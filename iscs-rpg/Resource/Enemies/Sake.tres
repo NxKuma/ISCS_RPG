@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="Entity" load_steps=4 format=3 uid="uid://cefbv8t5u4xp3"]
+
+[ext_resource type="Script" path="res://Script/SuperScript/Entity.gd" id="1_7tacw"]
+[ext_resource type="Script" path="res://Script/SuperScript/Skill.gd" id="2_rp1nm"]
+
+[sub_resource type="Resource" id="Resource_hj0di"]
+resource_local_to_scene = true
+script = ExtResource("2_rp1nm")
+skill_name = "Kill"
+skill_cost = 20
+skill_cooldown = 2
+skill_description = "Attack an Entity with 40 Damage"
+skill_target = "Single"
+skill_type = "Attack"
+skill_mode = "Active"
+skill_element = 0
+skill_damage = 40.0
+
+[resource]
+script = ExtResource("1_7tacw")
+entity_name = "Snake"
+health = 200.0
+mana = 50
+damage = 20.0
+skill_list = Array[ExtResource("2_rp1nm")]([SubResource("Resource_hj0di")])
+element = 0
+resistance = Array[int]([2])
+weakness = Array[int]([3, 1])
+speed = 30

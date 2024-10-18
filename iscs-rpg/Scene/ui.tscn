@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://chbe22p815kfy"]
+
+[node name="UI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BottomContainer" type="Panel" parent="."]
+clip_contents = true
+layout_mode = 0
+offset_top = 773.0
+offset_right = 1280.0
+offset_bottom = 1023.0
+
+[node name="HSplitter" type="HSplitContainer" parent="BottomContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = 342
+
+[node name="LSelection" type="Panel" parent="BottomContainer/HSplitter"]
+layout_mode = 2
+
+[node name="VSplitContainer" type="VSplitContainer" parent="BottomContainer/HSplitter/LSelection"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = 125
+
+[node name="Action" type="Panel" parent="BottomContainer/HSplitter/LSelection/VSplitContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="BottomContainer/HSplitter/LSelection/VSplitContainer/Action"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 48
+text = "Action"
+
+[node name="Skill" type="Panel" parent="BottomContainer/HSplitter/LSelection/VSplitContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="BottomContainer/HSplitter/LSelection/VSplitContainer/Skill"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 48
+text = "Skill"
+
+[node name="RSelection" type="Panel" parent="BottomContainer/HSplitter"]
+layout_mode = 2
+
+[node name="HSplitContainer" type="HSplitContainer" parent="BottomContainer/HSplitter/RSelection"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = 295

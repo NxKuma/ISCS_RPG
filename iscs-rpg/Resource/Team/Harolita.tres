@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Entity" load_steps=3 format=3 uid="uid://bfpvp7h5i2nb2"]
+
+[ext_resource type="Script" path="res://Script/SuperScript/Entity.gd" id="1_cmhqr"]
+[ext_resource type="Script" path="res://Script/SuperScript/Skill.gd" id="2_rkk1s"]
+
+[resource]
+script = ExtResource("1_cmhqr")
+name = "Harolita"
+health = 200.0
+mana = 50
+damage = 20.0
+skill_list = Array[ExtResource("2_rkk1s")]([])
+element = 1
+resistance = Array[int]([])
+weakness = Array[int]([])
+speed = 0
