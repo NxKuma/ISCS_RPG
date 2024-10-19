@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="Entity" load_steps=4 format=3 uid="uid://b60qsglbh2rpi"]
+
+[ext_resource type="Script" path="res://Script/SuperScript/Entity.gd" id="1_5shu7"]
+[ext_resource type="Script" path="res://Script/SuperScript/Skill.gd" id="2_astl4"]
+
+[sub_resource type="Resource" id="Resource_rrom3"]
+script = ExtResource("2_astl4")
+skill_name = "Heal"
+skill_cost = 100
+skill_cooldown = 1
+skill_description = "Heals the teammeate"
+skill_target = "Single"
+skill_type = "Support"
+skill_mode = "Special"
+skill_element = 3
+skill_damage = 50.0
+
+[resource]
+script = ExtResource("1_5shu7")
+entity_name = "OwlBoy"
+health = 300.0
+mana = 299
+damage = 400.0
+inTeam = true
+skill_list = Array[ExtResource("2_astl4")]([SubResource("Resource_rrom3")])
+element = 0
+resistance = Array[int]([])
+weakness = Array[int]([])
+speed = 0

@@ -1,10 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://86obwfisw11y"]
+[gd_scene load_steps=5 format=3 uid="uid://86obwfisw11y"]
 
 [ext_resource type="Texture2D" uid="uid://eqne8hr4yyg0" path="res://icon.svg" id="1_dfo4x"]
+[ext_resource type="Shader" uid="uid://0vc5e678k4vp" path="res://Material/disolver.tres" id="1_kfiw5"]
 [ext_resource type="Script" path="res://Character.gd" id="2_bagit"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5v06v"]
+resource_local_to_scene = true
+shader = ExtResource("1_kfiw5")
+shader_parameter/DissolveValue = null
 
 [node name="Player" type="Sprite2D"]
 modulate = Color(1, 0.501167, 0.27, 1)
+material = SubResource("ShaderMaterial_5v06v")
+position = Vector2(-1, 0)
 texture = ExtResource("1_dfo4x")
 script = ExtResource("2_bagit")
 
