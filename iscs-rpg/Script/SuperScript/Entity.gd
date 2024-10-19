@@ -6,6 +6,7 @@ class_name Entity
 @export var health : float
 @export var mana: int
 @export var damage: float
+@export var inTeam: bool
 @export var skill_list: Array[Skill] = []
 @export var element: Element
 @export var resistance: Array[Element] = []
@@ -61,7 +62,7 @@ func heal(health_healed: float) -> float:
 # --- Non Return Functions--- Skills
 
 #Stun the Entity
-func stun():
+func stun() -> void:
 	is_stunned = true
 	
 func change_speed(speed_change:int):
@@ -69,7 +70,7 @@ func change_speed(speed_change:int):
 	
 
 #Revive the Entity
-func revive():
+func revive() -> void:
 	if !is_dead:
 		return
 	else:

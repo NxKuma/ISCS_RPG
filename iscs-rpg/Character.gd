@@ -1,10 +1,10 @@
 extends Sprite2D
-class_name Player
+class_name Character
+
 @export var stats: Entity
 @onready var player_name: Label = $Name
 @onready var health: Label = $Health
 @onready var mana: Label = $Mana
-
 
 func _ready() -> void:
 	player_name.text = stats.entity_name

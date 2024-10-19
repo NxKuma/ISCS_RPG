@@ -22,6 +22,7 @@ entity_name = "Harold"
 health = 100.0
 mana = 100
 damage = 40.0
+inTeam = true
 skill_list = Array[ExtResource("2_3cg8k")]([SubResource("Resource_4q3bl")])
 element = 4
 resistance = Array[int]([3, 4])

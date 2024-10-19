@@ -11,9 +11,9 @@ grow_vertical = 2
 [node name="BottomContainer" type="Panel" parent="."]
 clip_contents = true
 layout_mode = 0
-offset_top = 773.0
-offset_right = 1280.0
-offset_bottom = 1023.0
+offset_top = 730.0
+offset_right = 1920.0
+offset_bottom = 1080.0
 
 [node name="HSplitter" type="HSplitContainer" parent="BottomContainer"]
 layout_mode = 1
@@ -22,7 +22,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-split_offset = 342
+split_offset = 400
 
 [node name="LSelection" type="Panel" parent="BottomContainer/HSplitter"]
 layout_mode = 2
@@ -34,7 +34,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-split_offset = 125
+split_offset = 175
+dragger_visibility = 1
 
 [node name="Action" type="Panel" parent="BottomContainer/HSplitter/LSelection/VSplitContainer"]
 layout_mode = 2
@@ -53,7 +54,7 @@ text = "Action"
 [node name="Skill" type="Panel" parent="BottomContainer/HSplitter/LSelection/VSplitContainer"]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="BottomContainer/HSplitter/LSelection/VSplitContainer/Skill"]
+[node name="Button2" type="Button" parent="BottomContainer/HSplitter/LSelection/VSplitContainer/Skill"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -74,4 +75,31 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-split_offset = 295
+split_offset = 740
+dragger_visibility = 1
+
+[node name="Panel" type="Panel" parent="BottomContainer/HSplitter/RSelection/HSplitContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="BottomContainer/HSplitter/RSelection/HSplitContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 40
+text = "Attack"
+
+[node name="Panel2" type="Panel" parent="BottomContainer/HSplitter/RSelection/HSplitContainer"]
+layout_mode = 2
+
+[node name="Button2" type="Button" parent="BottomContainer/HSplitter/RSelection/HSplitContainer/Panel2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 40
+text = "Stun"

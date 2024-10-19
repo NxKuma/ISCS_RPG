@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Entity" load_steps=3 format=3 uid="uid://dcrqn48o2sdu5"]
+
+[ext_resource type="Script" path="res://Script/SuperScript/Entity.gd" id="1_r2k4i"]
+[ext_resource type="Script" path="res://Script/SuperScript/Skill.gd" id="2_tptxg"]
+
+[resource]
+script = ExtResource("1_r2k4i")
+entity_name = "Lizard"
+health = 50.0
+mana = 40
+damage = 20.0
+inTeam = false
+skill_list = Array[ExtResource("2_tptxg")]([])
+element = 0
+resistance = Array[int]([])
+weakness = Array[int]([])
+speed = 20

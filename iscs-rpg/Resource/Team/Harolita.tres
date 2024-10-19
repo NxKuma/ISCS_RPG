@@ -1,16 +1,29 @@
-[gd_resource type="Resource" script_class="Entity" load_steps=3 format=3 uid="uid://bfpvp7h5i2nb2"]
+[gd_resource type="Resource" script_class="Entity" load_steps=4 format=3 uid="uid://bfpvp7h5i2nb2"]
 
 [ext_resource type="Script" path="res://Script/SuperScript/Entity.gd" id="1_cmhqr"]
 [ext_resource type="Script" path="res://Script/SuperScript/Skill.gd" id="2_rkk1s"]
 
+[sub_resource type="Resource" id="Resource_raw4b"]
+script = ExtResource("2_rkk1s")
+skill_name = "Defend"
+skill_cost = 20
+skill_cooldown = 4
+skill_description = "Saves a team mate from damage for 1 turn "
+skill_target = ""
+skill_type = ""
+skill_mode = ""
+skill_element = 0
+skill_damage = 0.0
+
 [resource]
 script = ExtResource("1_cmhqr")
-name = "Harolita"
+entity_name = "Harolita"
 health = 200.0
 mana = 50
 damage = 20.0
-skill_list = Array[ExtResource("2_rkk1s")]([])
+inTeam = true
+skill_list = Array[ExtResource("2_rkk1s")]([SubResource("Resource_raw4b")])
 element = 1
 resistance = Array[int]([])
 weakness = Array[int]([])
-speed = 0
+speed = 50

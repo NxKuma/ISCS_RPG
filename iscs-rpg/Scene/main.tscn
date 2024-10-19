@@ -1,32 +1,35 @@
-[gd_scene load_steps=10 format=3 uid="uid://dudg06l772u6g"]
+[gd_scene load_steps=12 format=3 uid="uid://dudg06l772u6g"]
 
 [ext_resource type="Script" path="res://GameHandler.gd" id="1_i7hjy"]
 [ext_resource type="PackedScene" uid="uid://86obwfisw11y" path="res://Scene/player.tscn" id="1_uhqgt"]
+[ext_resource type="Texture2D" uid="uid://dxrnc11eyxel6" path="res://Art/battleback9.png" id="2_d7vyk"]
 [ext_resource type="Script" path="res://Script/SuperScript/Entity.gd" id="2_f8bsn"]
-[ext_resource type="Texture2D" uid="uid://83p658vtgmqg" path="res://Art/battleback1.png" id="2_rboh6"]
 [ext_resource type="Script" path="res://Script/SuperScript/Skill.gd" id="3_eqwtp"]
 [ext_resource type="Resource" uid="uid://cefbv8t5u4xp3" path="res://Resource/Enemies/Sake.tres" id="4_4f31c"]
+[ext_resource type="Resource" uid="uid://dcrqn48o2sdu5" path="res://Resource/Enemies/Lizard.tres" id="7_aki4r"]
 [ext_resource type="PackedScene" uid="uid://chbe22p815kfy" path="res://Scene/ui.tscn" id="7_hsdh1"]
+[ext_resource type="Resource" uid="uid://bfpvp7h5i2nb2" path="res://Resource/Team/Harolita.tres" id="7_ugwp5"]
 
 [sub_resource type="Resource" id="Resource_4q3bl"]
 script = ExtResource("3_eqwtp")
-skill_name = "Fire Light Bash"
-skill_cost = 0
-skill_cooldown = 0
+skill_name = "Stun"
+skill_cost = 30
+skill_cooldown = 20
 skill_description = "Harold will swing around his jar of fireflies and inflict 30 Light Damage to the Enemy"
 skill_target = ""
 skill_type = "Attack"
-skill_mode = "Active"
+skill_mode = "Special"
 skill_element = 4
 skill_damage = 30.0
 
-[sub_resource type="Resource" id="Resource_2r6ot"]
+[sub_resource type="Resource" id="Resource_cbrsb"]
 resource_local_to_scene = true
 script = ExtResource("2_f8bsn")
 entity_name = "Harold"
 health = 100.0
 mana = 100
 damage = 40.0
+inTeam = true
 skill_list = Array[ExtResource("3_eqwtp")]([SubResource("Resource_4q3bl")])
 element = 4
 resistance = Array[int]([3, 4])
@@ -37,19 +40,34 @@ speed = 100
 script = ExtResource("1_i7hjy")
 
 [node name="BG" type="Sprite2D" parent="."]
-position = Vector2(672, 495)
-scale = Vector2(1.69085, 1.69085)
-texture = ExtResource("2_rboh6")
+modulate = Color(0.57, 0.57, 0.57, 1)
+scale = Vector2(1.74, 1.74)
+texture = ExtResource("2_d7vyk")
+centered = false
 
 [node name="Player" parent="." instance=ExtResource("1_uhqgt")]
-position = Vector2(360, 332)
-stats = SubResource("Resource_2r6ot")
+position = Vector2(580, 319)
+stats = SubResource("Resource_cbrsb")
+
+[node name="Player2" parent="." instance=ExtResource("1_uhqgt")]
+position = Vector2(395, 456)
+stats = ExtResource("7_ugwp5")
 
 [node name="Enemy" parent="." instance=ExtResource("1_uhqgt")]
 modulate = Color(1, 0.0588235, 0.270588, 1)
-position = Vector2(1033, 308)
+position = Vector2(1310, 318)
 stats = ExtResource("4_4f31c")
 
+[node name="Enemy2" parent="." instance=ExtResource("1_uhqgt")]
+modulate = Color(1, 0.0588235, 0.270588, 1)
+position = Vector2(1460, 441)
+stats = ExtResource("7_aki4r")
+
 [node name="UI" parent="." instance=ExtResource("7_hsdh1")]
-offset_left = 1.0
-offset_right = 1.0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="Timer" type="Timer" parent="."]
