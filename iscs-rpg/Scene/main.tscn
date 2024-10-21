@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://dudg06l772u6g"]
+[gd_scene load_steps=36 format=3 uid="uid://dudg06l772u6g"]
 
 [ext_resource type="Script" path="res://GameHandler.gd" id="1_i7hjy"]
 [ext_resource type="PackedScene" uid="uid://86obwfisw11y" path="res://Scene/player.tscn" id="1_uhqgt"]
@@ -7,11 +7,18 @@
 [ext_resource type="Script" path="res://Script/SuperScript/Skill.gd" id="3_eqwtp"]
 [ext_resource type="Resource" uid="uid://cefbv8t5u4xp3" path="res://Resource/Enemies/Sake.tres" id="4_4f31c"]
 [ext_resource type="Shader" uid="uid://0vc5e678k4vp" path="res://Material/disolver.tres" id="4_7rxj3"]
+[ext_resource type="Texture2D" uid="uid://ral5i4uqktmw" path="res://Art/Sample/175034.png" id="5_bunn7"]
 [ext_resource type="Resource" uid="uid://b60qsglbh2rpi" path="res://Resource/Team/Team3.tres" id="7_3usfu"]
 [ext_resource type="Resource" uid="uid://dcrqn48o2sdu5" path="res://Resource/Enemies/Lizard.tres" id="7_aki4r"]
 [ext_resource type="PackedScene" uid="uid://chbe22p815kfy" path="res://Scene/ui.tscn" id="7_hsdh1"]
 [ext_resource type="Resource" uid="uid://bfpvp7h5i2nb2" path="res://Resource/Team/Harolita.tres" id="7_ugwp5"]
+[ext_resource type="Texture2D" uid="uid://brhs2omauk4mh" path="res://Art/Sample/206665.png" id="8_t0par"]
+[ext_resource type="Texture2D" uid="uid://cuf7vgrgl8sp4" path="res://Art/Sample/175193.png" id="10_o1csc"]
 [ext_resource type="Resource" uid="uid://bror33mjlctl8" path="res://Resource/Enemies/Enemy3.tres" id="10_y3g8r"]
+[ext_resource type="Texture2D" uid="uid://b0ayqa82k8emr" path="res://Art/Sample/208947.png" id="12_3hfcm"]
+[ext_resource type="Shader" uid="uid://4behqx813h4c" path="res://Material/outline.tres" id="12_rirgx"]
+[ext_resource type="Texture2D" uid="uid://dxmyq2b2eh3lh" path="res://Art/Sample/206664.png" id="14_eu3e5"]
+[ext_resource type="Texture2D" uid="uid://bwfyjh75mj4f1" path="res://Art/Sample/175276.png" id="16_tqgrn"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_0rf02"]
 
@@ -23,6 +30,10 @@ resource_local_to_scene = true
 shader = ExtResource("4_7rxj3")
 shader_parameter/DissolveValue = 1.0
 shader_parameter/Texture2DParameter = SubResource("NoiseTexture2D_a7sbc")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_34f8e"]
+atlas = ExtResource("5_bunn7")
+region = Rect2(1971, 3, 78, 80)
 
 [sub_resource type="Resource" id="Resource_4q3bl"]
 script = ExtResource("3_eqwtp")
@@ -36,7 +47,7 @@ skill_mode = "Special"
 skill_element = 4
 skill_damage = 30.0
 
-[sub_resource type="Resource" id="Resource_wvyic"]
+[sub_resource type="Resource" id="Resource_qbjo4"]
 resource_local_to_scene = true
 script = ExtResource("2_f8bsn")
 entity_name = "Harold"
@@ -56,17 +67,29 @@ shader = ExtResource("4_7rxj3")
 shader_parameter/DissolveValue = 1.0
 shader_parameter/Texture2DParameter = SubResource("NoiseTexture2D_a7sbc")
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_eh0a2"]
+atlas = ExtResource("8_t0par")
+region = Rect2(874, 461, 64, 65)
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mbdo3"]
 resource_local_to_scene = true
 shader = ExtResource("4_7rxj3")
 shader_parameter/DissolveValue = 1.0
 shader_parameter/Texture2DParameter = SubResource("NoiseTexture2D_a7sbc")
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_pfnha"]
+atlas = ExtResource("10_o1csc")
+region = Rect2(1648, 78, 54, 65)
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xx68m"]
 resource_local_to_scene = true
-shader = ExtResource("4_7rxj3")
-shader_parameter/DissolveValue = 1.0
-shader_parameter/Texture2DParameter = SubResource("NoiseTexture2D_a7sbc")
+shader = ExtResource("12_rirgx")
+shader_parameter/ColorParameter = Color(1, 0, 0, 1)
+shader_parameter/Width = 2.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nr0p3"]
+atlas = ExtResource("12_3hfcm")
+region = Rect2(1339, 432, 85, 91)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_67xsb"]
 resource_local_to_scene = true
@@ -74,11 +97,19 @@ shader = ExtResource("4_7rxj3")
 shader_parameter/DissolveValue = 1.0
 shader_parameter/Texture2DParameter = SubResource("NoiseTexture2D_a7sbc")
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_jwjgw"]
+atlas = ExtResource("14_eu3e5")
+region = Rect2(979, 530, 57, 64)
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ggcwe"]
 resource_local_to_scene = true
 shader = ExtResource("4_7rxj3")
 shader_parameter/DissolveValue = 1.0
 shader_parameter/Texture2DParameter = SubResource("NoiseTexture2D_a7sbc")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ocbgp"]
+atlas = ExtResource("16_tqgrn")
+region = Rect2(1197, 374, 74, 74)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_i7hjy")
@@ -92,36 +123,182 @@ centered = false
 [node name="Player" parent="." instance=ExtResource("1_uhqgt")]
 material = SubResource("ShaderMaterial_qgx8j")
 position = Vector2(580, 319)
-stats = SubResource("Resource_wvyic")
+scale = Vector2(2, 2)
+texture = SubResource("AtlasTexture_34f8e")
+flip_h = true
+stats = SubResource("Resource_qbjo4")
+
+[node name="Name" parent="Player" index="0"]
+offset_left = -35.5
+offset_top = -63.5
+offset_right = 52.5
+offset_bottom = -40.5
+scale = Vector2(0.8, 0.8)
+
+[node name="Health" parent="Player" index="1"]
+offset_left = -35.5
+offset_top = 40.0
+offset_right = 52.5
+offset_bottom = 63.0
+scale = Vector2(0.8, 0.8)
+
+[node name="Mana" parent="Player" index="2"]
+offset_left = -35.5
+offset_top = 58.5
+offset_right = 52.5
+offset_bottom = 81.5
+scale = Vector2(0.8, 0.8)
 
 [node name="Player2" parent="." instance=ExtResource("1_uhqgt")]
 material = SubResource("ShaderMaterial_7mh1s")
 position = Vector2(395, 456)
+scale = Vector2(2, 2)
+texture = SubResource("AtlasTexture_eh0a2")
+flip_h = true
 stats = ExtResource("7_ugwp5")
+
+[node name="Name" parent="Player2" index="0"]
+offset_top = -53.0
+offset_bottom = -30.0
+scale = Vector2(0.8, 0.8)
+
+[node name="Health" parent="Player2" index="1"]
+offset_left = -43.0
+offset_top = 32.5
+offset_right = 45.0
+offset_bottom = 55.5
+scale = Vector2(0.8, 0.8)
+
+[node name="Mana" parent="Player2" index="2"]
+offset_left = -43.0
+offset_top = 52.5
+offset_right = 45.0
+offset_bottom = 75.5
+scale = Vector2(0.8, 0.8)
 
 [node name="Player3" parent="." instance=ExtResource("1_uhqgt")]
 material = SubResource("ShaderMaterial_mbdo3")
 position = Vector2(573, 599)
+scale = Vector2(2, 2)
+texture = SubResource("AtlasTexture_pfnha")
+flip_h = true
 stats = ExtResource("7_3usfu")
+
+[node name="Name" parent="Player3" index="0"]
+offset_left = -27.5
+offset_top = -48.5
+offset_right = 60.5
+offset_bottom = -25.5
+scale = Vector2(0.8, 0.8)
+
+[node name="Health" parent="Player3" index="1"]
+offset_left = -27.0
+offset_top = 32.5
+offset_right = 61.0
+offset_bottom = 55.5
+scale = Vector2(0.8, 0.8)
+
+[node name="Mana" parent="Player3" index="2"]
+offset_left = -28.5
+offset_top = 51.0
+offset_right = 59.5
+offset_bottom = 74.0
+scale = Vector2(0.8, 0.8)
 
 [node name="Enemy" parent="." instance=ExtResource("1_uhqgt")]
 modulate = Color(1, 0.0588235, 0.270588, 1)
 material = SubResource("ShaderMaterial_xx68m")
 position = Vector2(1310, 318)
+scale = Vector2(2, 2)
+texture = SubResource("AtlasTexture_nr0p3")
 stats = ExtResource("4_4f31c")
+
+[node name="Name" parent="Enemy" index="0"]
+offset_left = -39.5
+offset_top = -70.5
+offset_right = 48.5
+offset_bottom = -47.5
+scale = Vector2(0.8, 0.8)
+
+[node name="Health" parent="Enemy" index="1"]
+offset_left = -39.5
+offset_top = 45.5
+offset_right = 48.5
+offset_bottom = 68.5
+scale = Vector2(0.8, 0.8)
+
+[node name="Mana" parent="Enemy" index="2"]
+offset_left = -39.5
+offset_top = 64.0
+offset_right = 48.5
+offset_bottom = 87.0
+scale = Vector2(0.8, 0.8)
 
 [node name="Enemy2" parent="." instance=ExtResource("1_uhqgt")]
 modulate = Color(1, 0.0588235, 0.270588, 1)
 material = SubResource("ShaderMaterial_67xsb")
-position = Vector2(1460, 441)
+position = Vector2(1481, 471)
+scale = Vector2(2, 2)
+texture = SubResource("AtlasTexture_jwjgw")
 stats = ExtResource("7_aki4r")
+
+[node name="Name" parent="Enemy2" index="0"]
+offset_left = -39.0
+offset_top = -50.5
+offset_right = 49.0
+offset_bottom = -27.5
+scale = Vector2(0.8, 0.8)
+
+[node name="Health" parent="Enemy2" index="1"]
+offset_left = -39.0
+offset_top = 34.0
+offset_right = 49.0
+offset_bottom = 57.0
+scale = Vector2(0.8, 0.8)
+
+[node name="Mana" parent="Enemy2" index="2"]
+offset_left = -39.0
+offset_top = 52.5
+offset_right = 49.0
+offset_bottom = 75.5
+scale = Vector2(0.8, 0.8)
 
 [node name="Enemy3" parent="." instance=ExtResource("1_uhqgt")]
 modulate = Color(1, 0.0588235, 0.270588, 1)
 material = SubResource("ShaderMaterial_ggcwe")
-position = Vector2(1311, 609)
+position = Vector2(1294, 609)
+scale = Vector2(2, 2)
+texture = SubResource("AtlasTexture_ocbgp")
 stats = ExtResource("10_y3g8r")
+
+[node name="Name" parent="Enemy3" index="0"]
+offset_left = -37.5
+offset_top = -57.0
+offset_right = 50.5
+offset_bottom = -34.0
+scale = Vector2(0.8, 0.8)
+
+[node name="Health" parent="Enemy3" index="1"]
+offset_left = -37.0
+offset_top = 37.0
+offset_right = 51.0
+offset_bottom = 60.0
+scale = Vector2(0.8, 0.8)
+
+[node name="Mana" parent="Enemy3" index="2"]
+offset_left = -37.0
+offset_top = 53.5
+offset_right = 51.0
+offset_bottom = 76.5
+scale = Vector2(0.8, 0.8)
 
 [node name="UI" parent="." instance=ExtResource("7_hsdh1")]
 
 [node name="Timer" type="Timer" parent="."]
+
+[editable path="Player"]
+[editable path="Player2"]
+[editable path="Player3"]
+[editable path="Enemy"]
+[editable path="Enemy2"]
+[editable path="Enemy3"]
