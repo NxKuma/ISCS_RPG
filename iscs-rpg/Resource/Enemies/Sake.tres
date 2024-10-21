@@ -22,6 +22,7 @@ entity_name = "Snake"
 health = 200.0
 mana = 50
 damage = 20.0
+inTeam = false
 skill_list = Array[ExtResource("2_rp1nm")]([SubResource("Resource_hj0di")])
 element = 0
 resistance = Array[int]([2])
