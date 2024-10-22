@@ -71,7 +71,6 @@ text = "Skill"
 layout_mode = 2
 
 [node name="ActionPanel" type="HSplitContainer" parent="BottomContainer/HSplitter/RSelection"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

@@ -43,6 +43,8 @@ hint = 1
 input_name = "texture"
 
 [resource]
+resource_local_to_scene = true
+resource_name = "Dissolve"
 code = "shader_type canvas_item;
 render_mode blend_mix;
 
@@ -140,7 +142,6 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-262.3, 42.8238)
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2(1660, 340)

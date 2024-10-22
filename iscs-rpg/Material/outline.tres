@@ -118,6 +118,8 @@ operator = 2
 operator = 2
 
 [resource]
+resource_local_to_scene = true
+resource_name = "Outline"
 code = "shader_type canvas_item;
 render_mode blend_mix;
 
@@ -287,7 +289,6 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-525.826, 669.503)
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2(3000, 1400)

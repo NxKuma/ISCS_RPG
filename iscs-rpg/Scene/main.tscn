@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://dudg06l772u6g"]
+[gd_scene load_steps=26 format=3 uid="uid://dudg06l772u6g"]
 
 [ext_resource type="Script" path="res://GameHandler.gd" id="1_i7hjy"]
 [ext_resource type="PackedScene" uid="uid://86obwfisw11y" path="res://Scene/player.tscn" id="1_uhqgt"]
@@ -6,7 +6,6 @@
 [ext_resource type="Script" path="res://Script/SuperScript/Entity.gd" id="2_f8bsn"]
 [ext_resource type="Script" path="res://Script/SuperScript/Skill.gd" id="3_eqwtp"]
 [ext_resource type="Resource" uid="uid://cefbv8t5u4xp3" path="res://Resource/Enemies/Sake.tres" id="4_4f31c"]
-[ext_resource type="Shader" uid="uid://0vc5e678k4vp" path="res://Material/disolver.tres" id="4_7rxj3"]
 [ext_resource type="Texture2D" uid="uid://ral5i4uqktmw" path="res://Art/Sample/175034.png" id="5_bunn7"]
 [ext_resource type="Resource" uid="uid://b60qsglbh2rpi" path="res://Resource/Team/Team3.tres" id="7_3usfu"]
 [ext_resource type="Resource" uid="uid://dcrqn48o2sdu5" path="res://Resource/Enemies/Lizard.tres" id="7_aki4r"]
@@ -16,20 +15,8 @@
 [ext_resource type="Texture2D" uid="uid://cuf7vgrgl8sp4" path="res://Art/Sample/175193.png" id="10_o1csc"]
 [ext_resource type="Resource" uid="uid://bror33mjlctl8" path="res://Resource/Enemies/Enemy3.tres" id="10_y3g8r"]
 [ext_resource type="Texture2D" uid="uid://b0ayqa82k8emr" path="res://Art/Sample/208947.png" id="12_3hfcm"]
-[ext_resource type="Shader" uid="uid://4behqx813h4c" path="res://Material/outline.tres" id="12_rirgx"]
 [ext_resource type="Texture2D" uid="uid://dxmyq2b2eh3lh" path="res://Art/Sample/206664.png" id="14_eu3e5"]
 [ext_resource type="Texture2D" uid="uid://bwfyjh75mj4f1" path="res://Art/Sample/175276.png" id="16_tqgrn"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_0rf02"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_a7sbc"]
-noise = SubResource("FastNoiseLite_0rf02")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_qgx8j"]
-resource_local_to_scene = true
-shader = ExtResource("4_7rxj3")
-shader_parameter/DissolveValue = 1.0
-shader_parameter/Texture2DParameter = SubResource("NoiseTexture2D_a7sbc")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_34f8e"]
 atlas = ExtResource("5_bunn7")
@@ -47,7 +34,7 @@ skill_mode = "Special"
 skill_element = 4
 skill_damage = 30.0
 
-[sub_resource type="Resource" id="Resource_qbjo4"]
+[sub_resource type="Resource" id="Resource_j5tvv"]
 resource_local_to_scene = true
 script = ExtResource("2_f8bsn")
 entity_name = "Harold"
@@ -61,51 +48,21 @@ resistance = Array[int]([3, 4])
 weakness = Array[int]([1])
 speed = 100
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7mh1s"]
-resource_local_to_scene = true
-shader = ExtResource("4_7rxj3")
-shader_parameter/DissolveValue = 1.0
-shader_parameter/Texture2DParameter = SubResource("NoiseTexture2D_a7sbc")
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_eh0a2"]
 atlas = ExtResource("8_t0par")
 region = Rect2(874, 461, 64, 65)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mbdo3"]
-resource_local_to_scene = true
-shader = ExtResource("4_7rxj3")
-shader_parameter/DissolveValue = 1.0
-shader_parameter/Texture2DParameter = SubResource("NoiseTexture2D_a7sbc")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pfnha"]
 atlas = ExtResource("10_o1csc")
 region = Rect2(1648, 78, 54, 65)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_xx68m"]
-resource_local_to_scene = true
-shader = ExtResource("12_rirgx")
-shader_parameter/ColorParameter = Color(1, 0, 0, 1)
-shader_parameter/Width = 2.0
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_nr0p3"]
 atlas = ExtResource("12_3hfcm")
 region = Rect2(1339, 432, 85, 91)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_67xsb"]
-resource_local_to_scene = true
-shader = ExtResource("4_7rxj3")
-shader_parameter/DissolveValue = 1.0
-shader_parameter/Texture2DParameter = SubResource("NoiseTexture2D_a7sbc")
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_jwjgw"]
 atlas = ExtResource("14_eu3e5")
 region = Rect2(979, 530, 57, 64)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ggcwe"]
-resource_local_to_scene = true
-shader = ExtResource("4_7rxj3")
-shader_parameter/DissolveValue = 1.0
-shader_parameter/Texture2DParameter = SubResource("NoiseTexture2D_a7sbc")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ocbgp"]
 atlas = ExtResource("16_tqgrn")
@@ -121,12 +78,11 @@ texture = ExtResource("2_d7vyk")
 centered = false
 
 [node name="Player" parent="." instance=ExtResource("1_uhqgt")]
-material = SubResource("ShaderMaterial_qgx8j")
 position = Vector2(580, 319)
 scale = Vector2(2, 2)
 texture = SubResource("AtlasTexture_34f8e")
 flip_h = true
-stats = SubResource("Resource_qbjo4")
+stats = SubResource("Resource_j5tvv")
 
 [node name="Name" parent="Player" index="0"]
 offset_left = -35.5
@@ -150,7 +106,6 @@ offset_bottom = 81.5
 scale = Vector2(0.8, 0.8)
 
 [node name="Player2" parent="." instance=ExtResource("1_uhqgt")]
-material = SubResource("ShaderMaterial_7mh1s")
 position = Vector2(395, 456)
 scale = Vector2(2, 2)
 texture = SubResource("AtlasTexture_eh0a2")
@@ -177,7 +132,6 @@ offset_bottom = 75.5
 scale = Vector2(0.8, 0.8)
 
 [node name="Player3" parent="." instance=ExtResource("1_uhqgt")]
-material = SubResource("ShaderMaterial_mbdo3")
 position = Vector2(573, 599)
 scale = Vector2(2, 2)
 texture = SubResource("AtlasTexture_pfnha")
@@ -207,7 +161,6 @@ scale = Vector2(0.8, 0.8)
 
 [node name="Enemy" parent="." instance=ExtResource("1_uhqgt")]
 modulate = Color(1, 0.0588235, 0.270588, 1)
-material = SubResource("ShaderMaterial_xx68m")
 position = Vector2(1310, 318)
 scale = Vector2(2, 2)
 texture = SubResource("AtlasTexture_nr0p3")
@@ -236,7 +189,6 @@ scale = Vector2(0.8, 0.8)
 
 [node name="Enemy2" parent="." instance=ExtResource("1_uhqgt")]
 modulate = Color(1, 0.0588235, 0.270588, 1)
-material = SubResource("ShaderMaterial_67xsb")
 position = Vector2(1481, 471)
 scale = Vector2(2, 2)
 texture = SubResource("AtlasTexture_jwjgw")
@@ -265,7 +217,6 @@ scale = Vector2(0.8, 0.8)
 
 [node name="Enemy3" parent="." instance=ExtResource("1_uhqgt")]
 modulate = Color(1, 0.0588235, 0.270588, 1)
-material = SubResource("ShaderMaterial_ggcwe")
 position = Vector2(1294, 609)
 scale = Vector2(2, 2)
 texture = SubResource("AtlasTexture_ocbgp")
