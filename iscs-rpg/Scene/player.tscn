@@ -1,14 +1,14 @@
 [gd_scene load_steps=10 format=3 uid="uid://86obwfisw11y"]
 
-[ext_resource type="Shader" path="res://Material/blink.gdshader" id="1_contw"]
+[ext_resource type="Shader" uid="uid://4behqx813h4c" path="res://Material/outline.tres" id="1_0nklb"]
 [ext_resource type="Texture2D" uid="uid://eqne8hr4yyg0" path="res://icon.svg" id="1_dfo4x"]
 [ext_resource type="Script" path="res://Character.gd" id="2_bagit"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5v06v"]
 resource_local_to_scene = true
-shader = ExtResource("1_contw")
-shader_parameter/blink_color = Color(1, 1, 1, 1)
-shader_parameter/blink_intensity = 1.0
+shader = ExtResource("1_0nklb")
+shader_parameter/ColorParameter = Color(1, 0, 0, 1)
+shader_parameter/Width = 5.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yju2u"]
 
@@ -29,21 +29,6 @@ tracks/0/keys = {
 "values": [SubResource("ShaderMaterial_5v06v"), SubResource("ShaderMaterial_5v06v")]
 }
 
-[sub_resource type="Animation" id="Animation_m8b04"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:material")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [SubResource("ShaderMaterial_5v06v")]
-}
-
 [sub_resource type="Animation" id="Animation_df26b"]
 resource_name = "Disolve"
 step = 0.1
@@ -58,6 +43,21 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [SubResource("ShaderMaterial_5v06v"), SubResource("ShaderMaterial_5v06v"), SubResource("ShaderMaterial_5v06v")]
+}
+
+[sub_resource type="Animation" id="Animation_m8b04"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("ShaderMaterial_5v06v")]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_t5cmg"]
@@ -99,7 +99,7 @@ text = "Mana: 00
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-scale = Vector2(6.39305, 6.39305)
+scale = Vector2(4.3873, 4.3873)
 shape = SubResource("RectangleShape2D_yju2u")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
