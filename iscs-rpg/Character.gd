@@ -6,6 +6,8 @@ class_name Character
 @onready var health: Label = $Health
 @onready var mana: Label = $Mana
 
+var game_state: int = 0
+
 var blink_shader:Shader = preload("res://Material/blink.gdshader")
 var dissolve_shader:Shader = preload("res://Material/disolver.tres")
 var outline_shader:Shader = preload("res://Material/outline.tres")
@@ -39,14 +41,16 @@ func _process(delta: float) -> void:
 
 
 func _on_area_2d_mouse_entered() -> void:
-	reset_shader(2)
-	self.material.set_shader_parameter("shader_parameter/Width",3)
-	print(self.shader_checks)
-	print(self.player_name.text)
+	if game_state == 2:
+		reset_shader(2)
+		self.material.set_shader_parameter("shader_parameter/Width",3)
+		print(self.shader_checks)
+		print(self.player_name.text)
 	
 
 
 func _on_area_2d_mouse_exited() -> void:
-	reset_shader(0)
-	self.material.set_shader_parameter("shader_parameter/Width",0)
-	print("Goodbye")
+	if game_state == 2:
+		reset_shader(0)
+		self.material.set_shader_parameter("shader_parameter/Width",0)
+		print("Goodbye")

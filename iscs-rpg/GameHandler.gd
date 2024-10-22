@@ -2,8 +2,10 @@ extends Node2D
 
 @onready var ui: Control = $UI
 
-var entities: Array[Entity] = []
-var team: Array[Entity] = []
+var entities: Array[Sprite2D] = []
+var team: Array[Sprite2D] = []
+var enemies: Array[Sprite2D] = []
+
 var current_state: int = GameState.SetUp
 var special_button: Button
 var a_panel: HSplitContainer
@@ -45,12 +47,13 @@ func _ready() -> void:
 #--------------------------------------------------------------
 	for child in get_children():
 		if child.get_script() != null and child.stats != null:
-			entities.append(child.stats)
+			entities.append(child)
 #--------------------------------------------------------------
 	for e in entities:
-		if e.inTeam:
+		if e.stats.inTeam:
 			team.append(e)
-			
+		else:
+			enemies.append(e)
 	print(team.size())
 
 
@@ -67,21 +70,19 @@ func _process(delta: float) -> void:
 			b.set_mouse_filter(0)
 		for b in right_buttons:
 			b.set_mouse_filter(0)
+		for e in entities:
+			e.game_state = 0
 			
-		turn_indicator.text = team[current_entity].entity_name +"'s turn"
+		turn_indicator.text = team[current_entity].stats.entity_name +"'s turn"
 		if a_panel.is_visible():
-			special_button.text = team[current_entity].skill_list[0].skill_name
+			special_button.text = team[current_entity].stats.skill_list[0].skill_name
 	elif current_state == GameState.Target:
 		for b in left_buttons:
 			b.set_mouse_filter(2)
 		for b in right_buttons:
 			b.set_mouse_filter(2)
-			
-		
-		var enemies: Array[Entity] = []
-		for e in entities:
-			if !e.inTeam:
-				enemies.append(e)
+		for enemy in enemies:
+			enemy.game_state = 2
 	else:
 		pass
 		
