@@ -14,6 +14,8 @@ var outline_shader:Shader = preload("res://Material/outline.tres")
 var current_shader:Shader
 
 var shader_checks: Array[bool] = [false, false, false]
+var is_hovering: bool = false
+
 
 func align_shader(shader_number: int) -> void:
 	if shader_number == 0:
@@ -48,7 +50,17 @@ func _on_area_2d_mouse_entered() -> void:
 		reset_shader(2)
 		self.material.set_shader_parameter("shader_parameter/Width",3)
 		Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
-	
+		is_hovering = true
+		
+		#var mouse_input : InputEvent = InputEventMouseButton
+		#if mouse_input is InputEventMouseButton:
+			#get_parent().current_state = get_parent().GameState.Queue
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and is_hovering:
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			get_parent().target_entity = get_parent().get_enemy_count(self)
+			get_parent().current_state = get_parent().GameState.Queue
 
 
 func _on_area_2d_mouse_exited() -> void:
@@ -56,3 +68,4 @@ func _on_area_2d_mouse_exited() -> void:
 		reset_shader(0)
 		self.material.set_shader_parameter("shader_parameter/Width",0)
 		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+		is_hovering = false

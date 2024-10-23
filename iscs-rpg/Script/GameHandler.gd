@@ -5,7 +5,7 @@ extends Node2D
 var entities: Array[Sprite2D] = []
 var team: Array[Sprite2D] = []
 var enemies: Array[Sprite2D] = []
-var action_list: Array[String] = []
+var action_list: Dictionary = {}
 
 var current_state: int = GameState.SetUp
 var special_button: Button
@@ -14,6 +14,7 @@ var s_panel: HSplitContainer
 var l_panel: VSplitContainer
 var turn_indicator: Label
 var current_entity: int = 0
+var target_entity: int = 0
 var left_buttons: Array[Button] = []
 var right_buttons: Array[Button] = []
 var current_action: String
@@ -21,7 +22,7 @@ var current_action: String
 enum GameState{
 	SetUp, #Set Up = Player Chooses their moves
 	Target, #Target = Player Chooses the target of their moves
-	Execute #Execute = Game executes player and enemy movement
+	Queue #Queue = Game queues player action
 }
 
 # Called when the node enters the scene tree for the first time.
@@ -58,9 +59,6 @@ func _ready() -> void:
 			enemies.append(e)
 	print(team.size())
 
-func check_order() -> void:
-	pass
-
 func pick_enemy_action() -> void:
 	pass
 
@@ -73,11 +71,9 @@ func _process(delta: float) -> void:
 		for b in right_buttons:
 			b.set_mouse_filter(0)
 			b.set_pressed_no_signal(false)
-				
-			 
+
 		for e in entities:
 			e.game_state = 0
-			
 		turn_indicator.text = team[current_entity].stats.entity_name +"'s turn"
 		if a_panel.is_visible():
 			special_button.text = team[current_entity].stats.skill_list[0].skill_name
@@ -90,9 +86,10 @@ func _process(delta: float) -> void:
 				current_action = b.text
 		for enemy in enemies:
 			enemy.game_state = 2
-	elif current_state == GameState.Execute:
-		pass
-		
+	elif current_state == GameState.Queue and Engine.get_process_frames() % 5 == 0:
+			initialize_action(team[current_entity], current_action, enemies[target_entity])
+			print(action_list)
+			
 
 #Just for checking for now
 func _input(event: InputEvent) -> void:
@@ -101,16 +98,21 @@ func _input(event: InputEvent) -> void:
 	if current_state == GameState.Target and event.is_action_pressed("ui_cancel"):
 		current_state = GameState.SetUp
 
+func get_enemy_count(enemy: Character) -> int:
+	return enemies.find(enemy)
 
-func initialize_action(source: String, action: String, destination: String):
-	var action_name = source + " " + action + " " + destination
-	action_list.append(action_name)
-
-
-
-
-
-
+func initialize_action(source: Character, action: String, destination: Character):
+	var character_stats: Array[Skill] = source.stats.skill_list
+	for skill in character_stats:
+		if skill.skill_name == action or action == "Attack":
+			action_list[source] = [action, destination]
+			current_entity += 1
+			current_state = GameState.SetUp
+		else:
+			current_state = GameState.SetUp
+			print("Skill not in Character")
+			
+#------------------------------------------------------------------------------
 
 # Button Presses
 func _attack_button_press():
