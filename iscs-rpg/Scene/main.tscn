@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://dudg06l772u6g"]
+[gd_scene load_steps=34 format=3 uid="uid://dudg06l772u6g"]
 
 [ext_resource type="Script" path="res://Script/GameHandler.gd" id="1_i7hjy"]
 [ext_resource type="PackedScene" uid="uid://86obwfisw11y" path="res://Scene/player.tscn" id="1_uhqgt"]
@@ -8,10 +8,12 @@
 [ext_resource type="Resource" uid="uid://cefbv8t5u4xp3" path="res://Resource/Enemies/Sake.tres" id="4_4f31c"]
 [ext_resource type="Texture2D" uid="uid://ral5i4uqktmw" path="res://Art/Sample/175034.png" id="5_bunn7"]
 [ext_resource type="Resource" uid="uid://b60qsglbh2rpi" path="res://Resource/Team/Team3.tres" id="7_3usfu"]
+[ext_resource type="Shader" uid="uid://4behqx813h4c" path="res://Material/outline.tres" id="7_5bkwr"]
 [ext_resource type="Resource" uid="uid://dcrqn48o2sdu5" path="res://Resource/Enemies/Lizard.tres" id="7_aki4r"]
 [ext_resource type="PackedScene" uid="uid://chbe22p815kfy" path="res://Scene/ui.tscn" id="7_hsdh1"]
 [ext_resource type="Resource" uid="uid://bfpvp7h5i2nb2" path="res://Resource/Team/Harolita.tres" id="7_ugwp5"]
 [ext_resource type="Texture2D" uid="uid://brhs2omauk4mh" path="res://Art/Sample/206665.png" id="8_t0par"]
+[ext_resource type="Script" path="res://Script/Character.gd" id="9_nsxeu"]
 [ext_resource type="Texture2D" uid="uid://cuf7vgrgl8sp4" path="res://Art/Sample/175193.png" id="10_o1csc"]
 [ext_resource type="Resource" uid="uid://bror33mjlctl8" path="res://Resource/Enemies/Enemy3.tres" id="10_y3g8r"]
 [ext_resource type="Texture2D" uid="uid://b0ayqa82k8emr" path="res://Art/Sample/208947.png" id="12_3hfcm"]
@@ -34,7 +36,7 @@ skill_mode = "Special"
 skill_element = 4
 skill_damage = 30.0
 
-[sub_resource type="Resource" id="Resource_vf00b"]
+[sub_resource type="Resource" id="Resource_inrfc"]
 resource_local_to_scene = true
 script = ExtResource("2_f8bsn")
 entity_name = "Harold"
@@ -48,9 +50,72 @@ resistance = Array[int]([3, 4])
 weakness = Array[int]([1])
 speed = 100
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5v06v"]
+resource_local_to_scene = true
+shader = ExtResource("7_5bkwr")
+shader_parameter/ColorParameter = Color(1, 0, 0, 1)
+shader_parameter/Width = 3.0
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_eh0a2"]
 atlas = ExtResource("8_t0par")
 region = Rect2(874, 461, 64, 65)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yju2u"]
+
+[sub_resource type="Animation" id="Animation_3kaoy"]
+resource_name = "Blink"
+length = 0.2
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [SubResource("ShaderMaterial_5v06v"), SubResource("ShaderMaterial_5v06v")]
+}
+
+[sub_resource type="Animation" id="Animation_df26b"]
+resource_name = "Disolve"
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0001, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [SubResource("ShaderMaterial_5v06v"), SubResource("ShaderMaterial_5v06v"), SubResource("ShaderMaterial_5v06v")]
+}
+
+[sub_resource type="Animation" id="Animation_m8b04"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("ShaderMaterial_5v06v")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_t5cmg"]
+_data = {
+"Blink": SubResource("Animation_3kaoy"),
+"Disolve": SubResource("Animation_df26b"),
+"RESET": SubResource("Animation_m8b04")
+}
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pfnha"]
 atlas = ExtResource("10_o1csc")
@@ -82,7 +147,7 @@ position = Vector2(580, 319)
 scale = Vector2(2, 2)
 texture = SubResource("AtlasTexture_34f8e")
 flip_h = true
-stats = SubResource("Resource_vf00b")
+stats = SubResource("Resource_inrfc")
 
 [node name="Name" parent="Player" index="0"]
 offset_left = -35.5
@@ -105,31 +170,51 @@ offset_right = 52.5
 offset_bottom = 81.5
 scale = Vector2(0.8, 0.8)
 
-[node name="Player2" parent="." instance=ExtResource("1_uhqgt")]
+[node name="Player2" type="Sprite2D" parent="."]
+modulate = Color(1, 0.501167, 0.27, 1)
+material = SubResource("ShaderMaterial_5v06v")
 position = Vector2(395, 456)
 scale = Vector2(2, 2)
 texture = SubResource("AtlasTexture_eh0a2")
 flip_h = true
+script = ExtResource("9_nsxeu")
 stats = ExtResource("7_ugwp5")
 
-[node name="Name" parent="Player2" index="0"]
+[node name="Name" type="Label" parent="Player2"]
+offset_left = -43.0
 offset_top = -53.0
+offset_right = 45.0
 offset_bottom = -30.0
 scale = Vector2(0.8, 0.8)
+text = "Name Here"
 
-[node name="Health" parent="Player2" index="1"]
+[node name="Health" type="Label" parent="Player2"]
 offset_left = -43.0
 offset_top = 32.5
 offset_right = 45.0
 offset_bottom = 55.5
 scale = Vector2(0.8, 0.8)
+text = "Health: 00"
 
-[node name="Mana" parent="Player2" index="2"]
+[node name="Mana" type="Label" parent="Player2"]
 offset_left = -43.0
 offset_top = 52.5
 offset_right = 45.0
 offset_bottom = 75.5
 scale = Vector2(0.8, 0.8)
+text = "Mana: 00
+"
+
+[node name="Area2D" type="Area2D" parent="Player2"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player2/Area2D"]
+scale = Vector2(4.3873, 4.3873)
+shape = SubResource("RectangleShape2D_yju2u")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Player2"]
+libraries = {
+"": SubResource("AnimationLibrary_t5cmg")
+}
 
 [node name="Player3" parent="." instance=ExtResource("1_uhqgt")]
 position = Vector2(573, 599)
@@ -247,8 +332,10 @@ scale = Vector2(0.8, 0.8)
 
 [node name="Timer" type="Timer" parent="."]
 
+[connection signal="mouse_entered" from="Player2/Area2D" to="Player2" method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Player2/Area2D" to="Player2" method="_on_area_2d_mouse_exited"]
+
 [editable path="Player"]
-[editable path="Player2"]
 [editable path="Player3"]
 [editable path="Enemy"]
 [editable path="Enemy2"]

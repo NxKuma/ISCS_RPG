@@ -22,7 +22,8 @@ var current_action: String
 enum GameState{
 	SetUp, #Set Up = Player Chooses their moves
 	Target, #Target = Player Chooses the target of their moves
-	Queue #Queue = Game queues player action
+	Queue, #Queue = Game queues player action
+	Execute
 }
 
 # Called when the node enters the scene tree for the first time.
@@ -71,12 +72,12 @@ func _process(delta: float) -> void:
 		for b in right_buttons:
 			b.set_mouse_filter(0)
 			b.set_pressed_no_signal(false)
-
 		for e in entities:
 			e.game_state = 0
 		turn_indicator.text = team[current_entity].stats.entity_name +"'s turn"
 		if a_panel.is_visible():
 			special_button.text = team[current_entity].stats.skill_list[0].skill_name
+	
 	elif current_state == GameState.Target:
 		for b in left_buttons:
 			b.set_mouse_filter(2)
@@ -84,12 +85,19 @@ func _process(delta: float) -> void:
 			b.set_mouse_filter(2)
 			if b.is_pressed():
 				current_action = b.text
-		for enemy in enemies:
-			enemy.game_state = 2
+		
+		for skill in team[current_entity].stats.skill_list:
+			if skill.skill_type == "Attack" or current_action == "Attack":
+				for enemy in enemies:
+					enemy.game_state = 2
+			else:
+				for mate in team:
+					mate.game_state = 2
+
 	elif current_state == GameState.Queue and Engine.get_process_frames() % 5 == 0:
 			initialize_action(team[current_entity], current_action, enemies[target_entity])
 			print(action_list)
-			
+
 
 #Just for checking for now
 func _input(event: InputEvent) -> void:
@@ -98,16 +106,24 @@ func _input(event: InputEvent) -> void:
 	if current_state == GameState.Target and event.is_action_pressed("ui_cancel"):
 		current_state = GameState.SetUp
 
-func get_enemy_count(enemy: Character) -> int:
-	return enemies.find(enemy)
+func get_entity_count(entity: Character, is_in_team: bool) -> int:
+	var count: int = 0
+	if is_in_team:
+		count = team.find(entity)
+	else:
+		count = enemies.find(entity)
+	return count
 
 func initialize_action(source: Character, action: String, destination: Character):
 	var character_stats: Array[Skill] = source.stats.skill_list
 	for skill in character_stats:
 		if skill.skill_name == action or action == "Attack":
 			action_list[source] = [action, destination]
-			current_entity += 1
-			current_state = GameState.SetUp
+			if current_entity < team.size() - 1:
+				current_entity += 1
+				current_state = GameState.SetUp
+			else:
+				current_state = GameState.Execute
 		else:
 			current_state = GameState.SetUp
 			print("Skill not in Character")

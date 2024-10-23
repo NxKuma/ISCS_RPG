@@ -24,6 +24,15 @@ func align_shader(shader_number: int) -> void:
 		current_shader = dissolve_shader
 	elif shader_number == 2:
 		current_shader = outline_shader
+		self.material.set_shader(current_shader)
+		if stats.inTeam:
+			self.material.set_shader_parameter("shader_parameter/ColorParameter",Color.AQUA)
+			self.material.set_shader_parameter("shader_parameter/Width",3)
+			print(self.material.get_shader_parameter("shader_parameter/ColorParameter"))
+		else:
+			self.material.set_shader_parameter("shader_parameter/ColorParameter",Color.RED)
+			self.material.set_shader_parameter("shader_parameter/Width",3)
+		return
 	self.material.set_shader(current_shader)
 
 func reset_shader(animation_number: int) -> void:
@@ -41,25 +50,30 @@ func _process(delta: float) -> void:
 	health.text = "Health: " + str(stats.health)
 	mana.text = "Mana : " + str(stats.mana)
 	
-	if !stats.inTeam and game_state == 0:
+	if game_state == 0:
 		reset_shader(0)
 
 
 func _on_area_2d_mouse_entered() -> void:
 	if game_state == 2:
-		reset_shader(2)
-		self.material.set_shader_parameter("shader_parameter/Width",3)
-		Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
-		is_hovering = true
-		
-		#var mouse_input : InputEvent = InputEventMouseButton
-		#if mouse_input is InputEventMouseButton:
-			#get_parent().current_state = get_parent().GameState.Queue
+		if !stats.inTeam:
+			reset_shader(2)
+			self.material.set_shader_parameter("shader_parameter/Width",3)
+			self.material.set_shader_parameter("shader_parameter/ColorParameter",Color.RED)
+			Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
+			is_hovering = true
+		else:
+			print("Hello")
+			reset_shader(2)
+			self.material.set_shader_parameter("shader_parameter/ColorParameter",Color.AQUA)
+			self.material.set_shader_parameter("shader_parameter/Width",3)
+			Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
+			is_hovering = true
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and is_hovering:
 		if event.button_index == MOUSE_BUTTON_LEFT:
-			get_parent().target_entity = get_parent().get_enemy_count(self)
+			get_parent().target_entity = get_parent().get_entity_count(self,stats.inTeam)
 			get_parent().current_state = get_parent().GameState.Queue
 
 

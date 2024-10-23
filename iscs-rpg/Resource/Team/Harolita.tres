@@ -9,9 +9,9 @@ skill_name = "Defend"
 skill_cost = 20
 skill_cooldown = 4
 skill_description = "Saves a team mate from damage for 1 turn "
-skill_target = ""
-skill_type = ""
-skill_mode = ""
+skill_target = "Single"
+skill_type = "Support"
+skill_mode = "Special"
 skill_element = 0
 skill_damage = 0.0
 
