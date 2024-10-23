@@ -5,6 +5,7 @@ extends Node2D
 var entities: Array[Sprite2D] = []
 var team: Array[Sprite2D] = []
 var enemies: Array[Sprite2D] = []
+var action_list: Array[String] = []
 
 var current_state: int = GameState.SetUp
 var special_button: Button
@@ -15,6 +16,7 @@ var turn_indicator: Label
 var current_entity: int = 0
 var left_buttons: Array[Button] = []
 var right_buttons: Array[Button] = []
+var current_action: String
 
 enum GameState{
 	SetUp, #Set Up = Player Chooses their moves
@@ -35,9 +37,9 @@ func _ready() -> void:
 	for child in a_panel.get_children():
 		right_buttons.append(child.get_child(0))
 	
-	right_buttons[0].button_down.connect(_attack_button_press)
+	right_buttons[0].button_up.connect(_attack_button_press)
 	special_button = right_buttons[1]
-	special_button.button_down.connect(_special_button_press)
+	special_button.button_up.connect(_special_button_press)
 #--------------------------------------------------------------
 	for child in l_panel.get_children():
 		left_buttons.append(child.get_child(0))
@@ -56,7 +58,6 @@ func _ready() -> void:
 			enemies.append(e)
 	print(team.size())
 
-
 func check_order() -> void:
 	pass
 
@@ -66,10 +67,14 @@ func pick_enemy_action() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if current_state == GameState.SetUp and current_entity < team.size():
+		current_action = " "
 		for b in left_buttons:
 			b.set_mouse_filter(0)
 		for b in right_buttons:
 			b.set_mouse_filter(0)
+			b.set_pressed_no_signal(false)
+				
+			 
 		for e in entities:
 			e.game_state = 0
 			
@@ -81,9 +86,11 @@ func _process(delta: float) -> void:
 			b.set_mouse_filter(2)
 		for b in right_buttons:
 			b.set_mouse_filter(2)
+			if b.is_pressed():
+				current_action = b.text
 		for enemy in enemies:
 			enemy.game_state = 2
-	else:
+	elif current_state == GameState.Execute:
 		pass
 		
 
@@ -93,6 +100,17 @@ func _input(event: InputEvent) -> void:
 		current_entity += 1
 	if current_state == GameState.Target and event.is_action_pressed("ui_cancel"):
 		current_state = GameState.SetUp
+
+
+func initialize_action(source: String, action: String, destination: String):
+	var action_name = source + " " + action + " " + destination
+	action_list.append(action_name)
+
+
+
+
+
+
 
 # Button Presses
 func _attack_button_press():

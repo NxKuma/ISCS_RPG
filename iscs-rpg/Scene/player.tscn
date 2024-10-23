@@ -2,7 +2,7 @@
 
 [ext_resource type="Shader" uid="uid://4behqx813h4c" path="res://Material/outline.tres" id="1_0nklb"]
 [ext_resource type="Texture2D" uid="uid://eqne8hr4yyg0" path="res://icon.svg" id="1_dfo4x"]
-[ext_resource type="Script" path="res://Character.gd" id="2_bagit"]
+[ext_resource type="Script" path="res://Script/Character.gd" id="2_bagit"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5v06v"]
 resource_local_to_scene = true

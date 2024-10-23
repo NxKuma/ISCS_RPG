@@ -38,14 +38,16 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	health.text = "Health: " + str(stats.health)
 	mana.text = "Mana : " + str(stats.mana)
+	
+	if !stats.inTeam and game_state == 0:
+		reset_shader(0)
 
 
 func _on_area_2d_mouse_entered() -> void:
 	if game_state == 2:
 		reset_shader(2)
 		self.material.set_shader_parameter("shader_parameter/Width",3)
-		print(self.shader_checks)
-		print(self.player_name.text)
+		Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
 	
 
 
@@ -53,4 +55,4 @@ func _on_area_2d_mouse_exited() -> void:
 	if game_state == 2:
 		reset_shader(0)
 		self.material.set_shader_parameter("shader_parameter/Width",0)
-		print("Goodbye")
+		Input.set_default_cursor_shape(Input.CURSOR_ARROW)

@@ -1,6 +1,6 @@
 [gd_scene load_steps=26 format=3 uid="uid://dudg06l772u6g"]
 
-[ext_resource type="Script" path="res://GameHandler.gd" id="1_i7hjy"]
+[ext_resource type="Script" path="res://Script/GameHandler.gd" id="1_i7hjy"]
 [ext_resource type="PackedScene" uid="uid://86obwfisw11y" path="res://Scene/player.tscn" id="1_uhqgt"]
 [ext_resource type="Texture2D" uid="uid://dxrnc11eyxel6" path="res://Art/battleback9.png" id="2_d7vyk"]
 [ext_resource type="Script" path="res://Script/SuperScript/Entity.gd" id="2_f8bsn"]
@@ -34,7 +34,7 @@ skill_mode = "Special"
 skill_element = 4
 skill_damage = 30.0
 
-[sub_resource type="Resource" id="Resource_t3bo0"]
+[sub_resource type="Resource" id="Resource_0n42a"]
 resource_local_to_scene = true
 script = ExtResource("2_f8bsn")
 entity_name = "Harold"
@@ -82,7 +82,7 @@ position = Vector2(580, 319)
 scale = Vector2(2, 2)
 texture = SubResource("AtlasTexture_34f8e")
 flip_h = true
-stats = SubResource("Resource_t3bo0")
+stats = SubResource("Resource_0n42a")
 
 [node name="Name" parent="Player" index="0"]
 offset_left = -35.5

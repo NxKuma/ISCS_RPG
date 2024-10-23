@@ -92,6 +92,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 40
+toggle_mode = true
 text = "Attack"
 
 [node name="Panel2" type="Panel" parent="BottomContainer/HSplitter/RSelection/ActionPanel"]
@@ -106,6 +107,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_default_cursor_shape = 2
 theme_override_font_sizes/font_size = 40
+toggle_mode = true
 text = "Stun"
 
 [node name="Skill" type="HSplitContainer" parent="BottomContainer/HSplitter/RSelection"]
