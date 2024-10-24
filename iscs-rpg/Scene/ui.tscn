@@ -25,6 +25,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 split_offset = 400
+dragger_visibility = 1
 
 [node name="LSelection" type="Panel" parent="BottomContainer/HSplitter"]
 layout_mode = 2

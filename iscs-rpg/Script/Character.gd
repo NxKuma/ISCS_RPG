@@ -15,7 +15,8 @@ var current_shader:Shader
 
 var shader_checks: Array[bool] = [false, false, false]
 var is_hovering: bool = false
-
+var done_animating:bool = false
+var dissolve_value:float = 0.0
 
 func align_shader(shader_number: int) -> void:
 	if shader_number == 0:
@@ -24,15 +25,6 @@ func align_shader(shader_number: int) -> void:
 		current_shader = dissolve_shader
 	elif shader_number == 2:
 		current_shader = outline_shader
-		self.material.set_shader(current_shader)
-		if stats.inTeam:
-			self.material.set_shader_parameter("shader_parameter/ColorParameter",Color.AQUA)
-			self.material.set_shader_parameter("shader_parameter/Width",3)
-			print(self.material.get_shader_parameter("shader_parameter/ColorParameter"))
-		else:
-			self.material.set_shader_parameter("shader_parameter/ColorParameter",Color.RED)
-			self.material.set_shader_parameter("shader_parameter/Width",3)
-		return
 	self.material.set_shader(current_shader)
 
 func reset_shader(animation_number: int) -> void:
@@ -44,35 +36,44 @@ func reset_shader(animation_number: int) -> void:
 
 func _ready() -> void:
 	player_name.text = stats.entity_name
-	reset_shader(0)
+	reset_shader(1)
+	if stats.inTeam:
+		self.material.set("shader_parameter/ColorParameter",Color.AQUA)
+	else:
+		self.material.set("shader_parameter/ColorParameter",Color.RED)
+	
+	
 	
 func _process(delta: float) -> void:
 	health.text = "Health: " + str(stats.health)
 	mana.text = "Mana : " + str(stats.mana)
 	
-	if game_state == 0:
+	if current_shader == dissolve_shader:
+		dissolve_value += delta*0.8
+		self.material.set("shader_parameter/DissolveValue",dissolve_value)
+	
+	
+	if self.material.get("shader_parameter/DissolveValue") >= 1:
+		done_animating = true
+	if game_state == 0 and done_animating:
 		reset_shader(0)
 
 
 func _on_area_2d_mouse_entered() -> void:
 	if game_state == 2:
+		reset_shader(2)
+		is_hovering = true
+		Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
+		self.material.set("shader_parameter/Width",2)
 		if !stats.inTeam:
-			reset_shader(2)
-			self.material.set_shader_parameter("shader_parameter/Width",3)
-			self.material.set_shader_parameter("shader_parameter/ColorParameter",Color.RED)
-			Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
-			is_hovering = true
+			self.material.set("shader_parameter/ColorParameter",Color.RED)
 		else:
-			print("Hello")
-			reset_shader(2)
-			self.material.set_shader_parameter("shader_parameter/ColorParameter",Color.AQUA)
-			self.material.set_shader_parameter("shader_parameter/Width",3)
-			Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
-			is_hovering = true
+			self.material.set("shader_parameter/ColorParameter",Color.AQUA)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and is_hovering:
 		if event.button_index == MOUSE_BUTTON_LEFT:
+			is_hovering = false
 			get_parent().target_entity = get_parent().get_entity_count(self,stats.inTeam)
 			get_parent().current_state = get_parent().GameState.Queue
 
