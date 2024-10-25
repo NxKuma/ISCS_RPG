@@ -2,6 +2,9 @@ extends Node2D
 
 @onready var ui: Control = $UI
 
+var cursor_open = preload("res://Art/harold_open_cursor_big.png")
+var cursor_point = preload("res://Art/harold_point_cursor_big.png")
+
 var entities: Array[Sprite2D] = []
 var team: Array[Sprite2D] = []
 var enemies: Array[Sprite2D] = []
@@ -35,6 +38,8 @@ func _ready() -> void:
 	s_panel = ui.get_child(0).get_child(0).get_child(1).get_child(1)
 	l_panel = ui.get_child(0).get_child(0).get_child(0).get_child(0)
 	turn_indicator = ui.get_child(1).get_child(0)
+	Input.set_custom_mouse_cursor(cursor_open, Input.CURSOR_ARROW)
+	Input.set_custom_mouse_cursor(cursor_point, Input.CURSOR_POINTING_HAND)
 	
 	a_panel.set_visible(false)
 	s_panel.set_visible(false)
@@ -72,7 +77,6 @@ func _process(delta: float) -> void:
 	if current_state == GameState.SetUp and current_entity < team.size():
 		l_panel.set_visible(true)
 		has_queued = false
-		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 		current_action = " "
 		for b in left_buttons:
 			b.set_mouse_filter(0)
@@ -84,8 +88,10 @@ func _process(delta: float) -> void:
 		turn_indicator.text = team[current_entity].stats.entity_name +"'s turn"
 		if a_panel.is_visible():
 			special_button.text = team[current_entity].stats.skill_list[0].skill_name
+		
 #------------------------------------------------------------------------------
 	elif current_state == GameState.Target:
+		Input.set_custom_mouse_cursor(cursor_open, Input.CURSOR_ARROW)
 		has_queued = false
 		for b in left_buttons:
 			b.set_mouse_filter(2)
@@ -105,6 +111,7 @@ func _process(delta: float) -> void:
 					mate.game_state = 2
 #------------------------------------------------------------------------------
 	elif current_state == GameState.Queue and has_queued == false:
+		Input.set_custom_mouse_cursor(cursor_open, Input.CURSOR_ARROW)
 		has_queued = true
 		var target : Character
 		if is_attack:
@@ -116,7 +123,7 @@ func _process(delta: float) -> void:
 	elif current_state == GameState.Execute:
 		for e in range(enemies.size()):
 			initialize_action(enemies[e],"Attack", team[randi_range(0,2)])
-		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+		Input.set_custom_mouse_cursor(cursor_open, Input.CURSOR_ARROW)
 		for b in left_buttons:
 			b.set_mouse_filter(0)
 		for b in right_buttons:

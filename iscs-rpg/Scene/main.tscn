@@ -36,7 +36,7 @@ skill_mode = "Special"
 skill_element = 4
 skill_damage = 30.0
 
-[sub_resource type="Resource" id="Resource_hdgsu"]
+[sub_resource type="Resource" id="Resource_tm2ig"]
 resource_local_to_scene = true
 script = ExtResource("2_f8bsn")
 entity_name = "Harold"
@@ -147,7 +147,7 @@ position = Vector2(580, 319)
 scale = Vector2(2, 2)
 texture = SubResource("AtlasTexture_34f8e")
 flip_h = true
-stats = SubResource("Resource_hdgsu")
+stats = SubResource("Resource_tm2ig")
 
 [node name="Name" parent="Player" index="0"]
 offset_left = -35.5
@@ -340,3 +340,4 @@ scale = Vector2(0.8, 0.8)
 [editable path="Enemy"]
 [editable path="Enemy2"]
 [editable path="Enemy3"]
+[editable path="UI"]
