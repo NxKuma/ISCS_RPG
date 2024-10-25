@@ -64,11 +64,34 @@ func _ready() -> void:
 	print(team.size())
 
 func pick_enemy_action() -> void:
-	pass
+	for e in range(enemies.size()):
+		var enemy:Character = enemies[e]
+		var enemy_action_number: int  = randi_range(0, enemy.stats.skill_list.size())
+		var enemy_action_string: String
+		var target_array: Array[Sprite2D]
+		if enemy_action_number == enemy.stats.skill_list.size():
+			enemy_action_string = "Attack"
+			target_array = team
+		else:
+			enemy_action_string = enemy.stats.skill_list[enemy_action_number].skill_name
+			if enemy.stats.skill_list[enemy_action_number].skill_type == "Support":
+				target_array = enemie
+		initialize_action(enemies[e],enemy_action_string, team[randi_range(0,2)])
+
+func fastest_to_slowest(a, b):
+	if a.stats.speed > b.stats.speed:
+		return true
+	return false
+
+func arrange_by_speed() -> Array[Character]:
+	var entity_list: Array[Character] = []
+	for e in entities:
+		entity_list.append(e)
+	entity_list.sort_custom(fastest_to_slowest)
+	return entity_list
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	print(current_entity)
 	if current_state == GameState.SetUp and current_entity < team.size():
 		l_panel.set_visible(true)
 		has_queued = false
@@ -112,10 +135,11 @@ func _process(delta: float) -> void:
 		else:
 			target = team[target_entity]
 		initialize_action(team[current_entity], current_action, target)
+		
 #------------------------------------------------------------------------------
 	elif current_state == GameState.Execute:
-		for e in range(enemies.size()):
-			initialize_action(enemies[e],"Attack", team[randi_range(0,2)])
+		var sorted_list = arrange_by_speed()
+		print(action_list)
 		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 		for b in left_buttons:
 			b.set_mouse_filter(0)
@@ -128,6 +152,9 @@ func _process(delta: float) -> void:
 		a_panel.set_visible(false)
 		l_panel.set_visible(false)
 		turn_indicator.text = " "
+		#-------------------------------
+		# Put function here that goes through every value of the dictionary to do the things
+		#-------------------------------
 		await get_tree().create_timer(1.0).timeout
 		current_entity = 0
 		current_state = GameState.SetUp
@@ -162,6 +189,11 @@ func initialize_action(source: Character, action: String, destination: Character
 			
 #------------------------------------------------------------------------------
 
+
+
+
+
+#------------------------------------------------------------------------------
 # Button Presses
 func _attack_button_press():
 	current_state = GameState.Target
