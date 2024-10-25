@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://86obwfisw11y"]
+[gd_scene load_steps=11 format=3 uid="uid://86obwfisw11y"]
 
 [ext_resource type="Shader" uid="uid://4behqx813h4c" path="res://Material/outline.tres" id="1_0nklb"]
 [ext_resource type="Texture2D" uid="uid://eqne8hr4yyg0" path="res://icon.svg" id="1_dfo4x"]
@@ -71,11 +71,16 @@ tracks/1/keys = {
 "values": [Color(1, 1, 1, 1)]
 }
 
+[sub_resource type="Animation" id="Animation_q3xsd"]
+resource_name = "Stun"
+step = 0.1
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_t5cmg"]
 _data = {
 "Disolve": SubResource("Animation_df26b"),
 "Heal": SubResource("Animation_3kaoy"),
-"RESET": SubResource("Animation_m8b04")
+"RESET": SubResource("Animation_m8b04"),
+"Stun": SubResource("Animation_q3xsd")
 }
 
 [node name="Player" type="Sprite2D"]

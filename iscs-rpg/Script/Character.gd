@@ -42,8 +42,6 @@ func _ready() -> void:
 	else:
 		self.material.set("shader_parameter/ColorParameter",Color.RED)
 	
-	
-	
 func _process(delta: float) -> void:
 	health.text = "Health: " + str(stats.health)
 	mana.text = "Mana : " + str(stats.mana)

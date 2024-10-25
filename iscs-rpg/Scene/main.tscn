@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Script/GameHandler.gd" id="1_i7hjy"]
 [ext_resource type="PackedScene" uid="uid://86obwfisw11y" path="res://Scene/player.tscn" id="1_uhqgt"]
-[ext_resource type="Texture2D" uid="uid://dxrnc11eyxel6" path="res://Art/battleback9.png" id="2_d7vyk"]
+[ext_resource type="Texture2D" uid="uid://bem1tsrf28og8" path="res://Art/harold_bg_2.png" id="2_6cglo"]
 [ext_resource type="Script" path="res://Script/SuperScript/Entity.gd" id="2_f8bsn"]
 [ext_resource type="Script" path="res://Script/SuperScript/Skill.gd" id="3_eqwtp"]
 [ext_resource type="Resource" uid="uid://cefbv8t5u4xp3" path="res://Resource/Enemies/Sake.tres" id="4_4f31c"]
@@ -36,7 +36,7 @@ skill_mode = "Special"
 skill_element = 4
 skill_damage = 30.0
 
-[sub_resource type="Resource" id="Resource_1vo4v"]
+[sub_resource type="Resource" id="Resource_3u4kh"]
 resource_local_to_scene = true
 script = ExtResource("2_f8bsn")
 entity_name = "Harold"
@@ -148,17 +148,18 @@ region = Rect2(1197, 374, 74, 74)
 script = ExtResource("1_i7hjy")
 
 [node name="BG" type="Sprite2D" parent="."]
-modulate = Color(0.57, 0.57, 0.57, 1)
-scale = Vector2(1.74, 1.74)
-texture = ExtResource("2_d7vyk")
+modulate = Color(0.74, 0.74, 0.74, 1)
+position = Vector2(-200, -240)
+scale = Vector2(7.5, 7.5)
+texture = ExtResource("2_6cglo")
 centered = false
 
 [node name="Player" parent="." instance=ExtResource("1_uhqgt")]
-position = Vector2(580, 319)
+position = Vector2(762, 417)
 scale = Vector2(2, 2)
 texture = SubResource("AtlasTexture_34f8e")
 flip_h = true
-stats = SubResource("Resource_1vo4v")
+stats = SubResource("Resource_3u4kh")
 
 [node name="Name" parent="Player" index="0"]
 offset_left = -35.5
@@ -183,7 +184,7 @@ scale = Vector2(0.8, 0.8)
 
 [node name="Player2" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_5v06v")
-position = Vector2(395, 456)
+position = Vector2(557, 535)
 scale = Vector2(2, 2)
 texture = SubResource("AtlasTexture_eh0a2")
 flip_h = true
@@ -227,7 +228,7 @@ libraries = {
 }
 
 [node name="Player3" parent="." instance=ExtResource("1_uhqgt")]
-position = Vector2(573, 599)
+position = Vector2(348, 410)
 scale = Vector2(2, 2)
 texture = SubResource("AtlasTexture_pfnha")
 flip_h = true
@@ -255,7 +256,7 @@ offset_bottom = 74.0
 scale = Vector2(0.8, 0.8)
 
 [node name="Enemy" parent="." instance=ExtResource("1_uhqgt")]
-position = Vector2(1310, 318)
+position = Vector2(1257, 428)
 scale = Vector2(2, 2)
 texture = SubResource("AtlasTexture_nr0p3")
 stats = ExtResource("4_4f31c")
@@ -282,7 +283,7 @@ offset_bottom = 87.0
 scale = Vector2(0.8, 0.8)
 
 [node name="Enemy2" parent="." instance=ExtResource("1_uhqgt")]
-position = Vector2(1481, 471)
+position = Vector2(1456, 542)
 scale = Vector2(2, 2)
 texture = SubResource("AtlasTexture_jwjgw")
 stats = ExtResource("7_aki4r")
@@ -309,7 +310,7 @@ offset_bottom = 75.5
 scale = Vector2(0.8, 0.8)
 
 [node name="Enemy3" parent="." instance=ExtResource("1_uhqgt")]
-position = Vector2(1294, 609)
+position = Vector2(1665, 414)
 scale = Vector2(2, 2)
 texture = SubResource("AtlasTexture_ocbgp")
 stats = ExtResource("10_y3g8r")
@@ -338,6 +339,10 @@ scale = Vector2(0.8, 0.8)
 [node name="UI" parent="." instance=ExtResource("7_hsdh1")]
 
 [node name="Timer" type="Timer" parent="."]
+
+[node name="Label" type="Label" parent="."]
+offset_right = 285.0
+offset_bottom = 267.0
 
 [connection signal="mouse_entered" from="Player2/Area2D" to="Player2" method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="Player2/Area2D" to="Player2" method="_on_area_2d_mouse_exited"]

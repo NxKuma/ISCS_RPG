@@ -1,6 +1,7 @@
 extends Node2D
 
 @onready var ui: Control = $UI
+@onready var label: Label = $Label
 
 var entities: Array[Sprite2D] = []
 var team: Array[Sprite2D] = []
@@ -75,8 +76,10 @@ func pick_enemy_action() -> void:
 		else:
 			enemy_action_string = enemy.stats.skill_list[enemy_action_number].skill_name
 			if enemy.stats.skill_list[enemy_action_number].skill_type == "Support":
-				target_array = enemie
-		initialize_action(enemies[e],enemy_action_string, team[randi_range(0,2)])
+				target_array = enemies
+			else:
+				target_array = team
+		initialize_action(enemies[e],enemy_action_string, target_array[randi_range(0,2)])
 
 func fastest_to_slowest(a, b):
 	if a.stats.speed > b.stats.speed:
@@ -95,6 +98,7 @@ func _process(delta: float) -> void:
 	if current_state == GameState.SetUp and current_entity < team.size():
 		l_panel.set_visible(true)
 		has_queued = false
+		is_done_executing = false
 		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 		current_action = " "
 		for b in left_buttons:
@@ -138,8 +142,10 @@ func _process(delta: float) -> void:
 		
 #------------------------------------------------------------------------------
 	elif current_state == GameState.Execute:
+		if has_queued == true:
+			pick_enemy_action()
+			has_queued = false
 		var sorted_list = arrange_by_speed()
-		print(action_list)
 		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 		for b in left_buttons:
 			b.set_mouse_filter(0)
@@ -153,7 +159,9 @@ func _process(delta: float) -> void:
 		l_panel.set_visible(false)
 		turn_indicator.text = " "
 		#-------------------------------
-		# Put function here that goes through every value of the dictionary to do the things
+		if !is_done_executing:
+			execute_action(sorted_list)
+			is_done_executing = true
 		#-------------------------------
 		await get_tree().create_timer(1.0).timeout
 		current_entity = 0
@@ -186,9 +194,22 @@ func initialize_action(source: Character, action: String, destination: Character
 				current_state = GameState.Execute
 		else:
 			current_state = GameState.SetUp
-			
+	label.text += source.stats.entity_name + " used " +  action + " on " + destination.stats.entity_name + "\n"
 #------------------------------------------------------------------------------
-
+func execute_action(list:Array[Character]) -> void:
+	for l in list:
+		var stats: Entity = l.stats
+		var skill: Skill
+		var target: Character = action_list[l][1]
+		var action: String = action_list[l][0]
+		for s in stats.skill_list:
+			if s.skill_name == action:
+				skill = s
+		if action == "Attack":
+			target.stats.health = target.stats.take_damage(stats.damage)
+		elif skill.skill_type == "Attack":
+			target.stats.health = target.stats.take_skill_damage(skill)
+	
 
 
 
