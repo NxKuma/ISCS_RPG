@@ -11,15 +11,15 @@ var enemies: Array[Sprite2D] = []
 var action_list: Dictionary = {}
 
 var current_state: int = GameState.SetUp
-var special_button: Button
+var special_button: TextureButton
 var a_panel: HSplitContainer
 var s_panel: HSplitContainer
 var l_panel: VSplitContainer
 var turn_indicator: Label
 var current_entity: int = 0
 var target_entity: int = 0
-var left_buttons: Array[Button] = []
-var right_buttons: Array[Button] = []
+var left_buttons: Array[TextureButton] = []
+var right_buttons: Array[TextureButton] = []
 var current_action: String
 var has_queued: bool = false
 var is_done_executing: bool = false
@@ -46,6 +46,10 @@ func _ready() -> void:
 #--------------------------------------------------------------
 	for child in a_panel.get_children():
 		right_buttons.append(child.get_child(0))
+	for child in s_panel.get_children():
+		right_buttons.append(child.get_child(0))
+	for rb in right_buttons:
+		rb.button_up.connect(_attack_button_press)
 	
 	right_buttons[0].button_up.connect(_attack_button_press)
 	special_button = right_buttons[1]
@@ -87,11 +91,10 @@ func _process(delta: float) -> void:
 			e.game_state = 0
 		turn_indicator.text = team[current_entity].stats.entity_name +"'s turn"
 		if a_panel.is_visible():
-			special_button.text = team[current_entity].stats.skill_list[0].skill_name
+			special_button.get_child(0).text = team[current_entity].stats.skill_list[0].skill_name
 		
 #------------------------------------------------------------------------------
 	elif current_state == GameState.Target:
-		Input.set_custom_mouse_cursor(cursor_open, Input.CURSOR_ARROW)
 		has_queued = false
 		for b in left_buttons:
 			b.set_mouse_filter(2)
@@ -182,3 +185,7 @@ func _skill_screen_open():
 	s_panel.set_visible(!s_panel.is_visible())
 	if a_panel.is_visible():
 		a_panel.set_visible(false)
+
+
+func _on_action_mouse_entered() -> void:
+	pass # Replace with function body.
