@@ -75,15 +75,16 @@ func _process(delta: float) -> void:
 		reset_shader(0)
 	
 	if stats.health <= 0 and !is_dead:
-		is_dead = true
-		reset_shader(1)
-		health.visible = false
-		mana.visible = false
-		player_name.visible = false
-		animation_player.play("Die")
-		await animation_player.animation_finished
-		set_process(false)
-		
+		if !animation_player.is_playing():
+			is_dead = true
+			reset_shader(1)
+			health.visible = false
+			mana.visible = false
+			player_name.visible = false
+			animation_player.play("Die")
+			await animation_player.animation_finished
+			set_process(false)
+			
 
 
 func _on_area_2d_mouse_entered() -> void:

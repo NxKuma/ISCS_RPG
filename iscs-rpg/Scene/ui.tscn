@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://chbe22p815kfy"]
+[gd_scene load_steps=8 format=3 uid="uid://chbe22p815kfy"]
 
 [ext_resource type="StyleBox" uid="uid://d2rj7cq7mwm3u" path="res://Resource/Textrue/ui.tres" id="1_b0web"]
 [ext_resource type="Texture2D" uid="uid://dg04w854mvlx5" path="res://Art/Art.png" id="1_i4p0k"]
@@ -14,6 +14,13 @@ region = Rect2(64, 0, 32, 16)
 [sub_resource type="AtlasTexture" id="AtlasTexture_oxyae"]
 atlas = ExtResource("1_i4p0k")
 region = Rect2(0, 0, 32, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4tbwc"]
+atlas = ExtResource("1_i4p0k")
+region = Rect2(32, 37, 44, 11)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6m70c"]
+texture = SubResource("AtlasTexture_4tbwc")
 
 [node name="UI" type="Control"]
 layout_mode = 3
@@ -248,7 +255,7 @@ offset_top = 720.0
 offset_right = 400.0
 offset_bottom = 780.0
 grow_vertical = 2
-theme_override_styles/panel = ExtResource("1_b0web")
+theme_override_styles/panel = SubResource("StyleBoxTexture_6m70c")
 metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="Panel"]
@@ -258,6 +265,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_colors/font_color = Color(0.772549, 0.415686, 0.505882, 1)
 theme_override_font_sizes/font_size = 30
 text = "Harold's Turn"
 horizontal_alignment = 1

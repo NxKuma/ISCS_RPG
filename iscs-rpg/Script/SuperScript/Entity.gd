@@ -44,6 +44,8 @@ func take_damage(damage_dealt:float) -> float:
 	if randf_range(0,100) <= crit_chance:
 		damage_dealt *= crit_multiplier
 	health -= damage_dealt
+	if health <= 0:
+		health = 0
 	emit_signal("took_damage")
 	#Return the damaged health
 	return health
@@ -59,6 +61,8 @@ func take_skill_damage(skill_recieved:Skill) -> float:
 	elif skill_recieved.skill_element in weakness:
 		initial_health -= skill_recieved.skill_damage * 2
 	
+	if health <= 0:
+		health = 0
 	emit_signal("took_damage")
 	#Return the calculated health
 	return initial_health
