@@ -18,9 +18,9 @@ skill_damage = 20.0
 [resource]
 script = ExtResource("1_r2k4i")
 entity_name = "Lizard"
-health = 50.0
-mana = 40
-damage = 90.0
+health = 300.0
+mana = 50
+damage = 70.0
 inTeam = false
 skill_list = Array[ExtResource("2_tptxg")]([SubResource("Resource_o7b36")])
 element = 0

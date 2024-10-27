@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="Entity" load_steps=4 format=3 uid="uid://bfpvp7h5i2nb2"]
+[gd_resource type="Resource" script_class="Entity" load_steps=8 format=3 uid="uid://bfpvp7h5i2nb2"]
 
 [ext_resource type="Script" path="res://Script/SuperScript/Entity.gd" id="1_cmhqr"]
 [ext_resource type="Script" path="res://Script/SuperScript/Skill.gd" id="2_rkk1s"]
+[ext_resource type="Texture2D" uid="uid://dsjccrb8iy0o7" path="res://Art/harolita_shell_armor.png" id="3_cbb3e"]
+[ext_resource type="Texture2D" uid="uid://bi4udkoyodhe5" path="res://Art/harolita_rising_tide.png" id="4_rdfqp"]
 
 [sub_resource type="Resource" id="Resource_raw4b"]
 script = ExtResource("2_rkk1s")
@@ -15,6 +17,32 @@ skill_mode = "Special"
 skill_element = 0
 skill_damage = 50.0
 
+[sub_resource type="Resource" id="Resource_8djds"]
+script = ExtResource("2_rkk1s")
+skill_name = "Shell Armor"
+skill_cost = 30
+skill_cooldown = 0
+skill_description = ""
+skill_target = "Single"
+skill_type = "Support"
+skill_mode = "Active"
+skill_element = 1
+skill_damage = 50.0
+card_img = ExtResource("3_cbb3e")
+
+[sub_resource type="Resource" id="Resource_dabyv"]
+script = ExtResource("2_rkk1s")
+skill_name = "Rising Tide"
+skill_cost = 70
+skill_cooldown = 0
+skill_description = ""
+skill_target = "All"
+skill_type = "Support"
+skill_mode = "Active"
+skill_element = 1
+skill_damage = 2.0
+card_img = ExtResource("4_rdfqp")
+
 [resource]
 script = ExtResource("1_cmhqr")
 entity_name = "Harolita"
@@ -22,7 +50,7 @@ health = 200.0
 mana = 50
 damage = 20.0
 inTeam = true
-skill_list = Array[ExtResource("2_rkk1s")]([SubResource("Resource_raw4b")])
+skill_list = Array[ExtResource("2_rkk1s")]([SubResource("Resource_raw4b"), SubResource("Resource_8djds"), SubResource("Resource_dabyv")])
 element = 1
 resistance = Array[int]([])
 weakness = Array[int]([])

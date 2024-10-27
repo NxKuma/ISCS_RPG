@@ -17,6 +17,7 @@ class_name Entity
 signal took_damage
 signal healed
 signal speed_changed
+signal crit_up
 signal stunned
 signal did_armored
 signal mana_used
@@ -44,7 +45,7 @@ var crit_multiplier: float = 1.5
 #Take Physical Damage
 func take_damage(damage_dealt:float) -> float:
 	#Calculate Crit Damage
-	if randf_range(0,100) <= crit_chance:
+	if randf_range(1,100) <= crit_chance:
 		damage_dealt *= crit_multiplier
 	if armor >= 0:
 		armor -= damage_dealt
@@ -68,9 +69,6 @@ func take_skill_damage(skill_recieved:Skill) -> float:
 		initial_health -= skill_recieved.skill_damage * 2
 	else:
 		initial_health -= skill_recieved.skill_damage
-	if mana < skill_recieved.skill_cost:
-		emit_signal("mana_used")
-		return initial_health
 	
 	if initial_health <= 0:
 		initial_health = 0
@@ -95,6 +93,11 @@ func stun() -> void:
 func change_speed(speed_change:int) -> void:
 	speed += speed_change
 	emit_signal("speed_changed")
+	
+func change_crit(crit_change:int):
+	crit_chance += crit_change  
+	emit_signal("crit_up")
+	
 
 func armored(armor_value: float) -> void:
 	armor = armor_value

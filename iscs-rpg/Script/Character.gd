@@ -51,6 +51,7 @@ func reset_shader(animation_number: int) -> void:
 func _ready() -> void:
 	stats.took_damage.connect(take_damage)
 	stats.did_armored.connect(get_armor)
+	stats.crit_up.connect(get_armor)
 	
 	player_name.text = stats.entity_name
 	reset_shader(1)
@@ -92,7 +93,7 @@ func _on_area_2d_mouse_entered() -> void:
 		reset_shader(2)
 		is_hovering = true
 		Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
-		self.material.set("shader_parameter/Width",2)
+		self.material.set("shader_parameter/Width",1)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and is_hovering and !is_dead:

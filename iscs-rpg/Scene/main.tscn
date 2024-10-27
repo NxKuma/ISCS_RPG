@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://dudg06l772u6g"]
+[gd_scene load_steps=33 format=3 uid="uid://dudg06l772u6g"]
 
 [ext_resource type="Script" path="res://Script/GameHandler.gd" id="1_i7hjy"]
 [ext_resource type="PackedScene" uid="uid://86obwfisw11y" path="res://Scene/player.tscn" id="1_uhqgt"]
@@ -45,16 +45,42 @@ animations = [{
 [sub_resource type="Resource" id="Resource_4q3bl"]
 script = ExtResource("3_eqwtp")
 skill_name = "Fire Light Bash"
-skill_cost = 0
+skill_cost = 20
 skill_cooldown = 0
 skill_description = "Harold will swing around his jar of fireflies and inflict 30 Light Damage to the Enemy"
-skill_target = ""
+skill_target = "Single"
 skill_type = "Attack"
-skill_mode = "Active"
+skill_mode = "Special"
 skill_element = 4
 skill_damage = 30.0
 
-[sub_resource type="Resource" id="Resource_gi3s7"]
+[sub_resource type="Resource" id="Resource_0srgj"]
+script = ExtResource("3_eqwtp")
+skill_name = "Divine Smite"
+skill_cost = 30
+skill_cooldown = 0
+skill_description = "Attack All
+
+"
+skill_target = "Single"
+skill_type = "Attack"
+skill_mode = "Active"
+skill_element = 4
+skill_damage = 100.0
+
+[sub_resource type="Resource" id="Resource_lsprp"]
+script = ExtResource("3_eqwtp")
+skill_name = "Divine Aid"
+skill_cost = 70
+skill_cooldown = 0
+skill_description = ""
+skill_target = "Single"
+skill_type = "Support"
+skill_mode = "Active"
+skill_element = 4
+skill_damage = 25.0
+
+[sub_resource type="Resource" id="Resource_yy0gr"]
 resource_local_to_scene = true
 script = ExtResource("2_f8bsn")
 entity_name = "Harold"
@@ -62,7 +88,7 @@ health = 100.0
 mana = 100
 damage = 40.0
 inTeam = true
-skill_list = Array[ExtResource("3_eqwtp")]([SubResource("Resource_4q3bl")])
+skill_list = Array[ExtResource("3_eqwtp")]([SubResource("Resource_4q3bl"), SubResource("Resource_0srgj"), SubResource("Resource_lsprp")])
 element = 4
 resistance = Array[int]([3, 4])
 weakness = Array[int]([1])
@@ -170,7 +196,7 @@ material = SubResource("ShaderMaterial_wb0ka")
 position = Vector2(513, 468)
 scale = Vector2(7.5, 7.5)
 sprite_frames = SubResource("SpriteFrames_huilu")
-stats = SubResource("Resource_gi3s7")
+stats = SubResource("Resource_yy0gr")
 
 [node name="Player2" parent="." instance=ExtResource("1_uhqgt")]
 material = SubResource("ShaderMaterial_aivnm")

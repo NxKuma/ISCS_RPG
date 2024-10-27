@@ -3,6 +3,14 @@ extends Node2D
 @onready var ui: Control = $UI
 @onready var label: Label = $Label
 
+const cursor_open = preload("res://Art/harold_open_cursor_big.png")
+const cursor_point = preload("res://Art/harold_point_cursor_big.png")
+const dsmite_card = preload("res://Art/harold_divine_smite.png")
+const daid_card = preload("res://Art/harold_divine_aid.png")
+const sarmor_card = preload("res://Art/harolita_shell_armor.png")
+const rtide_card = preload("res://Art/harolita_rising_tide.png")
+
+var cards: Array = [dsmite_card, daid_card, sarmor_card, rtide_card]
 var entities: Array[AnimatedSprite2D] = []
 var team: Array[AnimatedSprite2D] = []
 var enemies: Array[AnimatedSprite2D] = []
@@ -11,6 +19,8 @@ var echo: Label
 
 var current_state: int = GameState.SetUp
 var special_button: TextureButton
+var skill1_button: TextureButton
+var skill2_button: TextureButton
 var a_panel: HSplitContainer
 var s_panel: HSplitContainer
 var l_panel: VSplitContainer
@@ -42,6 +52,10 @@ func _ready() -> void:
 	echo = ui.get_child(0).get_child(0).get_child(1).get_child(2)
 	turn_indicator = ui.get_child(1).get_child(0)
 	
+	Input.set_custom_mouse_cursor(cursor_open, Input.CURSOR_ARROW)
+	Input.set_custom_mouse_cursor(cursor_point, Input.CURSOR_POINTING_HAND)
+
+	
 	a_panel.set_visible(false)
 	s_panel.set_visible(false)
 #--------------------------------------------------------------
@@ -49,16 +63,18 @@ func _ready() -> void:
 		right_buttons.append(child.get_child(0))
 	special_button = right_buttons[1]
 	for child in s_panel.get_children():
-		right_buttons.append(child.get_child(0))
+		right_buttons.append(child.get_child(0).get_child(1).get_child(0))
+	skill1_button = right_buttons[2]
+	skill2_button = right_buttons[3]
 	for rb in right_buttons:
 		rb.button_up.connect(_attack_button_press)
-#--------------------------------------------------------------
+	#--------------------------------------------------------------
 	for child in l_panel.get_children():
 		left_buttons.append(child.get_child(0))
-	
+
 	left_buttons[0].button_down.connect(_action_screen_open)
 	left_buttons[1].button_down.connect(_skill_screen_open)
-#--------------------------------------------------------------
+	#--------------------------------------------------------------
 	for child in get_children():
 		if child.get_script() != null and child.stats != null:
 			entities.append(child)
@@ -123,6 +139,10 @@ func _process(delta: float) -> void:
 		turn_indicator.text = team[current_entity].stats.entity_name +"'s turn"
 		if a_panel.is_visible():
 			special_button.get_child(0).text = team[current_entity].stats.skill_list[0].skill_name
+		if s_panel.is_visible():
+			skill1_button.get_child(0).text = team[current_entity].stats.skill_list[1].skill_name
+			skill2_button.get_child(0).text = team[current_entity].stats.skill_list[2].skill_name
+			#skill1_button.get_parent().get_parent().get_child(0).get_child(0).texture = team[current_entity].stats.skill_list[1].card_img
 #------------------------------------------------------------------------------
 	elif current_state == GameState.Target:
 		has_queued = false
@@ -131,20 +151,27 @@ func _process(delta: float) -> void:
 		for b in right_buttons:
 			b.set_mouse_filter(2)
 			if b.is_pressed():
+				for a in s_panel.get_children():
+					if b == a.get_child(0).get_child(1).get_child(0):
+						current_action = b.get_child(0).text
 				for a in a_panel.get_children():
 					if b == a.get_child(0):
 						current_action = b.get_child(0).text
-					
-
+	
 		for skill in team[current_entity].stats.skill_list:
-			if skill.skill_type == "Attack" or current_action == "Attack":
+			if skill.skill_name == current_action:
+				if skill.skill_type == "Attack":
+					is_attack = true
+					for enemy in enemies:
+						enemy.game_state = 2
+				elif skill.skill_type == "Support":
+					is_attack = false
+					for mate in team:
+						mate.game_state = 2
+			elif current_action == "Attack":
 				is_attack = true
 				for enemy in enemies:
 					enemy.game_state = 2
-			else:
-				is_attack = false
-				for mate in team:
-					mate.game_state = 2
 #------------------------------------------------------------------------------
 	elif current_state == GameState.Queue and has_queued == false:
 		has_queued = true
@@ -211,29 +238,37 @@ func initialize_action(source: Character, action: String, destination: Character
 #------------------------------------------------------------------------------
 func execute_action(list:Array[Character]) -> void:
 	for l in list:
-		var stats: Entity = l.stats
-		var skill: Skill
-		var target: Character = action_list[l][1]
-		var action: String = action_list[l][0]
-		#print("{} (Who is dead?{}) is attacking {} (Who is dead?{})".format([l.stats.entity_name,l.is_dead,target.stats.entity_name,target.is_dead], "{}"))
-		for s in stats.skill_list:
-			if s.skill_name == action:
-				skill = s
-				print(skill.skill_name)
-		if (!target.is_dead and !l.is_dead) or (skill.skill_cost <= l.stats.mana):
-			echo.visible = true
-			echo.text = l.stats.entity_name + " used " +  action + " on " + target.stats.entity_name
-			if action == "Attack":
-				target.stats.health = target.stats.take_damage(stats.damage)
-			else:
-				if skill.skill_type == "Attack":
-					target.stats.health = target.stats.take_skill_damage(skill)
-				elif skill.skill_type == "Support":
-					if skill.skill_name.contains("Defend"):
-						target.stats.armored(skill.skill_damage)
-				if skill.skill_mode == "Active":
-					l.stats.mana -= skill.skill_cost
-			await target.entity_done
+		if l in action_list:
+			var stats: Entity = l.stats
+			var skill: Skill
+			var target: Character = action_list[l][1]
+			var action: String = action_list[l][0]
+			#print("{} (Who is dead?{}) is attacking {} (Who is dead?{})".format([l.stats.entity_name,l.is_dead,target.stats.entity_name,target.is_dead], "{}"))
+			if action != "Attack":
+				for s in stats.skill_list:
+					if s.skill_name == action:
+						skill = s
+						print(skill.skill_name)
+			if (!target.is_dead and !l.is_dead):
+				echo.visible = true
+				echo.text = l.stats.entity_name + " used " +  action + " on " + target.stats.entity_name
+				if action == "Attack":
+					target.stats.health = target.stats.take_damage(stats.damage)
+				else:
+					if skill.skill_name.contains("Smite"):
+						for e in enemies:
+							e.stats.health = e.stats.take_skill_damage(skill)
+					elif skill.skill_type == "Attack":
+						target.stats.health = target.stats.take_skill_damage(skill)
+					
+					elif skill.skill_type == "Support":
+						if skill.skill_name.contains("Defend"):
+							target.stats.armored(skill.skill_damage)
+						if skill.skill_name.contains("Smite"):
+							target.stats.change_crit(skill.skill_damage)
+					if skill.skill_mode == "Active":
+						l.stats.mana -= skill.skill_cost
+				await target.entity_done
 	#print("-------------------------------")
 	emit_signal("has_completed_executing")
 
@@ -259,6 +294,7 @@ func _skill_screen_open():
 func _on_has_completed_executing() -> void:
 	get_available_entity()
 	current_entity = 0
+	echo.visible = false
 	current_state = GameState.SetUp
 
 

@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://chbe22p815kfy"]
+[gd_scene load_steps=10 format=3 uid="uid://chbe22p815kfy"]
 
 [ext_resource type="StyleBox" uid="uid://d2rj7cq7mwm3u" path="res://Resource/Textrue/ui.tres" id="1_b0web"]
 [ext_resource type="Texture2D" uid="uid://dg04w854mvlx5" path="res://Art/Art.png" id="1_i4p0k"]
+[ext_resource type="Texture2D" uid="uid://dor6o3n0d57wx" path="res://Art/harold_divine_aid.png" id="3_dp3ij"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jjf2c"]
 atlas = ExtResource("1_i4p0k")
@@ -209,7 +210,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Skill" type="HSplitContainer" parent="BottomContainer/HSplitter/RSelection"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -223,7 +223,29 @@ dragger_visibility = 1
 layout_mode = 2
 theme_override_styles/panel = ExtResource("1_b0web")
 
-[node name="Button" type="TextureButton" parent="BottomContainer/HSplitter/RSelection/Skill/Panel"]
+[node name="HSplitContainer" type="HSplitContainer" parent="BottomContainer/HSplitter/RSelection/Skill/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = 200
+
+[node name="Panel" type="Panel" parent="BottomContainer/HSplitter/RSelection/Skill/Panel/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="BottomContainer/HSplitter/RSelection/Skill/Panel/HSplitContainer/Panel"]
+position = Vector2(102, 146)
+scale = Vector2(6, 6)
+texture = ExtResource("3_dp3ij")
+
+[node name="Panel2" type="Panel" parent="BottomContainer/HSplitter/RSelection/Skill/Panel/HSplitContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("1_b0web")
+
+[node name="Button" type="TextureButton" parent="BottomContainer/HSplitter/RSelection/Skill/Panel/HSplitContainer/Panel2"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -236,12 +258,44 @@ texture_normal = SubResource("AtlasTexture_jjf2c")
 texture_pressed = SubResource("AtlasTexture_w0rsb")
 texture_hover = SubResource("AtlasTexture_oxyae")
 stretch_mode = 0
+
+[node name="Label" type="Label" parent="BottomContainer/HSplitter/RSelection/Skill/Panel/HSplitContainer/Panel2/Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Panel2" type="Panel" parent="BottomContainer/HSplitter/RSelection/Skill"]
 layout_mode = 2
 theme_override_styles/panel = ExtResource("1_b0web")
 
-[node name="Button" type="TextureButton" parent="BottomContainer/HSplitter/RSelection/Skill/Panel2"]
+[node name="HSplitContainer" type="HSplitContainer" parent="BottomContainer/HSplitter/RSelection/Skill/Panel2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = 200
+
+[node name="Panel" type="Panel" parent="BottomContainer/HSplitter/RSelection/Skill/Panel2/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="BottomContainer/HSplitter/RSelection/Skill/Panel2/HSplitContainer/Panel"]
+position = Vector2(102, 146)
+scale = Vector2(6, 6)
+texture = ExtResource("3_dp3ij")
+
+[node name="Panel2" type="Panel" parent="BottomContainer/HSplitter/RSelection/Skill/Panel2/HSplitContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("1_b0web")
+
+[node name="Button" type="TextureButton" parent="BottomContainer/HSplitter/RSelection/Skill/Panel2/HSplitContainer/Panel2"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -254,6 +308,16 @@ texture_normal = SubResource("AtlasTexture_jjf2c")
 texture_pressed = SubResource("AtlasTexture_w0rsb")
 texture_hover = SubResource("AtlasTexture_oxyae")
 stretch_mode = 0
+
+[node name="Label" type="Label" parent="BottomContainer/HSplitter/RSelection/Skill/Panel2/HSplitContainer/Panel2/Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Label" type="Label" parent="BottomContainer/HSplitter/RSelection"]
 visible = false
