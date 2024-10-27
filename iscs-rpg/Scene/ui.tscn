@@ -98,6 +98,7 @@ vertical_alignment = 1
 layout_mode = 2
 
 [node name="ActionPanel" type="HSplitContainer" parent="BottomContainer/HSplitter/RSelection"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -160,7 +161,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Skill" type="HSplitContainer" parent="BottomContainer/HSplitter/RSelection"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -188,10 +188,9 @@ stretch_mode = 0
 
 [node name="Label" type="Label" parent="BottomContainer/HSplitter/RSelection/Skill/Panel/Skill1Button"]
 modulate = Color(0.556313, 0.273313, 0.0928052, 1)
-layout_mode = 0
-offset_right = 400.0
-offset_bottom = 138.0
-theme_override_font_sizes/font_size = 42
+offset_right = 742.0
+offset_bottom = 273.0
+theme_override_font_sizes/font_size = 60
 text = "Attack"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -214,11 +213,10 @@ stretch_mode = 0
 
 [node name="Label" type="Label" parent="BottomContainer/HSplitter/RSelection/Skill/Panel2/Skill2Button"]
 modulate = Color(0.556313, 0.273313, 0.0928052, 1)
-layout_mode = 0
-offset_right = 400.0
-offset_bottom = 138.0
-theme_override_font_sizes/font_size = 42
-text = "Attack"
+offset_right = 753.0
+offset_bottom = 274.0
+theme_override_font_sizes/font_size = 60
+text = "Special"
 horizontal_alignment = 1
 vertical_alignment = 1
 
