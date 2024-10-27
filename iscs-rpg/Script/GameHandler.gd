@@ -69,7 +69,6 @@ func get_available_entity() -> void:
 	for e in entities:
 		if !e.is_dead:
 			if e.stats.inTeam:
-				print(e.stats.entity_name)
 				team.append(e)
 			else:
 				enemies.append(e)
@@ -216,11 +215,12 @@ func execute_action(list:Array[Character]) -> void:
 		for s in stats.skill_list:
 			if s.skill_name == action:
 				skill = s
-		if action == "Attack":
-			target.stats.health = target.stats.take_damage(stats.damage)
-		elif skill.skill_type == "Attack":
-			target.stats.health = target.stats.take_skill_damage(skill)
-		await target.entity_done
+		if !target.is_dead and !l.stats.is_dead:
+			if action == "Attack":
+				target.stats.health = target.stats.take_damage(stats.damage)
+			elif skill.skill_type == "Attack":
+				target.stats.health = target.stats.take_skill_damage(skill)
+			await target.entity_done
 	emit_signal("has_completed_executing")
 
 

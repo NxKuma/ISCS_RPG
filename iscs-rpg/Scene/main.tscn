@@ -128,7 +128,7 @@ hint = 1
 [sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_wj31t"]
 input_name = "texture"
 
-[sub_resource type="VisualShader" id="VisualShader_li6ua"]
+[sub_resource type="VisualShader" id="VisualShader_qmj0y"]
 resource_local_to_scene = true
 resource_name = "Outline"
 code = "shader_type canvas_item;
@@ -325,7 +325,7 @@ nodes/fragment/connections = PackedInt32Array(3, 0, 4, 2, 4, 0, 5, 0, 6, 0, 5, 4
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_e1ke1"]
 resource_local_to_scene = true
-shader = SubResource("VisualShader_li6ua")
+shader = SubResource("VisualShader_qmj0y")
 shader_parameter/ColorParameter2 = null
 shader_parameter/DissolveValue = null
 
@@ -345,7 +345,7 @@ skill_mode = "Special"
 skill_element = 4
 skill_damage = 30.0
 
-[sub_resource type="Resource" id="Resource_d3g3l"]
+[sub_resource type="Resource" id="Resource_c3on8"]
 resource_local_to_scene = true
 script = ExtResource("2_f8bsn")
 entity_name = "Harold"
@@ -359,7 +359,7 @@ resistance = Array[int]([3, 4])
 weakness = Array[int]([1])
 speed = 100
 
-[sub_resource type="VisualShader" id="VisualShader_tfr7x"]
+[sub_resource type="VisualShader" id="VisualShader_ldgxj"]
 resource_local_to_scene = true
 resource_name = "Dissolve"
 code = "shader_type canvas_item;
@@ -495,11 +495,11 @@ nodes/fragment/connections = PackedInt32Array(3, 0, 4, 2, 4, 0, 5, 0, 6, 0, 5, 4
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_rv7v8"]
 resource_local_to_scene = true
-shader = SubResource("VisualShader_tfr7x")
+shader = SubResource("VisualShader_ldgxj")
 shader_parameter/ColorParameter = Color(1, 0, 0, 1)
 shader_parameter/DissolveValue = null
 
-[sub_resource type="VisualShader" id="VisualShader_8tvec"]
+[sub_resource type="VisualShader" id="VisualShader_v4jtr"]
 resource_local_to_scene = true
 resource_name = "Outline"
 code = "shader_type canvas_item;
@@ -696,7 +696,7 @@ nodes/fragment/connections = PackedInt32Array(3, 0, 4, 2, 4, 0, 5, 0, 6, 0, 5, 4
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_n1cil"]
 resource_local_to_scene = true
-shader = SubResource("VisualShader_8tvec")
+shader = SubResource("VisualShader_v4jtr")
 shader_parameter/ColorParameter2 = null
 shader_parameter/DissolveValue = null
 
@@ -704,7 +704,7 @@ shader_parameter/DissolveValue = null
 atlas = ExtResource("10_o1csc")
 region = Rect2(1648, 78, 54, 65)
 
-[sub_resource type="VisualShader" id="VisualShader_yng1g"]
+[sub_resource type="VisualShader" id="VisualShader_fmljm"]
 resource_local_to_scene = true
 resource_name = "Outline"
 code = "shader_type canvas_item;
@@ -901,7 +901,7 @@ nodes/fragment/connections = PackedInt32Array(3, 0, 4, 2, 4, 0, 5, 0, 6, 0, 5, 4
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_83xdm"]
 resource_local_to_scene = true
-shader = SubResource("VisualShader_yng1g")
+shader = SubResource("VisualShader_fmljm")
 shader_parameter/ColorParameter2 = null
 shader_parameter/DissolveValue = null
 
@@ -909,7 +909,7 @@ shader_parameter/DissolveValue = null
 atlas = ExtResource("12_3hfcm")
 region = Rect2(1339, 432, 85, 91)
 
-[sub_resource type="VisualShader" id="VisualShader_d1523"]
+[sub_resource type="VisualShader" id="VisualShader_pyg7q"]
 resource_local_to_scene = true
 resource_name = "Outline"
 code = "shader_type canvas_item;
@@ -1106,7 +1106,7 @@ nodes/fragment/connections = PackedInt32Array(3, 0, 4, 2, 4, 0, 5, 0, 6, 0, 5, 4
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7yp5p"]
 resource_local_to_scene = true
-shader = SubResource("VisualShader_d1523")
+shader = SubResource("VisualShader_pyg7q")
 shader_parameter/ColorParameter2 = null
 shader_parameter/DissolveValue = null
 
@@ -1114,7 +1114,7 @@ shader_parameter/DissolveValue = null
 atlas = ExtResource("14_eu3e5")
 region = Rect2(979, 530, 57, 64)
 
-[sub_resource type="VisualShader" id="VisualShader_lgt43"]
+[sub_resource type="VisualShader" id="VisualShader_mfv40"]
 resource_local_to_scene = true
 resource_name = "Outline"
 code = "shader_type canvas_item;
@@ -1311,7 +1311,7 @@ nodes/fragment/connections = PackedInt32Array(3, 0, 4, 2, 4, 0, 5, 0, 6, 0, 5, 4
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eeyht"]
 resource_local_to_scene = true
-shader = SubResource("VisualShader_lgt43")
+shader = SubResource("VisualShader_mfv40")
 shader_parameter/ColorParameter2 = null
 shader_parameter/DissolveValue = null
 
@@ -1334,7 +1334,7 @@ material = SubResource("ShaderMaterial_e1ke1")
 position = Vector2(762, 417)
 texture = SubResource("AtlasTexture_34f8e")
 flip_h = true
-stats = SubResource("Resource_d3g3l")
+stats = SubResource("Resource_c3on8")
 
 [node name="Name" parent="Player" index="0"]
 offset_left = -35.5
