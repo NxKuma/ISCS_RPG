@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://dudg06l772u6g"]
+[gd_scene load_steps=34 format=3 uid="uid://dudg06l772u6g"]
 
 [ext_resource type="Script" path="res://Script/GameHandler.gd" id="1_i7hjy"]
 [ext_resource type="PackedScene" uid="uid://86obwfisw11y" path="res://Scene/player.tscn" id="1_uhqgt"]
@@ -19,9 +19,6 @@
 [ext_resource type="Texture2D" uid="uid://b0ayqa82k8emr" path="res://Art/Sample/208947.png" id="12_3hfcm"]
 [ext_resource type="Texture2D" uid="uid://dxmyq2b2eh3lh" path="res://Art/Sample/206664.png" id="14_eu3e5"]
 [ext_resource type="Texture2D" uid="uid://bwfyjh75mj4f1" path="res://Art/Sample/175276.png" id="16_tqgrn"]
-[ext_resource type="Texture2D" uid="uid://duqcaqxatbr34" path="res://Art/harold_button_base.png" id="20_6hhv4"]
-[ext_resource type="Texture2D" uid="uid://nkvyy3q7i5hx" path="res://Art/harold_button_pressed.png" id="21_yc564"]
-[ext_resource type="Texture2D" uid="uid://b615lmabs54wc" path="res://Art/harold_button_hover.png" id="22_cjuic"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_34f8e"]
 atlas = ExtResource("5_bunn7")
@@ -39,7 +36,7 @@ skill_mode = "Special"
 skill_element = 4
 skill_damage = 30.0
 
-[sub_resource type="Resource" id="Resource_s2plx"]
+[sub_resource type="Resource" id="Resource_6ywc5"]
 resource_local_to_scene = true
 script = ExtResource("2_f8bsn")
 entity_name = "Harold"
@@ -150,7 +147,7 @@ position = Vector2(580, 319)
 scale = Vector2(2, 2)
 texture = SubResource("AtlasTexture_34f8e")
 flip_h = true
-stats = SubResource("Resource_s2plx")
+stats = SubResource("Resource_6ywc5")
 
 [node name="Name" parent="Player" index="0"]
 offset_left = -35.5
@@ -332,12 +329,6 @@ offset_bottom = 76.5
 scale = Vector2(0.8, 0.8)
 
 [node name="UI" parent="." instance=ExtResource("7_hsdh1")]
-
-[node name="TextureButton" parent="UI/BottomContainer/HSplitter/RSelection/Skill/Panel" index="0"]
-modulate = Color(1, 1, 1, 1)
-texture_normal = ExtResource("20_6hhv4")
-texture_pressed = ExtResource("21_yc564")
-texture_hover = ExtResource("22_cjuic")
 
 [node name="Timer" type="Timer" parent="."]
 
