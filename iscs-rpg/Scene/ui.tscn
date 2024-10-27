@@ -1,6 +1,19 @@
-[gd_scene load_steps=2 format=3 uid="uid://chbe22p815kfy"]
+[gd_scene load_steps=6 format=3 uid="uid://chbe22p815kfy"]
 
-[ext_resource type="Texture2D" uid="uid://eqne8hr4yyg0" path="res://icon.svg" id="1_xoaoj"]
+[ext_resource type="StyleBox" uid="uid://d2rj7cq7mwm3u" path="res://Resource/Textrue/ui.tres" id="1_b0web"]
+[ext_resource type="Texture2D" uid="uid://dg04w854mvlx5" path="res://Art/Art.png" id="1_i4p0k"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jjf2c"]
+atlas = ExtResource("1_i4p0k")
+region = Rect2(32, 0, 32, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w0rsb"]
+atlas = ExtResource("1_i4p0k")
+region = Rect2(64, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oxyae"]
+atlas = ExtResource("1_i4p0k")
+region = Rect2(0, 0, 32, 15)
 
 [node name="UI" type="Control"]
 layout_mode = 3
@@ -16,6 +29,7 @@ layout_mode = 0
 offset_top = 780.0
 offset_right = 1920.0
 offset_bottom = 1080.0
+theme_override_styles/panel = ExtResource("1_b0web")
 
 [node name="HSplitter" type="HSplitContainer" parent="BottomContainer"]
 layout_mode = 1
@@ -29,6 +43,7 @@ dragger_visibility = 1
 
 [node name="LSelection" type="Panel" parent="BottomContainer/HSplitter"]
 layout_mode = 2
+theme_override_styles/panel = ExtResource("1_b0web")
 
 [node name="VSplitContainer" type="VSplitContainer" parent="BottomContainer/HSplitter/LSelection"]
 layout_mode = 1
@@ -42,8 +57,9 @@ dragger_visibility = 1
 
 [node name="Action" type="Panel" parent="BottomContainer/HSplitter/LSelection/VSplitContainer"]
 layout_mode = 2
+theme_override_styles/panel = ExtResource("1_b0web")
 
-[node name="Button" type="Button" parent="BottomContainer/HSplitter/LSelection/VSplitContainer/Action"]
+[node name="Button" type="TextureButton" parent="BottomContainer/HSplitter/LSelection/VSplitContainer/Action"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -51,13 +67,30 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 48
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_jjf2c")
+texture_pressed = SubResource("AtlasTexture_w0rsb")
+texture_hover = SubResource("AtlasTexture_oxyae")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="BottomContainer/HSplitter/LSelection/VSplitContainer/Action/Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.772549, 0.541176, 0.415686, 1)
+theme_override_font_sizes/font_size = 40
 text = "Action"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Skill" type="Panel" parent="BottomContainer/HSplitter/LSelection/VSplitContainer"]
 layout_mode = 2
+theme_override_styles/panel = ExtResource("1_b0web")
 
-[node name="Button2" type="Button" parent="BottomContainer/HSplitter/LSelection/VSplitContainer/Skill"]
+[node name="Button" type="TextureButton" parent="BottomContainer/HSplitter/LSelection/VSplitContainer/Skill"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -65,11 +98,29 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 48
-text = "Skill"
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_jjf2c")
+texture_pressed = SubResource("AtlasTexture_w0rsb")
+texture_hover = SubResource("AtlasTexture_oxyae")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="BottomContainer/HSplitter/LSelection/VSplitContainer/Skill/Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.772549, 0.541176, 0.415686, 1)
+theme_override_font_sizes/font_size = 40
+text = "Skill
+"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="RSelection" type="Panel" parent="BottomContainer/HSplitter"]
 layout_mode = 2
+theme_override_styles/panel = ExtResource("1_b0web")
 
 [node name="ActionPanel" type="HSplitContainer" parent="BottomContainer/HSplitter/RSelection"]
 layout_mode = 1
@@ -83,8 +134,9 @@ dragger_visibility = 1
 
 [node name="Panel" type="Panel" parent="BottomContainer/HSplitter/RSelection/ActionPanel"]
 layout_mode = 2
+theme_override_styles/panel = ExtResource("1_b0web")
 
-[node name="Button" type="Button" parent="BottomContainer/HSplitter/RSelection/ActionPanel/Panel"]
+[node name="Button2" type="TextureButton" parent="BottomContainer/HSplitter/RSelection/ActionPanel/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -92,14 +144,30 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 40
 toggle_mode = true
+texture_normal = SubResource("AtlasTexture_jjf2c")
+texture_pressed = SubResource("AtlasTexture_w0rsb")
+texture_hover = SubResource("AtlasTexture_oxyae")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="BottomContainer/HSplitter/RSelection/ActionPanel/Panel/Button2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.772549, 0.541176, 0.415686, 1)
+theme_override_font_sizes/font_size = 40
 text = "Attack"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Panel2" type="Panel" parent="BottomContainer/HSplitter/RSelection/ActionPanel"]
 layout_mode = 2
+theme_override_styles/panel = ExtResource("1_b0web")
 
-[node name="Button2" type="Button" parent="BottomContainer/HSplitter/RSelection/ActionPanel/Panel2"]
+[node name="Button" type="TextureButton" parent="BottomContainer/HSplitter/RSelection/ActionPanel/Panel2"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -107,9 +175,24 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_default_cursor_shape = 2
-theme_override_font_sizes/font_size = 40
 toggle_mode = true
-text = "Stun"
+texture_normal = SubResource("AtlasTexture_jjf2c")
+texture_pressed = SubResource("AtlasTexture_w0rsb")
+texture_hover = SubResource("AtlasTexture_oxyae")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="BottomContainer/HSplitter/RSelection/ActionPanel/Panel2/Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.772549, 0.541176, 0.415686, 1)
+theme_override_font_sizes/font_size = 40
+text = "Attack"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Skill" type="HSplitContainer" parent="BottomContainer/HSplitter/RSelection"]
 visible = false
@@ -124,9 +207,9 @@ dragger_visibility = 1
 
 [node name="Panel" type="Panel" parent="BottomContainer/HSplitter/RSelection/Skill"]
 layout_mode = 2
+theme_override_styles/panel = ExtResource("1_b0web")
 
-[node name="TextureButton" type="TextureButton" parent="BottomContainer/HSplitter/RSelection/Skill/Panel"]
-modulate = Color(0.109804, 1, 0.913725, 1)
+[node name="Button" type="TextureButton" parent="BottomContainer/HSplitter/RSelection/Skill/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -134,14 +217,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_default_cursor_shape = 2
-texture_normal = ExtResource("1_xoaoj")
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_jjf2c")
+texture_pressed = SubResource("AtlasTexture_w0rsb")
+texture_hover = SubResource("AtlasTexture_oxyae")
 stretch_mode = 0
 
 [node name="Panel2" type="Panel" parent="BottomContainer/HSplitter/RSelection/Skill"]
 layout_mode = 2
+theme_override_styles/panel = ExtResource("1_b0web")
 
-[node name="TextureButton" type="TextureButton" parent="BottomContainer/HSplitter/RSelection/Skill/Panel2"]
-modulate = Color(1, 0.568627, 0.866667, 1)
+[node name="Button" type="TextureButton" parent="BottomContainer/HSplitter/RSelection/Skill/Panel2"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -149,7 +235,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_default_cursor_shape = 2
-texture_normal = ExtResource("1_xoaoj")
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_jjf2c")
+texture_pressed = SubResource("AtlasTexture_w0rsb")
+texture_hover = SubResource("AtlasTexture_oxyae")
 stretch_mode = 0
 
 [node name="Panel" type="Panel" parent="."]
@@ -159,6 +248,7 @@ offset_top = 720.0
 offset_right = 400.0
 offset_bottom = 780.0
 grow_vertical = 2
+theme_override_styles/panel = ExtResource("1_b0web")
 metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="Panel"]

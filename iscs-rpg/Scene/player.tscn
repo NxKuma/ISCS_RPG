@@ -1,31 +1,32 @@
-[gd_scene load_steps=11 format=3 uid="uid://86obwfisw11y"]
+[gd_scene load_steps=14 format=3 uid="uid://86obwfisw11y"]
 
-[ext_resource type="Shader" uid="uid://4behqx813h4c" path="res://Material/outline.tres" id="1_0nklb"]
 [ext_resource type="Texture2D" uid="uid://eqne8hr4yyg0" path="res://icon.svg" id="1_dfo4x"]
+[ext_resource type="Shader" path="res://Material/blink.gdshader" id="1_veuuv"]
 [ext_resource type="Script" path="res://Script/Character.gd" id="2_bagit"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5v06v"]
 resource_local_to_scene = true
-shader = ExtResource("1_0nklb")
-shader_parameter/ColorParameter = Color(1, 0, 0, 1)
-shader_parameter/Width = 3.0
+shader = ExtResource("1_veuuv")
+shader_parameter/blink_color = Color(1, 1, 1, 1)
+shader_parameter/blink_intensity = 0.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yju2u"]
 
 [sub_resource type="Animation" id="Animation_df26b"]
 resource_name = "Disolve"
+length = 1.5
 step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:material")
+tracks/0/path = NodePath(".:dissolve_value")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.0001, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 1,
-"values": [SubResource("ShaderMaterial_5v06v"), SubResource("ShaderMaterial_5v06v"), SubResource("ShaderMaterial_5v06v")]
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(4.59479, 0.196146),
+"update": 0,
+"values": [0.0, 1.0]
 }
 
 [sub_resource type="Animation" id="Animation_3kaoy"]
@@ -43,43 +44,179 @@ tracks/0/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(0.00889999, 0.89, 0.023585, 1), Color(1, 1, 1, 1)]
 }
-
-[sub_resource type="Animation" id="Animation_m8b04"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:material")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [SubResource("ShaderMaterial_5v06v")]
-}
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath(".:modulate")
+tracks/1/path = NodePath(".:skew")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.3, 0.7, 1),
+"transitions": PackedFloat32Array(1, 3.24901, 3.24901, 0.210224),
 "update": 0,
-"values": [Color(1, 1, 1, 1)]
+"values": [0.0, 0.0872665, -0.0872665, 0.0]
 }
 
 [sub_resource type="Animation" id="Animation_q3xsd"]
 resource_name = "Stun"
 step = 0.1
 
+[sub_resource type="Animation" id="Animation_6k2l4"]
+resource_name = "Die"
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:dissolve_value")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_533if"]
+resource_name = "Damaged"
+length = 0.5
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:blink_value")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 1.0, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(5, 0), Vector2(0, 0), Vector2(-5, 0), Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:skew")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.1, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.308923, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_dfmfy"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:blink_value")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:skew")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_22fnc"]
+resource_name = "Defend"
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0.0196078, 0.898039, 1, 1), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath(".:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(2, 2), Vector2(3.5, 3.5), Vector2(2, 2)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_t5cmg"]
 _data = {
+"Damaged": SubResource("Animation_533if"),
+"Defend": SubResource("Animation_22fnc"),
+"Die": SubResource("Animation_6k2l4"),
 "Disolve": SubResource("Animation_df26b"),
 "Heal": SubResource("Animation_3kaoy"),
-"RESET": SubResource("Animation_m8b04"),
+"RESET": SubResource("Animation_dfmfy"),
 "Stun": SubResource("Animation_q3xsd")
 }
 
@@ -88,6 +225,7 @@ material = SubResource("ShaderMaterial_5v06v")
 position = Vector2(-1, 1)
 texture = ExtResource("1_dfo4x")
 script = ExtResource("2_bagit")
+dissolve_value = 1.0
 
 [node name="Name" type="Label" parent="."]
 offset_left = -43.0
@@ -121,6 +259,7 @@ shape = SubResource("RectangleShape2D_yju2u")
 libraries = {
 "": SubResource("AnimationLibrary_t5cmg")
 }
+autoplay = "Disolve"
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
 
