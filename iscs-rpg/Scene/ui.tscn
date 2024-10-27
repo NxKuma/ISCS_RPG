@@ -14,6 +14,7 @@ region = Rect2(64, 0, 32, 16)
 [sub_resource type="AtlasTexture" id="AtlasTexture_oxyae"]
 atlas = ExtResource("1_i4p0k")
 region = Rect2(0, 0, 32, 15)
+[gd_scene load_steps=4 format=3 uid="uid://chbe22p815kfy"]
 
 [node name="UI" type="Control"]
 layout_mode = 3
@@ -90,6 +91,7 @@ vertical_alignment = 1
 layout_mode = 2
 theme_override_styles/panel = ExtResource("1_b0web")
 
+
 [node name="Button" type="TextureButton" parent="BottomContainer/HSplitter/LSelection/VSplitContainer/Skill"]
 layout_mode = 1
 anchors_preset = 15
@@ -113,8 +115,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.772549, 0.541176, 0.415686, 1)
 theme_override_font_sizes/font_size = 40
-text = "Skill
-"
+text = "Skill"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -123,6 +124,7 @@ layout_mode = 2
 theme_override_styles/panel = ExtResource("1_b0web")
 
 [node name="ActionPanel" type="HSplitContainer" parent="BottomContainer/HSplitter/RSelection"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -135,6 +137,7 @@ dragger_visibility = 1
 [node name="Panel" type="Panel" parent="BottomContainer/HSplitter/RSelection/ActionPanel"]
 layout_mode = 2
 theme_override_styles/panel = ExtResource("1_b0web")
+
 
 [node name="Button2" type="TextureButton" parent="BottomContainer/HSplitter/RSelection/ActionPanel/Panel"]
 layout_mode = 1
@@ -167,6 +170,7 @@ vertical_alignment = 1
 layout_mode = 2
 theme_override_styles/panel = ExtResource("1_b0web")
 
+
 [node name="Button" type="TextureButton" parent="BottomContainer/HSplitter/RSelection/ActionPanel/Panel2"]
 layout_mode = 1
 anchors_preset = 15
@@ -195,7 +199,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Skill" type="HSplitContainer" parent="BottomContainer/HSplitter/RSelection"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -223,6 +226,15 @@ texture_pressed = SubResource("AtlasTexture_w0rsb")
 texture_hover = SubResource("AtlasTexture_oxyae")
 stretch_mode = 0
 
+[node name="Label" type="Label" parent="BottomContainer/HSplitter/RSelection/Skill/Panel/Skill1Button"]
+modulate = Color(0.556313, 0.273313, 0.0928052, 1)
+offset_right = 742.0
+offset_bottom = 273.0
+theme_override_font_sizes/font_size = 60
+text = "Attack"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Panel2" type="Panel" parent="BottomContainer/HSplitter/RSelection/Skill"]
 layout_mode = 2
 theme_override_styles/panel = ExtResource("1_b0web")
@@ -240,6 +252,15 @@ texture_normal = SubResource("AtlasTexture_jjf2c")
 texture_pressed = SubResource("AtlasTexture_w0rsb")
 texture_hover = SubResource("AtlasTexture_oxyae")
 stretch_mode = 0
+
+[node name="Label" type="Label" parent="BottomContainer/HSplitter/RSelection/Skill/Panel2/Skill2Button"]
+modulate = Color(0.556313, 0.273313, 0.0928052, 1)
+offset_right = 753.0
+offset_bottom = 274.0
+theme_override_font_sizes/font_size = 60
+text = "Special"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1

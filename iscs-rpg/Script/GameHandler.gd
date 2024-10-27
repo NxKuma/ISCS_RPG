@@ -3,9 +3,13 @@ extends Node2D
 @onready var ui: Control = $UI
 @onready var label: Label = $Label
 
+
 var entities: Array[AnimatedSprite2D] = []
 var team: Array[AnimatedSprite2D] = []
 var enemies: Array[AnimatedSprite2D] = []
+
+var cursor_open = preload("res://Art/harold_open_cursor_big.png")
+var cursor_point = preload("res://Art/harold_point_cursor_big.png")
 var action_list: Dictionary = {}
 
 var current_state: int = GameState.SetUp
@@ -39,12 +43,22 @@ func _ready() -> void:
 	s_panel = ui.get_child(0).get_child(0).get_child(1).get_child(1)
 	l_panel = ui.get_child(0).get_child(0).get_child(0).get_child(0)
 	turn_indicator = ui.get_child(1).get_child(0)
+	Input.set_custom_mouse_cursor(cursor_open, Input.CURSOR_ARROW)
+	Input.set_custom_mouse_cursor(cursor_point, Input.CURSOR_POINTING_HAND)
 	
 	a_panel.set_visible(false)
 	s_panel.set_visible(false)
 #--------------------------------------------------------------
 	for child in a_panel.get_children():
 		right_buttons.append(child.get_child(0))
+
+	for child in s_panel.get_children():
+		right_buttons.append(child.get_child(0))
+	for rb in right_buttons:
+		rb.button_up.connect(_attack_button_press)
+	
+	right_buttons[0].button_up.connect(_attack_button_press)
+  
 	special_button = right_buttons[1]
 	for child in s_panel.get_children():
 		right_buttons.append(child.get_child(0))
@@ -144,6 +158,7 @@ func _process(delta: float) -> void:
 					mate.game_state = 2
 #------------------------------------------------------------------------------
 	elif current_state == GameState.Queue and has_queued == false:
+		Input.set_custom_mouse_cursor(cursor_open, Input.CURSOR_ARROW)
 		has_queued = true
 		var target : Character
 		if is_attack:
@@ -159,6 +174,9 @@ func _process(delta: float) -> void:
 			has_queued = false
 		var sorted_list = arrange_by_speed(entities)
 		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+		for e in range(enemies.size()):
+			initialize_action(enemies[e],"Attack", team[randi_range(0,2)])
+		Input.set_custom_mouse_cursor(cursor_open, Input.CURSOR_ARROW)
 		for b in left_buttons:
 			b.set_mouse_filter(0)
 		for b in right_buttons:
@@ -245,11 +263,8 @@ func _skill_screen_open():
 		a_panel.set_visible(false)
 
 
+
 func _on_has_completed_executing() -> void:
 	get_available_entity()
 	current_entity = 0
 	current_state = GameState.SetUp
-
-
-func _on_entity_done() -> void:
-	pass # Replace with function body.
