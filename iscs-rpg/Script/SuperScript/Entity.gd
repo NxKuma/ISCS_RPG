@@ -13,6 +13,12 @@ class_name Entity
 @export var weakness: Array[Element] = []
 @export var speed: int 
 
+#signals
+signal took_damage
+signal healed
+signal speed_changed
+signal stunned
+
 #Hidden in the Inspector
 enum Element{
 	Fire,
@@ -38,6 +44,7 @@ func take_damage(damage_dealt:float) -> float:
 	if randf_range(0,100) <= crit_chance:
 		damage_dealt *= crit_multiplier
 	health -= damage_dealt
+	emit_signal("took_damage")
 	#Return the damaged health
 	return health
 
@@ -52,20 +59,24 @@ func take_skill_damage(skill_recieved:Skill) -> float:
 	elif skill_recieved.skill_element in weakness:
 		initial_health -= skill_recieved.skill_damage * 2
 	
+	emit_signal("took_damage")
 	#Return the calculated health
 	return initial_health
 
 #Add Heal
 func heal(health_healed: float) -> float:
 	health += health_healed
+	emit_signal("healed")
 	return health
 # --- Non Return Functions--- Skills
 
 #Stun the Entity
 func stun() -> void:
+	emit_signal("stunned")
 	is_stunned = true
 	
 func change_speed(speed_change:int):
+	emit_signal("speed_changed")
 	speed += speed_change
 	
 

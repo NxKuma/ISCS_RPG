@@ -1,13 +1,15 @@
 extends Node2D
 
 @onready var ui: Control = $UI
+@onready var label: Label = $Label
+
+
+var entities: Array[AnimatedSprite2D] = []
+var team: Array[AnimatedSprite2D] = []
+var enemies: Array[AnimatedSprite2D] = []
 
 var cursor_open = preload("res://Art/harold_open_cursor_big.png")
 var cursor_point = preload("res://Art/harold_point_cursor_big.png")
-
-var entities: Array[Sprite2D] = []
-var team: Array[Sprite2D] = []
-var enemies: Array[Sprite2D] = []
 var action_list: Dictionary = {}
 
 var current_state: int = GameState.SetUp
@@ -24,6 +26,9 @@ var current_action: String
 var has_queued: bool = false
 var is_done_executing: bool = false
 var is_attack: bool = false
+
+signal has_completed_executing
+
 
 enum GameState{
 	SetUp, #Set Up = Player Chooses their moves
@@ -46,14 +51,19 @@ func _ready() -> void:
 #--------------------------------------------------------------
 	for child in a_panel.get_children():
 		right_buttons.append(child.get_child(0))
+
 	for child in s_panel.get_children():
 		right_buttons.append(child.get_child(0))
 	for rb in right_buttons:
 		rb.button_up.connect(_attack_button_press)
 	
 	right_buttons[0].button_up.connect(_attack_button_press)
+  
 	special_button = right_buttons[1]
-	special_button.button_up.connect(_attack_button_press)
+	for child in s_panel.get_children():
+		right_buttons.append(child.get_child(0))
+	for rb in right_buttons:
+		rb.button_up.connect(_attack_button_press)
 #--------------------------------------------------------------
 	for child in l_panel.get_children():
 		left_buttons.append(child.get_child(0))
@@ -65,22 +75,54 @@ func _ready() -> void:
 		if child.get_script() != null and child.stats != null:
 			entities.append(child)
 #--------------------------------------------------------------
+	get_available_entity()
+
+func get_available_entity() -> void:
+	team.clear()
+	enemies.clear()
 	for e in entities:
-		if e.stats.inTeam:
-			team.append(e)
-		else:
-			enemies.append(e)
-	print(team.size())
+		if !e.is_dead:
+			if e.stats.inTeam:
+				team.append(e)
+			else:
+				enemies.append(e)
 
 func pick_enemy_action() -> void:
-	pass
+	for e in range(enemies.size()):
+		var enemy:Character = enemies[e]
+		var enemy_action_number: int  = randi_range(0, enemy.stats.skill_list.size())
+		var enemy_action_string: String
+		var target_array: Array[AnimatedSprite2D]
+		if enemy_action_number == enemy.stats.skill_list.size():
+			enemy_action_string = "Attack"
+			target_array = team
+		else:
+			enemy_action_string = enemy.stats.skill_list[enemy_action_number].skill_name
+			if enemy.stats.skill_list[enemy_action_number].skill_type == "Support":
+				target_array = enemies
+			else:
+				target_array = team
+		initialize_action(enemies[e],enemy_action_string, target_array[randi_range(0,target_array.size() - 1)])
+
+func fastest_to_slowest(a, b):
+	if a.stats.speed > b.stats.speed:
+		return true
+	return false
+
+func arrange_by_speed(array_list: Array) -> Array[Character]:
+	var entity_list: Array[Character] = []
+	for e in array_list:
+		entity_list.append(e)
+	entity_list.sort_custom(fastest_to_slowest)
+	return entity_list
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	print(current_entity)
 	if current_state == GameState.SetUp and current_entity < team.size():
 		l_panel.set_visible(true)
 		has_queued = false
+		is_done_executing = false
+		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 		current_action = " "
 		for b in left_buttons:
 			b.set_mouse_filter(0)
@@ -92,7 +134,6 @@ func _process(delta: float) -> void:
 		turn_indicator.text = team[current_entity].stats.entity_name +"'s turn"
 		if a_panel.is_visible():
 			special_button.get_child(0).text = team[current_entity].stats.skill_list[0].skill_name
-		
 #------------------------------------------------------------------------------
 	elif current_state == GameState.Target:
 		has_queued = false
@@ -101,7 +142,10 @@ func _process(delta: float) -> void:
 		for b in right_buttons:
 			b.set_mouse_filter(2)
 			if b.is_pressed():
-				current_action = b.text
+				for a in a_panel.get_children():
+					if b == a.get_child(0):
+						current_action = b.get_child(0).text
+					
 
 		for skill in team[current_entity].stats.skill_list:
 			if skill.skill_type == "Attack" or current_action == "Attack":
@@ -122,8 +166,14 @@ func _process(delta: float) -> void:
 		else:
 			target = team[target_entity]
 		initialize_action(team[current_entity], current_action, target)
+		
 #------------------------------------------------------------------------------
 	elif current_state == GameState.Execute:
+		if has_queued == true:
+			pick_enemy_action()
+			has_queued = false
+		var sorted_list = arrange_by_speed(entities)
+		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 		for e in range(enemies.size()):
 			initialize_action(enemies[e],"Attack", team[randi_range(0,2)])
 		Input.set_custom_mouse_cursor(cursor_open, Input.CURSOR_ARROW)
@@ -138,9 +188,12 @@ func _process(delta: float) -> void:
 		a_panel.set_visible(false)
 		l_panel.set_visible(false)
 		turn_indicator.text = " "
-		await get_tree().create_timer(1.0).timeout
-		current_entity = 0
-		current_state = GameState.SetUp
+		#-------------------------------
+		if !is_done_executing:
+			execute_action(sorted_list)
+			is_done_executing = true
+		#-------------------------------
+		await _on_has_completed_executing
 #------------------------------------------------------------------------------
 #Just for checking for now
 func _input(event: InputEvent) -> void:
@@ -169,9 +222,32 @@ func initialize_action(source: Character, action: String, destination: Character
 				current_state = GameState.Execute
 		else:
 			current_state = GameState.SetUp
-			
+	#label.text += source.stats.entity_name + " used " +  action + " on " + destination.stats.entity_name + "\n"
 #------------------------------------------------------------------------------
+func execute_action(list:Array[Character]) -> void:
+	for l in list:
+		var stats: Entity = l.stats
+		var skill: Skill
+		var target: Character = action_list[l][1]
+		var action: String = action_list[l][0]
+		print("{} (Who is dead?{}) is attacking {} (Who is dead?{})".format([l.stats.entity_name,l.is_dead,target.stats.entity_name,target.is_dead], "{}"))
+		for s in stats.skill_list:
+			if s.skill_name == action:
+				skill = s
+		if !target.is_dead and !l.is_dead:
+			if action == "Attack":
+				target.stats.health = target.stats.take_damage(stats.damage)
+			elif skill.skill_type == "Attack":
+				target.stats.health = target.stats.take_skill_damage(skill)
+			await target.entity_done
+			label.text += l.stats.entity_name + " used " +  action + " on " + target.stats.entity_name + "\n"
+	print("-------------------------------")
+	emit_signal("has_completed_executing")
 
+
+
+
+#------------------------------------------------------------------------------
 # Button Presses
 func _attack_button_press():
 	current_state = GameState.Target
@@ -187,5 +263,8 @@ func _skill_screen_open():
 		a_panel.set_visible(false)
 
 
-func _on_action_mouse_entered() -> void:
-	pass # Replace with function body.
+
+func _on_has_completed_executing() -> void:
+	get_available_entity()
+	current_entity = 0
+	current_state = GameState.SetUp
