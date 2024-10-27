@@ -154,10 +154,6 @@ tracks/1/keys = {
 "values": [0.0, 0.0872665, -0.0872665, 0.0]
 }
 
-[sub_resource type="Animation" id="Animation_q3xsd"]
-resource_name = "Stun"
-step = 0.1
-
 [sub_resource type="Animation" id="Animation_dfmfy"]
 length = 0.001
 tracks/0/type = "value"
@@ -208,6 +204,10 @@ tracks/3/keys = {
 "update": 0,
 "values": [0.0]
 }
+
+[sub_resource type="Animation" id="Animation_q3xsd"]
+resource_name = "Stun"
+step = 0.1
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_t5cmg"]
 _data = {

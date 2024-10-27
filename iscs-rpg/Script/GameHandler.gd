@@ -3,6 +3,14 @@ extends Node2D
 @onready var ui: Control = $UI
 @onready var label: Label = $Label
 
+const cursor_open = preload("res://Art/harold_open_cursor_big.png")
+const cursor_point = preload("res://Art/harold_point_cursor_big.png")
+const dsmite_card = preload("res://Art/harold_divine_smite.png")
+const daid_card = preload("res://Art/harold_divine_aid.png")
+const sarmor_card = preload("res://Art/harolita_shell_armor.png")
+const rtide_card = preload("res://Art/harolita_rising_tide.png")
+
+var cards: Array = [dsmite_card, daid_card, sarmor_card, rtide_card]
 var entities: Array[AnimatedSprite2D] = []
 var team: Array[AnimatedSprite2D] = []
 var enemies: Array[AnimatedSprite2D] = []
@@ -10,6 +18,8 @@ var action_list: Dictionary = {}
 
 var current_state: int = GameState.SetUp
 var special_button: TextureButton
+var skill1_button: TextureButton
+var skill2_button: TextureButton
 var a_panel: HSplitContainer
 var s_panel: HSplitContainer
 var l_panel: VSplitContainer
@@ -40,6 +50,9 @@ func _ready() -> void:
 	l_panel = ui.get_child(0).get_child(0).get_child(0).get_child(0)
 	turn_indicator = ui.get_child(1).get_child(0)
 	
+	Input.set_custom_mouse_cursor(cursor_open, Input.CURSOR_ARROW)
+	Input.set_custom_mouse_cursor(cursor_point, Input.CURSOR_POINTING_HAND)
+	
 	a_panel.set_visible(false)
 	s_panel.set_visible(false)
 #--------------------------------------------------------------
@@ -47,7 +60,9 @@ func _ready() -> void:
 		right_buttons.append(child.get_child(0))
 	special_button = right_buttons[1]
 	for child in s_panel.get_children():
-		right_buttons.append(child.get_child(0))
+		right_buttons.append(child.get_child(0).get_child(1).get_child(0))
+	skill1_button = right_buttons[2]
+	skill2_button = right_buttons[3]
 	for rb in right_buttons:
 		rb.button_up.connect(_attack_button_press)
 #--------------------------------------------------------------
@@ -120,6 +135,10 @@ func _process(delta: float) -> void:
 		turn_indicator.text = team[current_entity].stats.entity_name +"'s turn"
 		if a_panel.is_visible():
 			special_button.get_child(0).text = team[current_entity].stats.skill_list[0].skill_name
+		if s_panel.is_visible():
+			skill1_button.get_child(0).text = team[current_entity].stats.skill_list[1].skill_name
+			skill2_button.get_child(0).text = team[current_entity].stats.skill_list[2].skill_name
+			skill1_button.get_parent().get_parent().get_child(0).get_child(0).texture = team[current_entity].stats.skill_list[1].card_img
 #------------------------------------------------------------------------------
 	elif current_state == GameState.Target:
 		has_queued = false

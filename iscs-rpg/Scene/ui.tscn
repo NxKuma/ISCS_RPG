@@ -1,7 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://chbe22p815kfy"]
+[gd_scene load_steps=10 format=3 uid="uid://chbe22p815kfy"]
 
 [ext_resource type="StyleBox" uid="uid://d2rj7cq7mwm3u" path="res://Resource/Textrue/ui.tres" id="1_b0web"]
 [ext_resource type="Texture2D" uid="uid://dg04w854mvlx5" path="res://Art/Art.png" id="1_i4p0k"]
+[ext_resource type="Texture2D" uid="uid://bk1xopb22k1vs" path="res://Art/harold_divine_smite.png" id="3_30tia"]
+[ext_resource type="Texture2D" uid="uid://dlnogxwxpr6yj" path="res://Art/harold_divine_aid.png" id="4_qt4ej"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jjf2c"]
 atlas = ExtResource("1_i4p0k")
@@ -102,6 +104,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -12.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_default_cursor_shape = 2
@@ -130,6 +133,7 @@ layout_mode = 2
 theme_override_styles/panel = ExtResource("1_b0web")
 
 [node name="ActionPanel" type="HSplitContainer" parent="BottomContainer/HSplitter/RSelection"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -202,7 +206,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Skill" type="HSplitContainer" parent="BottomContainer/HSplitter/RSelection"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -216,11 +219,40 @@ dragger_visibility = 1
 layout_mode = 2
 theme_override_styles/panel = ExtResource("1_b0web")
 
-[node name="Button" type="TextureButton" parent="BottomContainer/HSplitter/RSelection/Skill/Panel"]
+[node name="HSplitContainer" type="HSplitContainer" parent="BottomContainer/HSplitter/RSelection/Skill/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = 180
+
+[node name="Card1Panel" type="Panel" parent="BottomContainer/HSplitter/RSelection/Skill/Panel/HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+tooltip_text = "Imbues your weapon with the light of the fire fly and gives your attacks 1.5x boost."
+
+[node name="Sprite2D" type="Sprite2D" parent="BottomContainer/HSplitter/RSelection/Skill/Panel/HSplitContainer/Card1Panel"]
+z_index = 1
+position = Vector2(96, 150)
+scale = Vector2(6, 6)
+texture = ExtResource("3_30tia")
+
+[node name="Button1Panel" type="Panel" parent="BottomContainer/HSplitter/RSelection/Skill/Panel/HSplitContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("1_b0web")
+
+[node name="Button" type="TextureButton" parent="BottomContainer/HSplitter/RSelection/Skill/Panel/HSplitContainer/Button1Panel"]
+layout_mode = 2
+anchor_left = 0.029
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.108
+offset_top = 55.0
+offset_right = -6.0
+offset_bottom = -5.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_default_cursor_shape = 2
@@ -229,16 +261,58 @@ texture_normal = SubResource("AtlasTexture_jjf2c")
 texture_pressed = SubResource("AtlasTexture_w0rsb")
 texture_hover = SubResource("AtlasTexture_oxyae")
 stretch_mode = 0
+
+[node name="Label" type="Label" parent="BottomContainer/HSplitter/RSelection/Skill/Panel/HSplitContainer/Button1Panel/Button"]
+layout_mode = 0
+offset_left = 49.0
+offset_top = 80.0
+offset_right = 475.0
+offset_bottom = 179.0
+theme_override_colors/font_color = Color(0.497738, 0.334799, 0.223543, 1)
+theme_override_font_sizes/font_size = 55
+text = "Skill1
+"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Panel2" type="Panel" parent="BottomContainer/HSplitter/RSelection/Skill"]
 layout_mode = 2
 theme_override_styles/panel = ExtResource("1_b0web")
 
-[node name="Button" type="TextureButton" parent="BottomContainer/HSplitter/RSelection/Skill/Panel2"]
+[node name="HSplitContainer2" type="HSplitContainer" parent="BottomContainer/HSplitter/RSelection/Skill/Panel2"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = 180
+
+[node name="Card2Panel" type="Panel" parent="BottomContainer/HSplitter/RSelection/Skill/Panel2/HSplitContainer2"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+tooltip_text = "Harold calls for the blessing of the fireflies and gives your team +25% Crit Chance."
+
+[node name="Sprite2D" type="Sprite2D" parent="BottomContainer/HSplitter/RSelection/Skill/Panel2/HSplitContainer2/Card2Panel"]
+z_index = 1
+position = Vector2(96, 150)
+scale = Vector2(6, 6)
+texture = ExtResource("4_qt4ej")
+
+[node name="Button2Panel" type="Panel" parent="BottomContainer/HSplitter/RSelection/Skill/Panel2/HSplitContainer2"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("1_b0web")
+
+[node name="Button" type="TextureButton" parent="BottomContainer/HSplitter/RSelection/Skill/Panel2/HSplitContainer2/Button2Panel"]
+layout_mode = 2
+anchor_left = 0.029
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.108
+offset_top = 55.0
+offset_right = -6.0
+offset_bottom = -5.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_default_cursor_shape = 2
@@ -247,6 +321,18 @@ texture_normal = SubResource("AtlasTexture_jjf2c")
 texture_pressed = SubResource("AtlasTexture_w0rsb")
 texture_hover = SubResource("AtlasTexture_oxyae")
 stretch_mode = 0
+
+[node name="Label" type="Label" parent="BottomContainer/HSplitter/RSelection/Skill/Panel2/HSplitContainer2/Button2Panel/Button"]
+offset_left = 49.0
+offset_top = 80.0
+offset_right = 475.0
+offset_bottom = 179.0
+theme_override_colors/font_color = Color(0.497738, 0.334799, 0.223543, 1)
+theme_override_font_sizes/font_size = 55
+text = "Skill2
+"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1

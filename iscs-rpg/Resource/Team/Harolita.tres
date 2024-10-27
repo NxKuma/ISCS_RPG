@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Entity" load_steps=4 format=3 uid="uid://bfpvp7h5i2nb2"]
+[gd_resource type="Resource" script_class="Entity" load_steps=6 format=3 uid="uid://bfpvp7h5i2nb2"]
 
 [ext_resource type="Script" path="res://Script/SuperScript/Entity.gd" id="1_cmhqr"]
 [ext_resource type="Script" path="res://Script/SuperScript/Skill.gd" id="2_rkk1s"]
@@ -15,6 +15,30 @@ skill_mode = "Special"
 skill_element = 0
 skill_damage = 0.0
 
+[sub_resource type="Resource" id="Resource_6tfdu"]
+script = ExtResource("2_rkk1s")
+skill_name = "Shell Armor"
+skill_cost = 30
+skill_cooldown = 0
+skill_description = "Harolita fortifies her defenses with sturdy shells, giving her +25% resistance to all damage."
+skill_target = "Single"
+skill_type = "Support"
+skill_mode = "Special"
+skill_element = 1
+skill_damage = 0.0
+
+[sub_resource type="Resource" id="Resource_we3id"]
+script = ExtResource("2_rkk1s")
+skill_name = "Rising Tide"
+skill_cost = 70
+skill_cooldown = 0
+skill_description = "Harolita calls for the tide and propells her team faster, giving everyone in her team x2 speed."
+skill_target = "All"
+skill_type = "Support"
+skill_mode = "Special"
+skill_element = 1
+skill_damage = 0.0
+
 [resource]
 script = ExtResource("1_cmhqr")
 entity_name = "Harolita"
@@ -22,7 +46,7 @@ health = 200.0
 mana = 50
 damage = 20.0
 inTeam = true
-skill_list = Array[ExtResource("2_rkk1s")]([SubResource("Resource_raw4b")])
+skill_list = Array[ExtResource("2_rkk1s")]([SubResource("Resource_raw4b"), SubResource("Resource_6tfdu"), SubResource("Resource_we3id")])
 element = 1
 resistance = Array[int]([])
 weakness = Array[int]([])

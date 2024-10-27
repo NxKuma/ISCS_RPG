@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="Entity" load_steps=4 format=3 uid="uid://b8tdcow0rsb2p"]
+[gd_resource type="Resource" script_class="Entity" load_steps=8 format=3 uid="uid://b8tdcow0rsb2p"]
 
 [ext_resource type="Script" path="res://Script/SuperScript/Entity.gd" id="1_1cf0i"]
 [ext_resource type="Script" path="res://Script/SuperScript/Skill.gd" id="2_3cg8k"]
+[ext_resource type="Texture2D" uid="uid://bk1xopb22k1vs" path="res://Art/harold_divine_smite.png" id="3_a83e5"]
+[ext_resource type="Texture2D" uid="uid://dlnogxwxpr6yj" path="res://Art/harold_divine_aid.png" id="4_m6a2x"]
 
 [sub_resource type="Resource" id="Resource_4q3bl"]
 script = ExtResource("2_3cg8k")
@@ -15,6 +17,32 @@ skill_mode = "Active"
 skill_element = 4
 skill_damage = 30.0
 
+[sub_resource type="Resource" id="Resource_wxjri"]
+script = ExtResource("2_3cg8k")
+skill_name = "Divine Smite"
+skill_cost = 30
+skill_cooldown = 0
+skill_description = "Imbues your weapon with the light of the firefly and gives your attacks 1.5x boost."
+skill_target = "Single"
+skill_type = "Support"
+skill_mode = "Special"
+skill_element = 4
+skill_damage = 0.0
+card_img = ExtResource("3_a83e5")
+
+[sub_resource type="Resource" id="Resource_e8i83"]
+script = ExtResource("2_3cg8k")
+skill_name = "Divine Aid"
+skill_cost = 80
+skill_cooldown = 0
+skill_description = "Harold calls for the blessing of the fireflies and gives your team +25% Crit Chance."
+skill_target = "All"
+skill_type = "Support"
+skill_mode = "Special"
+skill_element = 4
+skill_damage = 0.0
+card_img = ExtResource("4_m6a2x")
+
 [resource]
 resource_local_to_scene = true
 script = ExtResource("1_1cf0i")
@@ -23,7 +51,7 @@ health = 100.0
 mana = 100
 damage = 40.0
 inTeam = true
-skill_list = Array[ExtResource("2_3cg8k")]([SubResource("Resource_4q3bl")])
+skill_list = Array[ExtResource("2_3cg8k")]([SubResource("Resource_4q3bl"), SubResource("Resource_wxjri"), SubResource("Resource_e8i83")])
 element = 4
 resistance = Array[int]([3, 4])
 weakness = Array[int]([1])

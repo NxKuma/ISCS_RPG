@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://dudg06l772u6g"]
+[gd_scene load_steps=35 format=3 uid="uid://dudg06l772u6g"]
 
 [ext_resource type="Script" path="res://Script/GameHandler.gd" id="1_i7hjy"]
 [ext_resource type="PackedScene" uid="uid://86obwfisw11y" path="res://Scene/player.tscn" id="1_uhqgt"]
@@ -11,7 +11,9 @@
 [ext_resource type="Resource" uid="uid://dcrqn48o2sdu5" path="res://Resource/Enemies/Lizard.tres" id="7_aki4r"]
 [ext_resource type="PackedScene" uid="uid://chbe22p815kfy" path="res://Scene/ui.tscn" id="7_hsdh1"]
 [ext_resource type="Resource" uid="uid://bfpvp7h5i2nb2" path="res://Resource/Team/Harolita.tres" id="7_ugwp5"]
+[ext_resource type="Texture2D" uid="uid://bk1xopb22k1vs" path="res://Art/harold_divine_smite.png" id="8_b7obx"]
 [ext_resource type="Texture2D" uid="uid://bwsxfi4t22s0u" path="res://Art/Lizard.png" id="9_tar5j"]
+[ext_resource type="Texture2D" uid="uid://dlnogxwxpr6yj" path="res://Art/harold_divine_aid.png" id="9_u3xpr"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wb0ka"]
 resource_local_to_scene = true
@@ -54,7 +56,33 @@ skill_mode = "Active"
 skill_element = 4
 skill_damage = 30.0
 
-[sub_resource type="Resource" id="Resource_aavtq"]
+[sub_resource type="Resource" id="Resource_wxjri"]
+script = ExtResource("3_eqwtp")
+skill_name = "Divine Smite"
+skill_cost = 30
+skill_cooldown = 0
+skill_description = "Imbues your weapon with the light of the firefly and gives your attacks 1.5x boost."
+skill_target = "Single"
+skill_type = "Support"
+skill_mode = "Special"
+skill_element = 4
+skill_damage = 0.0
+card_img = ExtResource("8_b7obx")
+
+[sub_resource type="Resource" id="Resource_e8i83"]
+script = ExtResource("3_eqwtp")
+skill_name = "Divine Aid"
+skill_cost = 80
+skill_cooldown = 0
+skill_description = "Harold calls for the blessing of the fireflies and gives your team +25% Crit Chance."
+skill_target = "All"
+skill_type = "Support"
+skill_mode = "Special"
+skill_element = 4
+skill_damage = 0.0
+card_img = ExtResource("9_u3xpr")
+
+[sub_resource type="Resource" id="Resource_toemn"]
 resource_local_to_scene = true
 script = ExtResource("2_f8bsn")
 entity_name = "Harold"
@@ -62,7 +90,7 @@ health = 100.0
 mana = 100
 damage = 40.0
 inTeam = true
-skill_list = Array[ExtResource("3_eqwtp")]([SubResource("Resource_4q3bl")])
+skill_list = Array[ExtResource("3_eqwtp")]([SubResource("Resource_4q3bl"), SubResource("Resource_wxjri"), SubResource("Resource_e8i83")])
 element = 4
 resistance = Array[int]([3, 4])
 weakness = Array[int]([1])
@@ -170,7 +198,7 @@ material = SubResource("ShaderMaterial_wb0ka")
 position = Vector2(513, 468)
 scale = Vector2(7.5, 7.5)
 sprite_frames = SubResource("SpriteFrames_huilu")
-stats = SubResource("Resource_aavtq")
+stats = SubResource("Resource_toemn")
 
 [node name="Player2" parent="." instance=ExtResource("1_uhqgt")]
 material = SubResource("ShaderMaterial_aivnm")
