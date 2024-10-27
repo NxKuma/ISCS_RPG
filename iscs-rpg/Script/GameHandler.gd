@@ -3,9 +3,9 @@ extends Node2D
 @onready var ui: Control = $UI
 @onready var label: Label = $Label
 
-var entities: Array[Sprite2D] = []
-var team: Array[Sprite2D] = []
-var enemies: Array[Sprite2D] = []
+var entities: Array[AnimatedSprite2D] = []
+var team: Array[AnimatedSprite2D] = []
+var enemies: Array[AnimatedSprite2D] = []
 var action_list: Dictionary = {}
 
 var current_state: int = GameState.SetUp
@@ -78,7 +78,7 @@ func pick_enemy_action() -> void:
 		var enemy:Character = enemies[e]
 		var enemy_action_number: int  = randi_range(0, enemy.stats.skill_list.size())
 		var enemy_action_string: String
-		var target_array: Array[Sprite2D]
+		var target_array: Array[AnimatedSprite2D]
 		if enemy_action_number == enemy.stats.skill_list.size():
 			enemy_action_string = "Attack"
 			target_array = team

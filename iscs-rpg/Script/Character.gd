@@ -1,5 +1,5 @@
-extends Sprite2D
-class_name Character
+class_name Character extends AnimatedSprite2D
+
 
 @export var stats: Entity
 @onready var player_name: Label = $Name
