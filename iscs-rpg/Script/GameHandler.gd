@@ -204,7 +204,7 @@ func initialize_action(source: Character, action: String, destination: Character
 				current_state = GameState.Execute
 		else:
 			current_state = GameState.SetUp
-	label.text += source.stats.entity_name + " used " +  action + " on " + destination.stats.entity_name + "\n"
+	#label.text += source.stats.entity_name + " used " +  action + " on " + destination.stats.entity_name + "\n"
 #------------------------------------------------------------------------------
 func execute_action(list:Array[Character]) -> void:
 	for l in list:
@@ -212,15 +212,18 @@ func execute_action(list:Array[Character]) -> void:
 		var skill: Skill
 		var target: Character = action_list[l][1]
 		var action: String = action_list[l][0]
+		print("{} (Who is dead?{}) is attacking {} (Who is dead?{})".format([l.stats.entity_name,l.is_dead,target.stats.entity_name,target.is_dead], "{}"))
 		for s in stats.skill_list:
 			if s.skill_name == action:
 				skill = s
-		if !target.is_dead and !l.stats.is_dead:
+		if !target.is_dead and !l.is_dead:
 			if action == "Attack":
 				target.stats.health = target.stats.take_damage(stats.damage)
 			elif skill.skill_type == "Attack":
 				target.stats.health = target.stats.take_skill_damage(skill)
 			await target.entity_done
+			label.text += l.stats.entity_name + " used " +  action + " on " + target.stats.entity_name + "\n"
+	print("-------------------------------")
 	emit_signal("has_completed_executing")
 
 

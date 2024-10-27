@@ -31,11 +31,14 @@ func align_shader(shader_number: int) -> void:
 		current_shader = blink_shader
 	elif shader_number == 1:
 		current_shader = dissolve_shader
-	elif shader_number == 2:
-		current_shader = outline_shader
 		noise.set_noise(noise_texture) 
 		self.material.set("shader_parameter/Texture2DParameter", noise)
-		
+	elif shader_number == 2:
+		current_shader = outline_shader
+		if !stats.inTeam:
+			self.material.set("shader_parameter/ColorParameter",Color.RED)
+		else:
+			self.material.set("shader_parameter/ColorParameter",Color.AQUA)
 	self.material.set_shader(current_shader)
 
 func reset_shader(animation_number: int) -> void:
@@ -64,6 +67,7 @@ func _process(delta: float) -> void:
 		self.material.set("shader_parameter/DissolveValue",dissolve_value)
 	elif current_shader == blink_shader:
 		self.material.set("shader_parameter/blink_intensity",blink_value)
+		
 	
 	if self.material.get("shader_parameter/DissolveValue") >= 1:
 		done_animating = true
@@ -88,10 +92,6 @@ func _on_area_2d_mouse_entered() -> void:
 		is_hovering = true
 		Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
 		self.material.set("shader_parameter/Width",2)
-		if !stats.inTeam:
-			self.material.set("shader_parameter/ColorParameter",Color.RED)
-		else:
-			self.material.set("shader_parameter/ColorParameter",Color.AQUA)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and is_hovering and !is_dead:
