@@ -6,10 +6,10 @@
 [sub_resource type="Resource" id="Resource_4q3bl"]
 script = ExtResource("2_3cg8k")
 skill_name = "Fire Light Bash"
-skill_cost = 0
+skill_cost = 20
 skill_cooldown = 0
 skill_description = "Harold will swing around his jar of fireflies and inflict 30 Light Damage to the Enemy"
-skill_target = ""
+skill_target = "Single"
 skill_type = "Attack"
 skill_mode = "Active"
 skill_element = 4

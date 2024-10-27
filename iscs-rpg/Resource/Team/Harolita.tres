@@ -13,7 +13,7 @@ skill_target = "Single"
 skill_type = "Support"
 skill_mode = "Special"
 skill_element = 0
-skill_damage = 0.0
+skill_damage = 50.0
 
 [resource]
 script = ExtResource("1_cmhqr")

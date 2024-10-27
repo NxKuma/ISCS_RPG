@@ -18,6 +18,8 @@ signal took_damage
 signal healed
 signal speed_changed
 signal stunned
+signal did_armored
+signal mana_used
 
 #Hidden in the Inspector
 enum Element{
@@ -32,6 +34,7 @@ enum Element{
 var max_health: float = health
 var is_stunned:bool = false
 var is_dead: bool = false
+var armor: int = 0
 var crit_chance: float = 50.0
 var crit_multiplier: float = 1.5
 
@@ -43,7 +46,10 @@ func take_damage(damage_dealt:float) -> float:
 	#Calculate Crit Damage
 	if randf_range(0,100) <= crit_chance:
 		damage_dealt *= crit_multiplier
-	health -= damage_dealt
+	if armor >= 0:
+		armor -= damage_dealt
+	else:
+		health -= damage_dealt
 	if health <= 0:
 		health = 0
 	emit_signal("took_damage")
@@ -60,9 +66,14 @@ func take_skill_damage(skill_recieved:Skill) -> float:
 		initial_health -= skill_recieved.skill_damage * 0.5
 	elif skill_recieved.skill_element in weakness:
 		initial_health -= skill_recieved.skill_damage * 2
+	else:
+		initial_health -= skill_recieved.skill_damage
+	if mana < skill_recieved.skill_cost:
+		emit_signal("mana_used")
+		return initial_health
 	
-	if health <= 0:
-		health = 0
+	if initial_health <= 0:
+		initial_health = 0
 	emit_signal("took_damage")
 	#Return the calculated health
 	return initial_health
@@ -72,17 +83,22 @@ func heal(health_healed: float) -> float:
 	health += health_healed
 	emit_signal("healed")
 	return health
+	
+
 # --- Non Return Functions--- Skills
 
 #Stun the Entity
 func stun() -> void:
-	emit_signal("stunned")
 	is_stunned = true
+	emit_signal("stunned")
 	
-func change_speed(speed_change:int):
-	emit_signal("speed_changed")
+func change_speed(speed_change:int) -> void:
 	speed += speed_change
-	
+	emit_signal("speed_changed")
+
+func armored(armor_value: float) -> void:
+	armor = armor_value
+	emit_signal("did_armored")
 
 #Revive the Entity
 func revive() -> void:

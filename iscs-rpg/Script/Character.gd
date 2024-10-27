@@ -50,7 +50,7 @@ func reset_shader(animation_number: int) -> void:
 
 func _ready() -> void:
 	stats.took_damage.connect(take_damage)
-	#stats.defe.connect(take_damage)
+	stats.did_armored.connect(get_armor)
 	
 	player_name.text = stats.entity_name
 	reset_shader(1)
@@ -112,5 +112,10 @@ func take_damage():
 	reset_shader(0)
 	self.material.set("shader_parameter/blink_color",Color.WHITE)
 	animation_player.play("Damaged")
+	await animation_player.animation_finished
+	emit_signal("entity_done")
+	
+func get_armor():
+	animation_player.play("Defend")
 	await animation_player.animation_finished
 	emit_signal("entity_done")

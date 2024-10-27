@@ -7,6 +7,7 @@ var entities: Array[AnimatedSprite2D] = []
 var team: Array[AnimatedSprite2D] = []
 var enemies: Array[AnimatedSprite2D] = []
 var action_list: Dictionary = {}
+var echo: Label
 
 var current_state: int = GameState.SetUp
 var special_button: TextureButton
@@ -38,6 +39,7 @@ func _ready() -> void:
 	a_panel = ui.get_child(0).get_child(0).get_child(1).get_child(0)
 	s_panel = ui.get_child(0).get_child(0).get_child(1).get_child(1)
 	l_panel = ui.get_child(0).get_child(0).get_child(0).get_child(0)
+	echo = ui.get_child(0).get_child(0).get_child(1).get_child(2)
 	turn_indicator = ui.get_child(1).get_child(0)
 	
 	a_panel.set_visible(false)
@@ -70,6 +72,7 @@ func get_available_entity() -> void:
 		if !e.is_dead:
 			if e.stats.inTeam:
 				team.append(e)
+				print(e.stats.entity_name)
 			else:
 				enemies.append(e)
 
@@ -212,18 +215,26 @@ func execute_action(list:Array[Character]) -> void:
 		var skill: Skill
 		var target: Character = action_list[l][1]
 		var action: String = action_list[l][0]
-		print("{} (Who is dead?{}) is attacking {} (Who is dead?{})".format([l.stats.entity_name,l.is_dead,target.stats.entity_name,target.is_dead], "{}"))
+		#print("{} (Who is dead?{}) is attacking {} (Who is dead?{})".format([l.stats.entity_name,l.is_dead,target.stats.entity_name,target.is_dead], "{}"))
 		for s in stats.skill_list:
 			if s.skill_name == action:
 				skill = s
-		if !target.is_dead and !l.is_dead:
+				print(skill.skill_name)
+		if (!target.is_dead and !l.is_dead) or (skill.skill_cost <= l.stats.mana):
+			echo.visible = true
+			echo.text = l.stats.entity_name + " used " +  action + " on " + target.stats.entity_name
 			if action == "Attack":
 				target.stats.health = target.stats.take_damage(stats.damage)
-			elif skill.skill_type == "Attack":
-				target.stats.health = target.stats.take_skill_damage(skill)
+			else:
+				if skill.skill_type == "Attack":
+					target.stats.health = target.stats.take_skill_damage(skill)
+				elif skill.skill_type == "Support":
+					if skill.skill_name.contains("Defend"):
+						target.stats.armored(skill.skill_damage)
+				if skill.skill_mode == "Active":
+					l.stats.mana -= skill.skill_cost
 			await target.entity_done
-			label.text += l.stats.entity_name + " used " +  action + " on " + target.stats.entity_name + "\n"
-	print("-------------------------------")
+	#print("-------------------------------")
 	emit_signal("has_completed_executing")
 
 
