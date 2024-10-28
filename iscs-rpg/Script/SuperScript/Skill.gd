@@ -11,7 +11,7 @@ class_name Skill
 @export_enum("Special", "Active") var skill_mode: String
 @export var skill_element: Element
 @export var skill_damage: float
-#@export var card_img: Texture2D
+@export var card_img: Texture2D
 
 #Hidden in the Inspector
 enum Element{

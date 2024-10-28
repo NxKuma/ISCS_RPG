@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="Entity" load_steps=6 format=3 uid="uid://bfpvp7h5i2nb2"]
+[gd_resource type="Resource" script_class="Entity" load_steps=8 format=3 uid="uid://bfpvp7h5i2nb2"]
 
 [ext_resource type="Script" path="res://Script/SuperScript/Entity.gd" id="1_cmhqr"]
 [ext_resource type="Script" path="res://Script/SuperScript/Skill.gd" id="2_rkk1s"]
+[ext_resource type="Texture2D" uid="uid://dsjccrb8iy0o7" path="res://Art/harolita_shell_armor.png" id="3_iy08x"]
+[ext_resource type="Texture2D" uid="uid://bi4udkoyodhe5" path="res://Art/harolita_rising_tide.png" id="4_fn3fv"]
 
 [sub_resource type="Resource" id="Resource_raw4b"]
 script = ExtResource("2_rkk1s")
@@ -26,6 +28,7 @@ skill_type = "Support"
 skill_mode = "Active"
 skill_element = 1
 skill_damage = 50.0
+card_img = ExtResource("3_iy08x")
 
 [sub_resource type="Resource" id="Resource_dabyv"]
 script = ExtResource("2_rkk1s")
@@ -38,6 +41,7 @@ skill_type = "Support"
 skill_mode = "Active"
 skill_element = 1
 skill_damage = 2.0
+card_img = ExtResource("4_fn3fv")
 
 [resource]
 script = ExtResource("1_cmhqr")

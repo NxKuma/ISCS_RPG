@@ -35,6 +35,7 @@ enum Element{
 var max_health: float = health
 var is_stunned:bool = false
 var is_dead: bool = false
+var is_armored: bool = false
 var armor: int = 0
 var crit_chance: float = 50.0
 var crit_multiplier: float = 1.5
@@ -50,6 +51,7 @@ func take_damage(damage_dealt:float) -> float:
 	if armor >= 0:
 		armor -= damage_dealt
 	else:
+		is_armored = false
 		health -= damage_dealt
 	if health <= 0:
 		health = 0
@@ -60,15 +62,20 @@ func take_damage(damage_dealt:float) -> float:
 #Take Skill Damage
 func take_skill_damage(skill_recieved:Skill) -> float:
 	var initial_health:float = health
-	
+	var damage_dealt: float = skill_recieved.skill_damage
 	#Check if the Skill Element is aligned with the Element of the Entity
 	#Based on this the damage will either weaken or strengthen
 	if skill_recieved.skill_element in resistance:
-		initial_health -= skill_recieved.skill_damage * 0.5
+		initial_health -= damage_dealt * 0.5
 	elif skill_recieved.skill_element in weakness:
-		initial_health -= skill_recieved.skill_damage * 2
+		initial_health -= damage_dealt * 2
 	else:
-		initial_health -= skill_recieved.skill_damage
+		initial_health -= damage_dealt
+	if armor >= 0:
+		armor -= damage_dealt
+	else:
+		is_armored = false
+		initial_health -= damage_dealt
 	
 	if initial_health <= 0:
 		initial_health = 0
@@ -100,6 +107,7 @@ func change_crit(crit_change:int):
 	
 
 func armored(armor_value: float) -> void:
+	is_armored = true
 	armor = armor_value
 	emit_signal("did_armored")
 

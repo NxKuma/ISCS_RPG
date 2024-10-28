@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="Entity" load_steps=6 format=3 uid="uid://b8tdcow0rsb2p"]
+[gd_resource type="Resource" script_class="Entity" load_steps=8 format=3 uid="uid://b8tdcow0rsb2p"]
 
 [ext_resource type="Script" path="res://Script/SuperScript/Entity.gd" id="1_1cf0i"]
 [ext_resource type="Script" path="res://Script/SuperScript/Skill.gd" id="2_3cg8k"]
+[ext_resource type="Texture2D" uid="uid://bx3lfwiuan64h" path="res://Art/harold_divine_smite.png" id="3_80tvm"]
+[ext_resource type="Texture2D" uid="uid://dor6o3n0d57wx" path="res://Art/harold_divine_aid.png" id="4_4jbsr"]
 
 [sub_resource type="Resource" id="Resource_4q3bl"]
 script = ExtResource("2_3cg8k")
@@ -22,10 +24,11 @@ skill_cost = 30
 skill_cooldown = 0
 skill_description = ""
 skill_target = "Single"
-skill_type = "Support"
+skill_type = "Attack"
 skill_mode = "Active"
 skill_element = 4
-skill_damage = 2.0
+skill_damage = 100.0
+card_img = ExtResource("3_80tvm")
 
 [sub_resource type="Resource" id="Resource_lsprp"]
 script = ExtResource("2_3cg8k")
@@ -38,6 +41,7 @@ skill_type = "Support"
 skill_mode = "Active"
 skill_element = 4
 skill_damage = 25.0
+card_img = ExtResource("4_4jbsr")
 
 [resource]
 resource_local_to_scene = true

@@ -14,6 +14,7 @@ var cards: Array = [dsmite_card, daid_card, sarmor_card, rtide_card]
 var entities: Array[AnimatedSprite2D] = []
 var team: Array[AnimatedSprite2D] = []
 var enemies: Array[AnimatedSprite2D] = []
+var card_skills: Array[Sprite2D] = []
 var action_list: Dictionary = {}
 var echo: Label
 
@@ -65,7 +66,7 @@ func _ready() -> void:
 	
 	a_panel.set_visible(false)
 	s_panel.set_visible(false)
-#--------------------------------------------------------------
+	#--------------------------------------------------------------
 	for child in a_panel.get_children():
 		right_buttons.append(child.get_child(0))
 		action_buttons.append(child.get_child(0))
@@ -77,6 +78,12 @@ func _ready() -> void:
 	skill2_button = right_buttons[3]
 	for rb in right_buttons:
 		rb.button_up.connect(_attack_button_press)
+	#--------------------------------------------------------------
+	card_skills.append(s_panel.get_child(0).get_child(0).get_child(0).get_child(0))
+	card_skills.append(s_panel.get_child(1).get_child(0).get_child(0).get_child(0))
+	#for child in s_panel.get_child(1).get_child(0).get_children():
+		#right_buttons.append(child.get_child(0).get_child(1).get_child(0))
+		#skill_buttons.append(child.get_child(0).get_child(1).get_child(0))
 	#--------------------------------------------------------------
 	for child in l_panel.get_children():
 		left_buttons.append(child.get_child(0))
@@ -94,10 +101,10 @@ func get_available_entity() -> void:
 	team.clear()
 	enemies.clear()
 	for e in entities:
-		if !e.is_dead:
+		if !e.is_dead and (e.stats.health > 0):
 			if e.stats.inTeam:
 				team.append(e)
-				print(e.stats.entity_name)
+				print(e.stats.health)
 			else:
 				enemies.append(e)
 
@@ -136,6 +143,8 @@ func _process(delta: float) -> void:
 	
 		
 	if current_state == GameState.SetUp and current_entity < team.size():
+		if team[current_entity].stats.is_stunned:
+			current_entity += 1
 		l_panel.set_visible(true)
 		is_attack = false
 		has_queued = false
@@ -155,7 +164,8 @@ func _process(delta: float) -> void:
 		if s_panel.is_visible():
 			skill1_button.get_child(0).text = team[current_entity].stats.skill_list[1].skill_name
 			skill2_button.get_child(0).text = team[current_entity].stats.skill_list[2].skill_name
-			skill1_button.get_parent().get_parent().get_child(0).get_child(0).texture = cards[0]
+			for x in range(1,2):
+				card_skills[x -1].set_texture(team[current_entity].stats.skill_list[x].card_img) 
 #------------------------------------------------------------------------------
 	elif current_state == GameState.Target:
 		for b in left_buttons:
@@ -291,8 +301,10 @@ func execute_action(list:Array[Character]) -> void:
 					elif skill.skill_type == "Support":
 						if skill.skill_name.contains("Heal"):
 							target.stats.heal(skill.skill_damage)
-						if skill.skill_name.contains("Smite"):
+						if skill.skill_name.contains("Aid"):
 							target.stats.change_crit(skill.skill_damage)
+						if skill.skill_name.contains("Armor"):
+							target.stats.armored(skill.skill_damage)
 					if skill.skill_mode == "Active":
 						l.stats.mana -= skill.skill_cost
 				await target.entity_done
@@ -328,7 +340,6 @@ func _on_has_completed_executing() -> void:
 	current_entity = 0
 	echo.visible = false
 	if team.size() <= 0:
-		print("hello")
 		emit_signal("lose_signal")
 	elif enemies.size() <= 0:
 		emit_signal("win_signal")

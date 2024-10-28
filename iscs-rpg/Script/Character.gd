@@ -63,6 +63,10 @@ func _ready() -> void:
 		self.material.set("shader_parameter/ColorParameter",Color.RED)
 	
 func _process(delta: float) -> void:
+	if stats.is_armored:
+		health.set_modulate(Color.AQUA)
+	else:
+		health.set_modulate(Color.WHITE)
 	health.text = "Health: " + str(stats.health)
 	mana.text = "Mana : " + str(stats.mana)
 	
