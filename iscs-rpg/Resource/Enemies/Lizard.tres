@@ -25,5 +25,5 @@ inTeam = false
 skill_list = Array[ExtResource("2_tptxg")]([SubResource("Resource_o7b36")])
 element = 0
 resistance = Array[int]([])
-weakness = Array[int]([])
+weakness = Array[int]([4])
 speed = 20

@@ -25,6 +25,7 @@ var noise : NoiseTexture2D = NoiseTexture2D.new()
 var noise_texture: FastNoiseLite = FastNoiseLite.new()
 
 signal entity_done
+signal target_picked
 
 func align_shader(shader_number: int) -> void:
 	if shader_number == 0:
@@ -52,6 +53,7 @@ func _ready() -> void:
 	stats.took_damage.connect(take_damage)
 	stats.did_armored.connect(get_armor)
 	stats.crit_up.connect(get_armor)
+	stats.healed.connect(heal)
 	
 	player_name.text = stats.entity_name
 	reset_shader(1)
@@ -117,6 +119,15 @@ func take_damage():
 	emit_signal("entity_done")
 	
 func get_armor():
+	reset_shader(0)
+	self.material.set("shader_parameter/blink_color",Color.SKY_BLUE)
 	animation_player.play("Defend")
+	await animation_player.animation_finished
+	emit_signal("entity_done")
+	
+func heal():
+	reset_shader(0)
+	self.material.set("shader_parameter/blink_color",Color.GREEN)
+	animation_player.play("Heal")
 	await animation_player.animation_finished
 	emit_signal("entity_done")

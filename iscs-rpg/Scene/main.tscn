@@ -1,8 +1,9 @@
-[gd_scene load_steps=33 format=3 uid="uid://dudg06l772u6g"]
+[gd_scene load_steps=34 format=3 uid="uid://dudg06l772u6g"]
 
 [ext_resource type="Script" path="res://Script/GameHandler.gd" id="1_i7hjy"]
 [ext_resource type="PackedScene" uid="uid://86obwfisw11y" path="res://Scene/player.tscn" id="1_uhqgt"]
 [ext_resource type="Texture2D" uid="uid://bem1tsrf28og8" path="res://Art/harold_bg_2.png" id="2_6cglo"]
+[ext_resource type="PackedScene" uid="uid://b4yv8xktjuagr" path="res://Scene/Win.tscn" id="2_8sp1v"]
 [ext_resource type="Script" path="res://Script/SuperScript/Entity.gd" id="2_f8bsn"]
 [ext_resource type="Script" path="res://Script/SuperScript/Skill.gd" id="3_eqwtp"]
 [ext_resource type="Resource" uid="uid://cefbv8t5u4xp3" path="res://Resource/Enemies/Sake.tres" id="4_4f31c"]
@@ -80,7 +81,7 @@ skill_mode = "Active"
 skill_element = 4
 skill_damage = 25.0
 
-[sub_resource type="Resource" id="Resource_yy0gr"]
+[sub_resource type="Resource" id="Resource_ti1se"]
 resource_local_to_scene = true
 script = ExtResource("2_f8bsn")
 entity_name = "Harold"
@@ -184,6 +185,8 @@ animations = [{
 [node name="Main" type="Node2D"]
 script = ExtResource("1_i7hjy")
 
+[node name="Control" parent="." instance=ExtResource("2_8sp1v")]
+
 [node name="BG" type="Sprite2D" parent="."]
 modulate = Color(0.74, 0.74, 0.74, 1)
 position = Vector2(-200, -240)
@@ -196,7 +199,7 @@ material = SubResource("ShaderMaterial_wb0ka")
 position = Vector2(513, 468)
 scale = Vector2(7.5, 7.5)
 sprite_frames = SubResource("SpriteFrames_huilu")
-stats = SubResource("Resource_yy0gr")
+stats = SubResource("Resource_ti1se")
 
 [node name="Player2" parent="." instance=ExtResource("1_uhqgt")]
 material = SubResource("ShaderMaterial_aivnm")

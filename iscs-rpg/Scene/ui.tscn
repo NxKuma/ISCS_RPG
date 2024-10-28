@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://chbe22p815kfy"]
+[gd_scene load_steps=11 format=3 uid="uid://chbe22p815kfy"]
 
 [ext_resource type="StyleBox" uid="uid://d2rj7cq7mwm3u" path="res://Resource/Textrue/ui.tres" id="1_b0web"]
 [ext_resource type="Texture2D" uid="uid://dg04w854mvlx5" path="res://Art/Art.png" id="1_i4p0k"]
@@ -15,6 +15,10 @@ region = Rect2(64, 0, 32, 16)
 [sub_resource type="AtlasTexture" id="AtlasTexture_oxyae"]
 atlas = ExtResource("1_i4p0k")
 region = Rect2(0, 0, 32, 15)
+
+[sub_resource type="LabelSettings" id="LabelSettings_xccnb"]
+font_size = 40
+font_color = Color(0.772549, 0.541176, 0.415686, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_6tqjb"]
 line_spacing = 4.0
@@ -81,7 +85,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_default_cursor_shape = 2
-toggle_mode = true
 texture_normal = SubResource("AtlasTexture_jjf2c")
 texture_pressed = SubResource("AtlasTexture_w0rsb")
 texture_hover = SubResource("AtlasTexture_oxyae")
@@ -112,7 +115,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_default_cursor_shape = 2
-toggle_mode = true
 texture_normal = SubResource("AtlasTexture_jjf2c")
 texture_pressed = SubResource("AtlasTexture_w0rsb")
 texture_hover = SubResource("AtlasTexture_oxyae")
@@ -266,6 +268,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+label_settings = SubResource("LabelSettings_xccnb")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -316,6 +319,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+label_settings = SubResource("LabelSettings_xccnb")
 horizontal_alignment = 1
 vertical_alignment = 1
 

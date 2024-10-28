@@ -1,0 +1,168 @@
+[gd_scene load_steps=11 format=3 uid="uid://b4yv8xktjuagr"]
+
+[ext_resource type="Script" path="res://EndScreen.gd" id="1_dwd0e"]
+[ext_resource type="Texture2D" uid="uid://c2mpir2wn8shy" path="res://Art/462541984_575120998511068_6886210963320232769_n.png" id="2_t367q"]
+[ext_resource type="StyleBox" uid="uid://d2rj7cq7mwm3u" path="res://Resource/Textrue/ui.tres" id="3_p6ekh"]
+[ext_resource type="Texture2D" uid="uid://dg04w854mvlx5" path="res://Art/Art.png" id="4_qlcqd"]
+[ext_resource type="Texture2D" uid="uid://dndmem6dkfbwx" path="res://Art/462542735_831436382230289_3766659466918496028_n.png" id="5_acmhw"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_sj86q"]
+font_size = 150
+font_color = Color(0.384314, 0.164706, 0.0705882, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eua78"]
+atlas = ExtResource("4_qlcqd")
+region = Rect2(32, 0, 32, 15)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_78o0s"]
+atlas = ExtResource("4_qlcqd")
+region = Rect2(64, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nhmu4"]
+atlas = ExtResource("4_qlcqd")
+region = Rect2(0, 0, 32, 15)
+
+[sub_resource type="LabelSettings" id="LabelSettings_gl8ik"]
+font_size = 80
+font_color = Color(0.384314, 0.164706, 0.0705882, 1)
+
+[node name="Control" type="CanvasLayer"]
+script = ExtResource("1_dwd0e")
+
+[node name="Win Panel" type="Panel" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HSplitContainer" type="HSplitContainer" parent="Win Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = 500
+
+[node name="TextureRect" type="TextureRect" parent="Win Panel/HSplitContainer"]
+layout_mode = 2
+texture = ExtResource("2_t367q")
+expand_mode = 3
+stretch_mode = 4
+
+[node name="Panel" type="Panel" parent="Win Panel/HSplitContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_p6ekh")
+
+[node name="Labe" type="Label" parent="Win Panel/HSplitContainer/Panel"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 215.0
+offset_bottom = 488.0
+grow_horizontal = 2
+text = "YOU WIN"
+label_settings = SubResource("LabelSettings_sj86q")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Win Button" type="TextureButton" parent="Win Panel/HSplitContainer/Panel"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -567.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_default_cursor_shape = 2
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_eua78")
+texture_pressed = SubResource("AtlasTexture_78o0s")
+texture_hover = SubResource("AtlasTexture_nhmu4")
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="Win Panel/HSplitContainer/Panel/Win Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.772549, 0.541176, 0.415686, 1)
+theme_override_font_sizes/font_size = 40
+text = "Go Again"
+label_settings = SubResource("LabelSettings_gl8ik")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Lose Panel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HSplitContainer" type="HSplitContainer" parent="Lose Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = 500
+
+[node name="TextureRect" type="TextureRect" parent="Lose Panel/HSplitContainer"]
+layout_mode = 2
+texture = ExtResource("5_acmhw")
+expand_mode = 3
+stretch_mode = 4
+
+[node name="Panel" type="Panel" parent="Lose Panel/HSplitContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_p6ekh")
+
+[node name="Labe" type="Label" parent="Lose Panel/HSplitContainer/Panel"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 215.0
+offset_bottom = 488.0
+grow_horizontal = 2
+text = "You lost"
+label_settings = SubResource("LabelSettings_sj86q")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Lose Button" type="TextureButton" parent="Lose Panel/HSplitContainer/Panel"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -567.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_default_cursor_shape = 2
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_eua78")
+texture_pressed = SubResource("AtlasTexture_78o0s")
+texture_hover = SubResource("AtlasTexture_nhmu4")
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="Lose Panel/HSplitContainer/Panel/Lose Button"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -184.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.772549, 0.541176, 0.415686, 1)
+theme_override_font_sizes/font_size = 40
+text = "Go Again"
+label_settings = SubResource("LabelSettings_gl8ik")
+horizontal_alignment = 1
+vertical_alignment = 1
