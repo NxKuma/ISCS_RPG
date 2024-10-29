@@ -94,6 +94,8 @@ func _process(delta: float) -> void:
 	
 	if stats.health <= 0 and !is_dead:
 		if !animation_player.is_playing():
+			stats.is_stunned = false
+			stats.is_dead = true
 			is_dead = true
 			reset_shader(1)
 			health.visible = false

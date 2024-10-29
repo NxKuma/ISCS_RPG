@@ -11,6 +11,7 @@ const sarmor_card = preload("res://Art/harolita_shell_armor.png")
 const rtide_card = preload("res://Art/harolita_rising_tide.png")
 
 var cards: Array = [dsmite_card, daid_card, sarmor_card, rtide_card]
+var available_team: Array[AnimatedSprite2D] = []
 var entities: Array[AnimatedSprite2D] = []
 var team: Array[AnimatedSprite2D] = []
 var enemies: Array[AnimatedSprite2D] = []
@@ -96,11 +97,14 @@ func _ready() -> void:
 
 func get_available_entity() -> void:
 	team.clear()
+	available_team.clear()
 	enemies.clear()
 	for e in entities:
-		if !e.is_dead and (e.stats.health > 0) and (!e.stats.is_stunned):
+		if !e.is_dead and (e.stats.health > 0):
 			if e.stats.inTeam:
 				team.append(e)
+				if !e.stats.is_stunned:
+					available_team.append(e)
 			else:
 				enemies.append(e)
 
@@ -120,7 +124,10 @@ func pick_enemy_action() -> void:
 			else:
 				target_array = team
 		has_queued = false
-		initialize_action(enemies[e],enemy_action_string, target_array[randi_range(0,target_array.size() - 1)])
+		if available_team.size() <= 0:
+			emit_signal("has_completed_executing")
+		else:
+			initialize_action(enemies[e],enemy_action_string, target_array[randi_range(0,target_array.size() - 1)])
 
 func fastest_to_slowest(a, b):
 	if a.stats.speed > b.stats.speed:
@@ -138,8 +145,8 @@ func arrange_by_speed(array_list: Array) -> Array[Character]:
 func _process(delta: float) -> void:
 	
 		
-	if current_state == GameState.SetUp and current_entity < team.size():
-		if team[current_entity].stats.is_stunned:
+	if current_state == GameState.SetUp and current_entity < available_team.size():
+		if available_team[current_entity].stats.is_stunned:
 			current_entity += 1
 		l_panel.set_visible(true)
 		is_attack = false
@@ -154,14 +161,14 @@ func _process(delta: float) -> void:
 			b.set_pressed_no_signal(false)
 		for e in entities:
 			e.game_state = 0
-		turn_indicator.text = team[current_entity].stats.entity_name +"'s turn"
+		turn_indicator.text = available_team[current_entity].stats.entity_name +"'s turn"
 		if a_panel.is_visible():
-			special_button.get_child(0).text = team[current_entity].stats.skill_list[0].skill_name
+			special_button.get_child(0).text = available_team[current_entity].stats.skill_list[0].skill_name
 		if s_panel.is_visible():
-			skill1_button.get_child(0).text = team[current_entity].stats.skill_list[1].skill_name
-			skill2_button.get_child(0).text = team[current_entity].stats.skill_list[2].skill_name
-			card_skills[0].set_texture(team[current_entity].stats.skill_list[1].card_img)
-			card_skills[1].set_texture(team[current_entity].stats.skill_list[2].card_img) 
+			skill1_button.get_child(0).text = available_team[current_entity].stats.skill_list[1].skill_name
+			skill2_button.get_child(0).text = available_team[current_entity].stats.skill_list[2].skill_name
+			card_skills[0].set_texture(available_team[current_entity].stats.skill_list[1].card_img)
+			card_skills[1].set_texture(available_team[current_entity].stats.skill_list[2].card_img) 
 #------------------------------------------------------------------------------
 	elif current_state == GameState.Target:
 		for b in left_buttons:
@@ -198,7 +205,7 @@ func _process(delta: float) -> void:
 			target = enemies[target_entity]
 		else:
 			target = team[target_entity]
-		initialize_action(team[current_entity], current_action, target)
+		initialize_action(available_team[current_entity], current_action, target)
 		#await action_initialized
 #------------------------------------------------------------------------------
 	elif current_state == GameState.Execute:
@@ -245,7 +252,7 @@ func initialize_action(source: Character, action: String, destination: Character
 		var character_stats: Array[Skill] = source.stats.skill_list
 		var target_array: Array[AnimatedSprite2D] = []
 		if source.name.contains("Player"):
-			target_array = team
+			target_array = available_team
 		else:
 			target_array = enemies
 		has_queued = true
@@ -278,14 +285,14 @@ func execute_action(list:Array[Character]) -> void:
 					if s.skill_name == action:
 						skill = s
 				enough_mana = skill.skill_cost > stats.mana
-			if (!target.is_dead and !l.is_dead) and !l.stats.is_stunned:
+			if (!target.is_dead and !l.is_dead) and !l.stats.is_stunned and l.stats.health > 0:
 				echo.visible = true
 				echo.text = l.stats.entity_name + " used " +  action + " on " + target.stats.entity_name
 				if action == "Attack":
 					target.stats.health = target.stats.take_damage(stats.damage)
 				else:
 					if enough_mana:
-						echo.text = "Not Enough Mana"
+						echo.text = "Not Enough Mana \n" + l.stats.entity_name + " tried using " +  action + " on " + target.stats.entity_name
 						await get_tree().create_timer(1).timeout
 					else:
 						
@@ -358,19 +365,16 @@ func _on_has_completed_executing() -> void:
 				t.emit_signal("stun_finished")
 	current_entity = 0
 	echo.visible = false
-	print(entities[0].stats.health == 0 and entities[1].stats.health == 0)
-	if team.size() <= 0 and (entities[0].stats.health == 0 and entities[1].stats.health == 0) :
+	get_available_entity()
+	if team.size() <= 0:
 		emit_signal("lose_signal")
-		set_process(false)
 		return
 	elif enemies.size() <= 0:
 		emit_signal("win_signal")
-		set_process(false)
 		return
-	get_available_entity()
-	if team.size() == 0:
-		print("hello")
-		has_queued = true
-		current_state = GameState.Execute
 	else:
-		current_state = GameState.SetUp
+		if available_team.size() == 0:
+			has_queued = true
+			current_state = GameState.Execute
+		else:
+			current_state = GameState.SetUp
