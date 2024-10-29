@@ -11,9 +11,9 @@ skill_cooldown = 0
 skill_description = ""
 skill_target = "Single"
 skill_type = "Attack"
-skill_mode = "Special"
+skill_mode = "Active"
 skill_element = 0
-skill_damage = 20.0
+skill_damage = 0.0
 
 [resource]
 script = ExtResource("1_r2k4i")

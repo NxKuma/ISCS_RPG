@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://dudg06l772u6g"]
+[gd_scene load_steps=36 format=3 uid="uid://dudg06l772u6g"]
 
 [ext_resource type="Script" path="res://Script/GameHandler.gd" id="1_i7hjy"]
 [ext_resource type="PackedScene" uid="uid://86obwfisw11y" path="res://Scene/player.tscn" id="1_uhqgt"]
@@ -7,11 +7,14 @@
 [ext_resource type="Resource" uid="uid://cefbv8t5u4xp3" path="res://Resource/Enemies/Sake.tres" id="4_4f31c"]
 [ext_resource type="Shader" path="res://Material/blink.gdshader" id="4_48tvg"]
 [ext_resource type="Texture2D" uid="uid://chnnmegyldca8" path="res://Art/Harol.png" id="5_35b1r"]
+[ext_resource type="Script" path="res://Script/SuperScript/Entity.gd" id="7_41ws0"]
 [ext_resource type="Resource" uid="uid://dcrqn48o2sdu5" path="res://Resource/Enemies/Lizard.tres" id="7_aki4r"]
 [ext_resource type="PackedScene" uid="uid://chbe22p815kfy" path="res://Scene/ui.tscn" id="7_hsdh1"]
-[ext_resource type="Resource" uid="uid://b8tdcow0rsb2p" path="res://Resource/Team/Harold.tres" id="7_jyiwk"]
 [ext_resource type="Resource" uid="uid://bfpvp7h5i2nb2" path="res://Resource/Team/Harolita.tres" id="7_ugwp5"]
+[ext_resource type="Script" path="res://Script/SuperScript/Skill.gd" id="8_rcxlu"]
+[ext_resource type="Texture2D" uid="uid://bx3lfwiuan64h" path="res://Art/harold_divine_smite.png" id="9_ksv57"]
 [ext_resource type="Texture2D" uid="uid://bwsxfi4t22s0u" path="res://Art/Lizard.png" id="9_tar5j"]
+[ext_resource type="Texture2D" uid="uid://dor6o3n0d57wx" path="res://Art/harold_divine_aid.png" id="10_w7h3j"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wb0ka"]
 resource_local_to_scene = true
@@ -41,6 +44,58 @@ animations = [{
 "name": &"default",
 "speed": 5.0
 }]
+
+[sub_resource type="Resource" id="Resource_4q3bl"]
+script = ExtResource("8_rcxlu")
+skill_name = "Fire Light Bash"
+skill_cost = 20
+skill_cooldown = 0
+skill_description = "Harold will swing around his jar of fireflies and inflict 30 Light Damage to the Enemy"
+skill_target = "Single"
+skill_type = "Attack"
+skill_mode = "Active"
+skill_element = 4
+skill_damage = 30.0
+
+[sub_resource type="Resource" id="Resource_0srgj"]
+script = ExtResource("8_rcxlu")
+skill_name = "Divine Smite"
+skill_cost = 30
+skill_cooldown = 0
+skill_description = ""
+skill_target = "Single"
+skill_type = "Attack"
+skill_mode = "Active"
+skill_element = 4
+skill_damage = 100.0
+card_img = ExtResource("9_ksv57")
+
+[sub_resource type="Resource" id="Resource_lsprp"]
+script = ExtResource("8_rcxlu")
+skill_name = "Divine Aid"
+skill_cost = 70
+skill_cooldown = 0
+skill_description = ""
+skill_target = "Single"
+skill_type = "Support"
+skill_mode = "Active"
+skill_element = 4
+skill_damage = 25.0
+card_img = ExtResource("10_w7h3j")
+
+[sub_resource type="Resource" id="Resource_g51im"]
+resource_local_to_scene = true
+script = ExtResource("7_41ws0")
+entity_name = "Harold"
+health = 100.0
+mana = 100
+damage = 40.0
+inTeam = true
+skill_list = Array[ExtResource("8_rcxlu")]([SubResource("Resource_4q3bl"), SubResource("Resource_0srgj"), SubResource("Resource_lsprp")])
+element = 4
+resistance = Array[int]([3, 4])
+weakness = Array[int]([1])
+speed = 100
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_aivnm"]
 resource_local_to_scene = true
@@ -146,7 +201,7 @@ material = SubResource("ShaderMaterial_wb0ka")
 position = Vector2(513, 468)
 scale = Vector2(7.5, 7.5)
 sprite_frames = SubResource("SpriteFrames_huilu")
-stats = ExtResource("7_jyiwk")
+stats = SubResource("Resource_g51im")
 
 [node name="Player2" parent="." instance=ExtResource("1_uhqgt")]
 material = SubResource("ShaderMaterial_aivnm")

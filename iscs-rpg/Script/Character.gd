@@ -9,6 +9,7 @@ class_name Character extends AnimatedSprite2D
 
 @export var dissolve_value:float = 0.0
 @export var blink_value:float = 0.0
+@export var stun_counter: int = 0
 
 var game_state: int = 0
 
@@ -26,6 +27,7 @@ var noise_texture: FastNoiseLite = FastNoiseLite.new()
 
 signal entity_done
 signal target_picked
+signal stun_finished
 
 func align_shader(shader_number: int) -> void:
 	if shader_number == 0:
@@ -52,8 +54,12 @@ func reset_shader(animation_number: int) -> void:
 func _ready() -> void:
 	stats.took_damage.connect(take_damage)
 	stats.did_armored.connect(get_armor)
-	stats.crit_up.connect(get_armor)
+	stats.crit_up.connect(crit_boost)
+	stats.stunned.connect(stunned)
 	stats.healed.connect(heal)
+	
+	stats.max_health = stats.health
+	stats.max_mana = stats.mana
 	
 	player_name.text = stats.entity_name
 	reset_shader(1)
@@ -67,6 +73,11 @@ func _process(delta: float) -> void:
 		health.set_modulate(Color.AQUA)
 	else:
 		health.set_modulate(Color.WHITE)
+	
+	if stats.is_stunned:
+		player_name.set_modulate(Color.YELLOW)
+	else:
+		player_name.set_modulate(Color.WHITE)
 	health.text = "Health: " + str(stats.health)
 	mana.text = "Mana : " + str(stats.mana)
 	
@@ -135,3 +146,34 @@ func heal():
 	animation_player.play("Heal")
 	await animation_player.animation_finished
 	emit_signal("entity_done")
+	
+func crit_boost():
+	reset_shader(0)
+	self.material.set("shader_parameter/blink_color",Color.DARK_ORANGE)
+	animation_player.play("Heal")
+	await animation_player.animation_finished
+	emit_signal("entity_done")
+	
+func damage_boost():
+	reset_shader(0)
+	self.material.set("shader_parameter/blink_color",Color.CRIMSON)
+	animation_player.play("Heal")
+	await animation_player.animation_finished
+	emit_signal("entity_done")
+
+func stunned():
+	self.pause()
+	reset_shader(0)
+	self.material.set("shader_parameter/blink_color",Color.YELLOW)
+	animation_player.play("Stun")
+	await animation_player.animation_finished
+	emit_signal("entity_done")
+
+
+func _on_stun_finished() -> void:
+	self.play("default")
+	stats.is_stunned = false
+	reset_shader(0)
+	self.material.set("shader_parameter/blink_color",Color.YELLOW)
+	animation_player.play("Revert_stun")
+	await animation_player.animation_finished

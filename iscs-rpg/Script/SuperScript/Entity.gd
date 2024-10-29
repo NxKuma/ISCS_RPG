@@ -21,6 +21,7 @@ signal crit_up
 signal stunned
 signal did_armored
 signal mana_used
+signal damage_changed
 
 #Hidden in the Inspector
 enum Element{
@@ -32,7 +33,8 @@ enum Element{
 	Dark
 }
 
-var max_health: float = health
+var max_health: float
+var max_mana: int 
 var is_stunned:bool = false
 var is_dead: bool = false
 var is_armored: bool = false
@@ -42,6 +44,7 @@ var crit_multiplier: float = 1.5
 
 
 # ---Return Functions---
+
 
 #Take Physical Damage
 func take_damage(damage_dealt:float) -> float:
@@ -65,17 +68,16 @@ func take_skill_damage(skill_recieved:Skill) -> float:
 	var damage_dealt: float = skill_recieved.skill_damage
 	#Check if the Skill Element is aligned with the Element of the Entity
 	#Based on this the damage will either weaken or strengthen
-	if skill_recieved.skill_element in resistance:
-		initial_health -= damage_dealt * 0.5
-	elif skill_recieved.skill_element in weakness:
-		initial_health -= damage_dealt * 2
-	else:
-		initial_health -= damage_dealt
 	if armor >= 0:
 		armor -= damage_dealt
 	else:
 		is_armored = false
-		initial_health -= damage_dealt
+		if skill_recieved.skill_element in resistance:
+			initial_health -= damage_dealt * 0.5
+		elif skill_recieved.skill_element in weakness:
+			initial_health -= damage_dealt * 2
+		else:
+			initial_health -= damage_dealt
 	
 	if initial_health <= 0:
 		initial_health = 0
@@ -101,10 +103,14 @@ func change_speed(speed_change:int) -> void:
 	speed += speed_change
 	emit_signal("speed_changed")
 	
+func damage_boost(amount: int) -> void:
+	damage *= amount
+	emit_signal("damage_changed")
+	
+	
 func change_crit(crit_change:int):
 	crit_chance += crit_change  
 	emit_signal("crit_up")
-	
 
 func armored(armor_value: float) -> void:
 	is_armored = true

@@ -81,9 +81,6 @@ func _ready() -> void:
 	#--------------------------------------------------------------
 	card_skills.append(s_panel.get_child(0).get_child(0).get_child(0).get_child(0))
 	card_skills.append(s_panel.get_child(1).get_child(0).get_child(0).get_child(0))
-	#for child in s_panel.get_child(1).get_child(0).get_children():
-		#right_buttons.append(child.get_child(0).get_child(1).get_child(0))
-		#skill_buttons.append(child.get_child(0).get_child(1).get_child(0))
 	#--------------------------------------------------------------
 	for child in l_panel.get_children():
 		left_buttons.append(child.get_child(0))
@@ -101,10 +98,9 @@ func get_available_entity() -> void:
 	team.clear()
 	enemies.clear()
 	for e in entities:
-		if !e.is_dead and (e.stats.health > 0):
+		if !e.is_dead and (e.stats.health > 0) and (!e.stats.is_stunned):
 			if e.stats.inTeam:
 				team.append(e)
-				print(e.stats.health)
 			else:
 				enemies.append(e)
 
@@ -164,8 +160,8 @@ func _process(delta: float) -> void:
 		if s_panel.is_visible():
 			skill1_button.get_child(0).text = team[current_entity].stats.skill_list[1].skill_name
 			skill2_button.get_child(0).text = team[current_entity].stats.skill_list[2].skill_name
-			for x in range(1,2):
-				card_skills[x -1].set_texture(team[current_entity].stats.skill_list[x].card_img) 
+			card_skills[0].set_texture(team[current_entity].stats.skill_list[1].card_img)
+			card_skills[1].set_texture(team[current_entity].stats.skill_list[2].card_img) 
 #------------------------------------------------------------------------------
 	elif current_state == GameState.Target:
 		for b in left_buttons:
@@ -181,7 +177,6 @@ func _process(delta: float) -> void:
 					for s in skill_buttons:
 						if b == s:
 							current_action = b.get_child(0).text
-		print(str(team[current_entity]) +current_action)
 		for skill in team[current_entity].stats.skill_list:
 			if skill.skill_name == current_action:
 				if skill.skill_type == "Attack":
@@ -208,7 +203,6 @@ func _process(delta: float) -> void:
 #------------------------------------------------------------------------------
 	elif current_state == GameState.Execute:
 		if has_queued:
-			print("hello")
 			pick_enemy_action()
 			has_queued = false
 		var sorted_list = arrange_by_speed(entities)
@@ -258,7 +252,6 @@ func initialize_action(source: Character, action: String, destination: Character
 		for skill in character_stats:
 			if skill.skill_name == action or action == "Attack":
 				action_list[source] = [action, destination]
-				print(target_array)
 				if current_entity < target_array.size()-1:
 					current_entity += 1
 					a_panel.set_visible(false)
@@ -278,36 +271,52 @@ func execute_action(list:Array[Character]) -> void:
 			var skill: Skill
 			var target: Character = action_list[l][1]
 			var action: String = action_list[l][0]
+			var enough_mana: bool
 			#print("{} (Who is dead?{}) is attacking {} (Who is dead?{})".format([l.stats.entity_name,l.is_dead,target.stats.entity_name,target.is_dead], "{}"))
 			if action != "Attack":
 				for s in stats.skill_list:
 					if s.skill_name == action:
 						skill = s
-						print(skill.skill_name)
-			if (!target.is_dead and !l.is_dead):
+				enough_mana = skill.skill_cost > stats.mana
+			if (!target.is_dead and !l.is_dead) and !l.stats.is_stunned:
 				echo.visible = true
 				echo.text = l.stats.entity_name + " used " +  action + " on " + target.stats.entity_name
 				if action == "Attack":
 					target.stats.health = target.stats.take_damage(stats.damage)
 				else:
-					if skill.skill_cost > stats.mana:
-						emit_signal("has_completed_executing")
-					if skill.skill_name.contains("Smite"):
-						for e in enemies:
-							e.stats.health = e.stats.take_skill_damage(skill)
-					elif skill.skill_type == "Attack":
-						target.stats.health = target.stats.take_skill_damage(skill)
-					
-					elif skill.skill_type == "Support":
-						if skill.skill_name.contains("Heal"):
-							target.stats.heal(skill.skill_damage)
-						if skill.skill_name.contains("Aid"):
-							target.stats.change_crit(skill.skill_damage)
-						if skill.skill_name.contains("Armor"):
-							target.stats.armored(skill.skill_damage)
-					if skill.skill_mode == "Active":
-						l.stats.mana -= skill.skill_cost
-				await target.entity_done
+					if enough_mana:
+						echo.text = "Not Enough Mana"
+						await get_tree().create_timer(1).timeout
+					else:
+						
+						if skill.skill_type == "Attack":
+							if skill.skill_name.contains("Smite"):
+								for e in enemies:
+									e.stats.health = e.stats.take_skill_damage(skill)
+							elif skill.skill_name.contains("Stun"):
+								target.stats.stun()
+							elif skill.skill_name.contains("Kill"):
+								for e in team:
+									e.stats.health = e.stats.take_skill_damage(skill)
+							else:
+								target.stats.health = target.stats.take_skill_damage(skill)
+						
+						elif skill.skill_type == "Support":
+							if skill.skill_name.contains("Heal"):
+								target.stats.heal(skill.skill_damage)
+							elif skill.skill_name.contains("Aid"):
+								target.stats.change_crit(skill.skill_damage)
+							elif skill.skill_name.contains("Armor"):
+								target.stats.armored(skill.skill_damage)
+							elif skill.skill_name.contains("Rising"):
+								target.stats.armored(skill.skill_damage)
+						if skill.skill_mode == "Active":
+							if l.stats.mana <= 0:
+								l.stats.mana = 0
+							else:
+								l.stats.mana -= skill.skill_cost
+				if !enough_mana:
+					await target.entity_done
 	#print("-------------------------------")
 	emit_signal("has_completed_executing")
 
@@ -336,11 +345,32 @@ func _skill_screen_open():
 
 
 func _on_has_completed_executing() -> void:
-	get_available_entity()
+	for t in entities:
+		if t.stats.mana < t.stats.max_mana:
+			t.stats.mana += 10
+		else:
+			t.stats.mana = t.stats.max_mana
+		
+		if t.stats.is_stunned:
+			if t.stun_counter > 0:
+				t.stun_counter -= 1
+			else:
+				t.emit_signal("stun_finished")
 	current_entity = 0
 	echo.visible = false
-	if team.size() <= 0:
+	print(entities[0].stats.health == 0 and entities[1].stats.health == 0)
+	if team.size() <= 0 and (entities[0].stats.health == 0 and entities[1].stats.health == 0) :
 		emit_signal("lose_signal")
+		set_process(false)
+		return
 	elif enemies.size() <= 0:
 		emit_signal("win_signal")
-	current_state = GameState.SetUp
+		set_process(false)
+		return
+	get_available_entity()
+	if team.size() == 0:
+		print("hello")
+		has_queued = true
+		current_state = GameState.Execute
+	else:
+		current_state = GameState.SetUp

@@ -14,7 +14,7 @@ skill_target = "Single"
 skill_type = "Attack"
 skill_mode = "Active"
 skill_element = 0
-skill_damage = 40.0
+skill_damage = 25.0
 
 [resource]
 script = ExtResource("1_7tacw")
