@@ -10,37 +10,35 @@ var available_team: Array[AnimatedSprite2D] = []
 var entities: Array[AnimatedSprite2D] = []
 var team: Array[AnimatedSprite2D] = []
 var enemies: Array[AnimatedSprite2D] = []
+var left_buttons: Array[TextureButton] = []
+var right_buttons: Array[TextureButton] = []
+var skill_buttons: Array[TextureButton] = []
+var action_buttons: Array[TextureButton] = []
 var card_skills: Array[Sprite2D] = []
 var action_list: Dictionary = {}
-var echo: Label
 
+var turn_indicator: Label
+var echo: Label
+var current_entity: int = 0
+var target_entity: int = 0
 var current_state: int = GameState.SetUp
+var die_count: int = 0
 var special_button: TextureButton
 var skill1_button: TextureButton
 var skill2_button: TextureButton
 var a_panel: HSplitContainer
 var s_panel: HSplitContainer
 var l_panel: VSplitContainer
-var turn_indicator: Label
-var current_entity: int = 0
-var target_entity: int = 0
-var left_buttons: Array[TextureButton] = []
-var right_buttons: Array[TextureButton] = []
-var skill_buttons: Array[TextureButton] = []
-var action_buttons: Array[TextureButton] = []
 var current_action: String
-var has_queued: bool = false
 var is_done_executing: bool = false
+var has_queued: bool = false
 var is_attack: bool = false
-var die_count: int = 0
 
 signal has_completed_executing
 signal action_initialized
 signal reset_game
 signal win_signal
 signal lose_signal
-# gamehandler.signal.connect(function)
-# emit_signal("skill_button_pressed", 123)
 
 enum GameState{
 	SetUp, #Set Up = Player Chooses their moves
@@ -88,7 +86,7 @@ func _ready() -> void:
 	for child in get_children():
 		if child.get_script() != null and child is AnimatedSprite2D:
 			entities.append(child)
-#--------------------------------------------------------------
+	#--------------------------------------------------------------
 	get_available_entity()
 
 func get_available_entity() -> void:
@@ -123,7 +121,6 @@ func pick_enemy_action() -> void:
 					for t in team:
 						if t.stats.is_stunned:
 							available_array.append(t)
-					print(available_array)
 					target_array = available_array
 				else:
 					target_array = available_team
@@ -133,7 +130,7 @@ func pick_enemy_action() -> void:
 		else:
 			initialize_action(enemies[e],enemy_action_string, target_array[randi_range(0,target_array.size() - 1)])
 
-func fastest_to_slowest(a, b):
+func fastest_to_slowest(a, b) -> bool:
 	if a.stats.speed > b.stats.speed:
 		return true
 	return false
@@ -247,7 +244,7 @@ func get_entity_count(entity: Character, is_in_team: bool) -> int:
 		count = enemies.find(entity)
 	return count
 #------------------------------------------------------------------------------
-func initialize_action(source: Character, action: String, destination: Character):
+func initialize_action(source: Character, action: String, destination: Character) -> void:
 	if !has_queued:
 		var character_stats: Array[Skill] = source.stats.skill_list
 		var target_array: Array[AnimatedSprite2D] = []
@@ -267,9 +264,6 @@ func initialize_action(source: Character, action: String, destination: Character
 					return
 				else:
 					current_state = GameState.Execute
-			#else:
-				#current_state = GameState.SetUp
-	#label.text += source.stats.entity_name + " used " +  action + " on " + destination.stats.entity_name + "\n"
 #------------------------------------------------------------------------------
 func execute_action(list:Array[Character]) -> void:
 	for l in list:
@@ -279,7 +273,6 @@ func execute_action(list:Array[Character]) -> void:
 			var target: Character = action_list[l][1]
 			var action: String = action_list[l][0]
 			var enough_mana: bool
-			#print("{} (Who is dead?{}) is attacking {} (Who is dead?{})".format([l.stats.entity_name,l.is_dead,target.stats.entity_name,target.is_dead], "{}"))
 			if action != "Attack":
 				for s in stats.skill_list:
 					if s.skill_name == action:
@@ -323,9 +316,8 @@ func execute_action(list:Array[Character]) -> void:
 								l.stats.mana -= skill.skill_cost
 				if !enough_mana:
 					await target.entity_done
-	#print("-------------------------------")
 	emit_signal("has_completed_executing")
-
+#------------------------------------------------------------------------------
 func queue_action() -> void:
 	var target : Character
 	if is_attack:
@@ -333,23 +325,21 @@ func queue_action() -> void:
 	else:
 		target = team[target_entity]
 	initialize_action(team[current_entity], current_action, target)
-
 #------------------------------------------------------------------------------
 # Button Presses
-func _attack_button_press():
+func _attack_button_press() -> void:
 	current_state = GameState.Target
-	
-func _action_screen_open():
+
+func _action_screen_open() -> void:
 	a_panel.set_visible(!a_panel.is_visible())
 	if s_panel.is_visible():
 		s_panel.set_visible(false)
 	
-func _skill_screen_open():
+func _skill_screen_open() -> void:
 	s_panel.set_visible(!s_panel.is_visible())
 	if a_panel.is_visible():
 		a_panel.set_visible(false)
-
-
+#------------------------------------------------------------------------------
 func _on_has_completed_executing() -> void:
 	for t in entities:
 		if t.stats.mana < t.stats.max_mana:
@@ -362,29 +352,23 @@ func _on_has_completed_executing() -> void:
 				t.stun_counter -= 1
 			else:
 				t.emit_signal("stun_finished")
-				print("Stun daw")
 				await t.entity_done
 	echo.visible = false
 	get_available_entity()
 	if team.size() <= 0:
-		print("Lose na")
 		emit_signal("lose_signal")
 		return
 	elif enemies.size() <= 0:
-		print("Win na")
 		emit_signal("win_signal")
 		return
 	else:
-		print("WTF?")
 		if available_team.size() == 0:
-			print("What Happen")
 			has_queued = true
 			current_state = GameState.Execute
 		else:
-			print("available_team.size()")
 			current_entity = 0
 			current_state = GameState.SetUp
-
+#------------------------------------------------------------------------------
 func _on_reset_game() -> void:
 	current_state = GameState.SetUp
 	for e in entities:

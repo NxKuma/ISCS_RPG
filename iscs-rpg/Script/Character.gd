@@ -1,17 +1,14 @@
 class_name Character extends AnimatedSprite2D
 
-
 @export var stats: Entity
-@onready var player_name: Label = $Name
-@onready var health: Label = $Health
-@onready var mana: Label = $Mana
-@onready var animation_player: AnimationPlayer = $AnimationPlayer
-
 @export var dissolve_value:float = 0.0
 @export var blink_value:float = 0.0
 @export var stun_counter: int = 0
 
-var game_state: int = 0
+@onready var player_name: Label = $Name
+@onready var health: Label = $Health
+@onready var mana: Label = $Mana
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 var blink_shader:Shader = preload("res://Material/blink.gdshader")
 var dissolve_shader:Shader = preload("res://Material/disolver.tres")
@@ -19,11 +16,12 @@ var outline_shader:Shader = preload("res://Material/outline.tres")
 var current_shader:Shader
 
 var shader_checks: Array[bool] = [false, false, false]
+var done_animating:bool = false
 var is_hovering: bool = false
 var is_dead: bool = false
-var done_animating:bool = false
-var noise : NoiseTexture2D = NoiseTexture2D.new()
+var game_state: int = 0
 var noise_texture: FastNoiseLite = FastNoiseLite.new()
+var noise : NoiseTexture2D = NoiseTexture2D.new()
 
 signal entity_done
 signal target_picked
@@ -53,7 +51,6 @@ func reset_shader(animation_number: int) -> void:
 		shader_checks[x] = false
 	shader_checks[animation_number] = true
 	align_shader(animation_number)
-	
 
 func _ready() -> void:
 	stats.took_damage.connect(take_damage)
@@ -73,7 +70,7 @@ func _ready() -> void:
 		self.material.set("shader_parameter/ColorParameter",Color.AQUA)
 	else:
 		self.material.set("shader_parameter/ColorParameter",Color.RED)
-	
+
 func _process(delta: float) -> void:
 	if stats.is_armored:
 		health.set_modulate(Color.AQUA)
@@ -110,8 +107,6 @@ func _process(delta: float) -> void:
 			animation_player.play("Die")
 			await animation_player.animation_finished
 			set_process(false)
-			
-
 
 func _on_area_2d_mouse_entered() -> void:
 	if game_state == 2 and !is_dead:
@@ -134,7 +129,7 @@ func _on_area_2d_mouse_exited() -> void:
 		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 		is_hovering = false
 
-func take_damage(did_crit: int):
+func take_damage(did_crit: int) -> void:
 	reset_shader(0)
 	if did_crit == 0:
 		self.material.set("shader_parameter/blink_color",Color.WHITE)
@@ -146,42 +141,41 @@ func take_damage(did_crit: int):
 	await animation_player.animation_finished
 	emit_signal("entity_done")
 	
-func get_armor():
+func get_armor() -> void:
 	reset_shader(0)
 	self.material.set("shader_parameter/blink_color",Color.SKY_BLUE)
 	animation_player.play("Defend")
 	await animation_player.animation_finished
 	emit_signal("entity_done")
 	
-func heal():
+func heal() -> void:
 	reset_shader(0)
 	self.material.set("shader_parameter/blink_color",Color.GREEN)
 	animation_player.play("Heal")
 	await animation_player.animation_finished
 	emit_signal("entity_done")
 	
-func crit_boost():
+func crit_boost() -> void:
 	reset_shader(0)
 	self.material.set("shader_parameter/blink_color",Color.DARK_ORANGE)
 	animation_player.play("ChangeCrit")
 	await animation_player.animation_finished
 	emit_signal("entity_done")
 	
-func damage_boost():
+func damage_boost() -> void:
 	reset_shader(0)
 	self.material.set("shader_parameter/blink_color",Color.CRIMSON)
 	animation_player.play("DamageBoost")
 	await animation_player.animation_finished
 	emit_signal("entity_done")
 
-func stunned():
+func stunned() -> void:
 	self.pause()
 	reset_shader(0)
 	self.material.set("shader_parameter/blink_color",Color.YELLOW)
 	animation_player.play("Stun")
 	await animation_player.animation_finished
 	emit_signal("entity_done")
-
 
 func _on_stun_finished() -> void:
 	self.play("default")

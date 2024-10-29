@@ -43,16 +43,17 @@ var armor: int = 0
 var crit_chance: float = 30.0
 var crit_multiplier: float = 1.5
 
-
 # ---Return Functions---
-
 
 #Take Physical Damage
 func take_damage(damage_dealt:float) -> float:
 	#Calculate Crit Damage
 	if randf_range(1,100) <= crit_chance:
 		damage_dealt *= crit_multiplier
-		health -= damage_dealt
+		if armor > 0:
+			armor -= damage_dealt
+		else:
+			health -= damage_dealt
 		emit_signal("took_damage", 1)
 	else:
 		emit_signal("took_damage", 0)
@@ -115,8 +116,7 @@ func damage_boost(amount: int) -> void:
 	damage *= amount
 	emit_signal("damage_changed")
 	
-	
-func change_crit(crit_change:int):
+func change_crit(crit_change:int) -> void:
 	crit_chance += crit_change  
 	emit_signal("crit_up")
 
