@@ -14,12 +14,6 @@ func _ready() -> void:
 	win_panel.visible = false
 	lose_panel.visible = false
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
-
 func show_win() -> void:
 	win_panel.visible = true
 	lose_panel.visible = false
@@ -29,6 +23,7 @@ func show_lose() -> void:
 	lose_panel.visible = true
 	
 func return_to_game() -> void:
+	get_parent().emit_signal("reset_game")
 	win_panel.visible = false
 	lose_panel.visible = false
-		
+	

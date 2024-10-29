@@ -14,7 +14,7 @@ class_name Entity
 @export var speed: int 
 
 #signals
-signal took_damage
+signal took_damage(did_crit:int)
 signal healed
 signal speed_changed
 signal crit_up
@@ -22,6 +22,7 @@ signal stunned
 signal did_armored
 signal mana_used
 signal damage_changed
+signal entity_revive
 
 #Hidden in the Inspector
 enum Element{
@@ -39,7 +40,7 @@ var is_stunned:bool = false
 var is_dead: bool = false
 var is_armored: bool = false
 var armor: int = 0
-var crit_chance: float = 50.0
+var crit_chance: float = 30.0
 var crit_multiplier: float = 1.5
 
 
@@ -51,14 +52,17 @@ func take_damage(damage_dealt:float) -> float:
 	#Calculate Crit Damage
 	if randf_range(1,100) <= crit_chance:
 		damage_dealt *= crit_multiplier
-	if armor >= 0:
-		armor -= damage_dealt
-	else:
-		is_armored = false
 		health -= damage_dealt
-	if health <= 0:
-		health = 0
-	emit_signal("took_damage")
+		emit_signal("took_damage", 1)
+	else:
+		emit_signal("took_damage", 0)
+		if armor > 0:
+			armor -= damage_dealt
+		else:
+			is_armored = false
+			health -= damage_dealt
+		if health <= 0:
+			health = 0
 	#Return the damaged health
 	return health
 
@@ -68,20 +72,24 @@ func take_skill_damage(skill_recieved:Skill) -> float:
 	var damage_dealt: float = skill_recieved.skill_damage
 	#Check if the Skill Element is aligned with the Element of the Entity
 	#Based on this the damage will either weaken or strengthen
-	if armor >= 0:
+	if armor > 0:
 		armor -= damage_dealt
+		emit_signal("took_damage", 0)
 	else:
 		is_armored = false
 		if skill_recieved.skill_element in resistance:
 			initial_health -= damage_dealt * 0.5
+			emit_signal("took_damage", 2)
 		elif skill_recieved.skill_element in weakness:
 			initial_health -= damage_dealt * 2
+			emit_signal("took_damage", 1)
 		else:
 			initial_health -= damage_dealt
+			emit_signal("took_damage", 0)
 	
 	if initial_health <= 0:
 		initial_health = 0
-	emit_signal("took_damage")
+	
 	#Return the calculated health
 	return initial_health
 
@@ -119,8 +127,10 @@ func armored(armor_value: float) -> void:
 
 #Revive the Entity
 func revive() -> void:
-	if !is_dead:
-		return
-	else:
-		health = max_health
-		is_dead = false
+	health = max_health
+	mana = max_mana
+	is_stunned = false
+	is_armored = false
+	crit_chance = 30.0
+	is_dead = false
+	emit_signal("entity_revive")

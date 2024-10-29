@@ -36,6 +36,10 @@ func align_shader(shader_number: int) -> void:
 		current_shader = dissolve_shader
 		noise.set_noise(noise_texture) 
 		self.material.set("shader_parameter/Texture2DParameter", noise)
+		if !stats.inTeam:
+			self.material.set("shader_parameter/ColorParameter",Color.RED)
+		else:
+			self.material.set("shader_parameter/ColorParameter",Color.AQUA)
 	elif shader_number == 2:
 		current_shader = outline_shader
 		if !stats.inTeam:
@@ -57,6 +61,8 @@ func _ready() -> void:
 	stats.crit_up.connect(crit_boost)
 	stats.stunned.connect(stunned)
 	stats.healed.connect(heal)
+	stats.damage_changed.connect(damage_boost)
+	stats.entity_revive.connect(revive)
 	
 	stats.max_health = stats.health
 	stats.max_mana = stats.mana
@@ -128,9 +134,14 @@ func _on_area_2d_mouse_exited() -> void:
 		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 		is_hovering = false
 
-func take_damage():
+func take_damage(did_crit: int):
 	reset_shader(0)
-	self.material.set("shader_parameter/blink_color",Color.WHITE)
+	if did_crit == 0:
+		self.material.set("shader_parameter/blink_color",Color.WHITE)
+	elif did_crit == 1:
+		self.material.set("shader_parameter/blink_color",Color.RED)
+	else:
+		self.material.set("shader_parameter/blink_color",Color.DIM_GRAY)
 	animation_player.play("Damaged")
 	await animation_player.animation_finished
 	emit_signal("entity_done")
@@ -152,14 +163,14 @@ func heal():
 func crit_boost():
 	reset_shader(0)
 	self.material.set("shader_parameter/blink_color",Color.DARK_ORANGE)
-	animation_player.play("Heal")
+	animation_player.play("ChangeCrit")
 	await animation_player.animation_finished
 	emit_signal("entity_done")
 	
 func damage_boost():
 	reset_shader(0)
 	self.material.set("shader_parameter/blink_color",Color.CRIMSON)
-	animation_player.play("Heal")
+	animation_player.play("DamageBoost")
 	await animation_player.animation_finished
 	emit_signal("entity_done")
 
@@ -178,4 +189,16 @@ func _on_stun_finished() -> void:
 	reset_shader(0)
 	self.material.set("shader_parameter/blink_color",Color.YELLOW)
 	animation_player.play("Revert_stun")
+	await animation_player.animation_finished
+	emit_signal("entity_done")
+
+func revive() -> void:
+	done_animating = false
+	health.visible = true
+	mana.visible = true
+	player_name.visible = true
+	stats.is_dead = false
+	is_dead = false
+	reset_shader(1)
+	animation_player.play("DisolveAgain")
 	await animation_player.animation_finished
